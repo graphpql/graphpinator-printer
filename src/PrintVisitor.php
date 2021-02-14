@@ -258,7 +258,7 @@ final class PrintVisitor implements ComponentVisitor
         }
 
         if (\count($component) === 0) {
-            return '[]';
+            return $openingChar . $closingChar;
         }
 
         return $openingChar . \PHP_EOL
