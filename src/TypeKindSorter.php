@@ -27,6 +27,7 @@ class TypeKindSorter implements \Graphpinator\Printer\Sorter
         \ksort($enum);
         \ksort($scalar);
         \ksort($object);
+        \ksort($directives);
 
         return \array_merge($interface, $object, $union, $input, $scalar, $enum, $directives);
     }
