@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4c5a727fb573e7a1bb5745669976178c",
+    "content-hash": "9162df0a91b730a7d9aadba3a7076d00",
     "packages": [
         {
             "name": "infinityloop-dev/graphpinator",
@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/infinityloop-dev/graphpinator.git",
-                "reference": "0cb059ca1b29ed5ff73c94480fcda03b7dbaa54c"
+                "reference": "40c58138b9bf2f7d0eedb0a4bf846aec95c7343c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/infinityloop-dev/graphpinator/zipball/0cb059ca1b29ed5ff73c94480fcda03b7dbaa54c",
-                "reference": "0cb059ca1b29ed5ff73c94480fcda03b7dbaa54c",
+                "url": "https://api.github.com/repos/infinityloop-dev/graphpinator/zipball/40c58138b9bf2f7d0eedb0a4bf846aec95c7343c",
+                "reference": "40c58138b9bf2f7d0eedb0a4bf846aec95c7343c",
                 "shasum": ""
             },
             "require": {
@@ -66,7 +66,7 @@
                 "issues": "https://github.com/infinityloop-dev/graphpinator/issues",
                 "source": "https://github.com/infinityloop-dev/graphpinator/tree/v1.0-rc7+2"
             },
-            "time": "2021-02-14T19:15:04+00:00"
+            "time": "2021-02-14T19:41:28+00:00"
         },
         {
             "name": "infinityloop-dev/graphpinator-common",
