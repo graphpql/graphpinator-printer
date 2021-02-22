@@ -207,7 +207,7 @@ final class PrintVisitor implements ComponentVisitor
         $isFirst = true;
 
         foreach ($set as $item) {
-            $currentHasDescription = $item->hasDescription();
+            $currentHasDescription = $item->getDescription() !== null;
 
             if (!$isFirst && ($previousHasDescription || $currentHasDescription)) {
                 $result .= \PHP_EOL;
