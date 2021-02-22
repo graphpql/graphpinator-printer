@@ -244,9 +244,7 @@ final class PrintVisitor implements ComponentVisitor
 
                 $component[] = $key . ': ' . $this->printValue($innerValue->getValue(), $indentLevel + 1);
             }
-        }
-
-        if ($value instanceof \Graphpinator\Value\ListInputedValue) {
+        } elseif ($value instanceof \Graphpinator\Value\ListInputedValue) {
             $openingChar = '[';
             $closingChar = ']';
 
@@ -255,6 +253,8 @@ final class PrintVisitor implements ComponentVisitor
 
                 $component[] = $this->printValue($innerValue, $indentLevel + 1);
             }
+        } else {
+            throw new \InvalidArgumentException('Unknown value type.');
         }
 
         if (\count($component) === 0) {

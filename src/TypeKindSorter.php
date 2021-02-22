@@ -6,6 +6,11 @@ namespace Graphpinator\Printer;
 
 class TypeKindSorter implements \Graphpinator\Printer\Sorter
 {
+    /**
+     * @param array<\Graphpinator\Type\Contract\NamedDefinition> $types
+     * @param array<\Graphpinator\Directive\Contract\Definition> $directives
+     * @return array<\Graphpinator\Type\Contract\NamedDefinition|\Graphpinator\Directive\Contract\Definition>
+     */
     public function sort(array $types, array $directives) : array
     {
         $interface = $union = $input = $enum = $scalar = $object = [];
@@ -18,6 +23,7 @@ class TypeKindSorter implements \Graphpinator\Printer\Sorter
                 \Graphpinator\Type\Introspection\TypeKind::ENUM => $enum[$name] = $type,
                 \Graphpinator\Type\Introspection\TypeKind::SCALAR => $scalar[$name] = $type,
                 \Graphpinator\Type\Introspection\TypeKind::OBJECT => $object[$name] = $type,
+                default => null,
             };
         }
 
