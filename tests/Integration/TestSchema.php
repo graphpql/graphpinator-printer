@@ -417,19 +417,10 @@ final class TestSchema
 
     public static function getSimpleDirective() : \Graphpinator\Directive\Directive
     {
-        return new class extends \Graphpinator\Directive\Directive implements \Graphpinator\Directive\Contract\ExecutableDefinition
+        return new class extends \Graphpinator\Directive\Directive implements \Graphpinator\Directive\Contract\FieldLocation
         {
-            use \Graphpinator\Directive\Contract\TExecutableDefinition;
-
             protected const NAME = 'simpleDirective';
-
-            public function __construct()
-            {
-                parent::__construct(
-                    [\Graphpinator\Directive\ExecutableDirectiveLocation::FIELD],
-                    true,
-                );
-            }
+            protected const REPEATABLE = true;
 
             public function validateType(
                 ?\Graphpinator\Type\Contract\Definition $definition,
@@ -441,6 +432,14 @@ final class TestSchema
                 return new \Graphpinator\Argument\ArgumentSet([
                     \Graphpinator\Argument\Argument::create('reason', \Graphpinator\Container\Container::String()),
                 ]);
+            }
+
+            public function resolveFieldBefore(\Graphpinator\Value\ArgumentValueSet $arguments) : string
+            {
+            }
+
+            public function resolveFieldAfter(\Graphpinator\Value\FieldValue $fieldValue, \Graphpinator\Value\ArgumentValueSet $arguments,) : string
+            {
             }
         };
     }

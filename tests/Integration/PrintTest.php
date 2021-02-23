@@ -302,7 +302,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         
         directive @simpleDirective(
           reason: String
-        ) repeatable on FIELD
+        ) repeatable on FIELD | INLINE_FRAGMENT | FRAGMENT_SPREAD
         EOL;
 
         $printer = new \Graphpinator\Printer\Printer(

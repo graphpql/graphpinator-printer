@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "infinityloop-dev/graphpinator",
-            "version": "v1.0-rc8",
+            "version": "v1.0-rc9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/infinityloop-dev/graphpinator.git",
-                "reference": "8ed2419e7e3970a7b4130ce1da1534d62542db7b"
+                "reference": "2b1bfb3e65267f34e02c1ed764345ec2a0e0d1bb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/infinityloop-dev/graphpinator/zipball/8ed2419e7e3970a7b4130ce1da1534d62542db7b",
-                "reference": "8ed2419e7e3970a7b4130ce1da1534d62542db7b",
+                "url": "https://api.github.com/repos/infinityloop-dev/graphpinator/zipball/2b1bfb3e65267f34e02c1ed764345ec2a0e0d1bb",
+                "reference": "2b1bfb3e65267f34e02c1ed764345ec2a0e0d1bb",
                 "shasum": ""
             },
             "require": {
@@ -64,9 +64,9 @@
             "homepage": "https://www.infinityloop.dev/",
             "support": {
                 "issues": "https://github.com/infinityloop-dev/graphpinator/issues",
-                "source": "https://github.com/infinityloop-dev/graphpinator/tree/v1.0-rc8"
+                "source": "https://github.com/infinityloop-dev/graphpinator/tree/v1.0-rc9"
             },
-            "time": "2021-02-22T23:23:58+00:00"
+            "time": "2021-02-23T18:56:19+00:00"
         },
         {
             "name": "infinityloop-dev/graphpinator-common",
@@ -1301,16 +1301,16 @@
         },
         {
             "name": "phar-io/version",
-            "version": "3.0.4",
+            "version": "3.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phar-io/version.git",
-                "reference": "e4782611070e50613683d2b9a57730e9a3ba5451"
+                "reference": "bae7c545bef187884426f042434e561ab1ddb182"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phar-io/version/zipball/e4782611070e50613683d2b9a57730e9a3ba5451",
-                "reference": "e4782611070e50613683d2b9a57730e9a3ba5451",
+                "url": "https://api.github.com/repos/phar-io/version/zipball/bae7c545bef187884426f042434e561ab1ddb182",
+                "reference": "bae7c545bef187884426f042434e561ab1ddb182",
                 "shasum": ""
             },
             "require": {
@@ -1346,9 +1346,9 @@
             "description": "Library for handling version information and constraints",
             "support": {
                 "issues": "https://github.com/phar-io/version/issues",
-                "source": "https://github.com/phar-io/version/tree/3.0.4"
+                "source": "https://github.com/phar-io/version/tree/3.1.0"
             },
-            "time": "2020-12-13T23:18:30+00:00"
+            "time": "2021-02-23T14:00:09+00:00"
         },
         {
             "name": "phpdocumentor/reflection-common",
