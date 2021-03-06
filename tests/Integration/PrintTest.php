@@ -21,7 +21,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
                 EOL,
             ],
             [
-                $container->introspectionTypeKind(),
+                new \Graphpinator\Introspection\TypeKind(),
                 <<<'EOL'
                 """
                 Built-in introspection enum.
@@ -39,7 +39,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
                 EOL,
             ],
             [
-                $container->introspectionSchema(),
+                new \Graphpinator\Introspection\Schema($container),
                 <<<'EOL'
                 """
                 Built-in introspection type.
@@ -55,7 +55,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
                 EOL,
             ],
             [
-                $container->introspectionType(),
+                new \Graphpinator\Introspection\Type($container),
                 <<<'EOL'
                 """
                 Built-in introspection type.
@@ -78,7 +78,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
                 EOL,
             ],
             [
-                $container->introspectionDirective(),
+                new \Graphpinator\Introspection\Directive($container),
                 <<<'EOL'
                 """
                 Built-in introspection type.

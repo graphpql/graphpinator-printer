@@ -16,13 +16,13 @@ class TypeKindSorter implements \Graphpinator\Printer\Sorter
         $interface = $union = $input = $enum = $scalar = $object = [];
 
         foreach ($types as $name => $type) {
-            match ($type->getTypeKind()) {
-                \Graphpinator\Type\Introspection\TypeKind::INTERFACE => $interface[$name] = $type,
-                \Graphpinator\Type\Introspection\TypeKind::UNION => $union[$name] = $type,
-                \Graphpinator\Type\Introspection\TypeKind::INPUT_OBJECT => $input[$name] = $type,
-                \Graphpinator\Type\Introspection\TypeKind::ENUM => $enum[$name] = $type,
-                \Graphpinator\Type\Introspection\TypeKind::SCALAR => $scalar[$name] = $type,
-                \Graphpinator\Type\Introspection\TypeKind::OBJECT => $object[$name] = $type,
+            match ($type->accept(new \Graphpinator\Introspection\TypeKindVisitor())) {
+                \Graphpinator\Introspection\TypeKind::INTERFACE => $interface[$name] = $type,
+                \Graphpinator\Introspection\TypeKind::UNION => $union[$name] = $type,
+                \Graphpinator\Introspection\TypeKind::INPUT_OBJECT => $input[$name] = $type,
+                \Graphpinator\Introspection\TypeKind::ENUM => $enum[$name] = $type,
+                \Graphpinator\Introspection\TypeKind::SCALAR => $scalar[$name] = $type,
+                \Graphpinator\Introspection\TypeKind::OBJECT => $object[$name] = $type,
                 default => null,
             };
         }

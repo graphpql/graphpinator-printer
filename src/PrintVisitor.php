@@ -69,7 +69,7 @@ final class PrintVisitor implements ComponentVisitor
             . '}';
     }
 
-    public function visitScalar(\Graphpinator\Type\Scalar\ScalarType $scalar) : string
+    public function visitScalar(\Graphpinator\Type\ScalarType $scalar) : string
     {
         return $this->printDescription($scalar->getDescription())
             . 'scalar ' . $scalar->getName();
@@ -123,7 +123,7 @@ final class PrintVisitor implements ComponentVisitor
         return $schema . $this->printDirectiveUsages($argument->getDirectiveUsages());
     }
 
-    public function visitDirectiveUsage(\Graphpinator\Directive\DirectiveUsage $directiveUsage) : string
+    public function visitDirectiveUsage(\Graphpinator\DirectiveUsage\DirectiveUsage $directiveUsage) : string
     {
         $schema = '@' . $directiveUsage->getDirective()->getName();
         $printableArguments = [];
@@ -144,7 +144,7 @@ final class PrintVisitor implements ComponentVisitor
         return $schema;
     }
 
-    public function visitEnumItem(\Graphpinator\Type\Enum\EnumItem $enumItem) : string
+    public function visitEnumItem(\Graphpinator\EnumItem\EnumItem $enumItem) : string
     {
         return $this->printItemDescription($enumItem->getDescription())
             . $enumItem->getName() . $this->printDirectiveUsages($enumItem->getDirectiveUsages());
@@ -172,7 +172,7 @@ final class PrintVisitor implements ComponentVisitor
         return '"""' . \PHP_EOL . $description . \PHP_EOL . '"""' . \PHP_EOL;
     }
 
-    private function printImplements(\Graphpinator\Utils\InterfaceSet $implements) : string
+    private function printImplements(\Graphpinator\Type\InterfaceSet $implements) : string
     {
         if (\count($implements) === 0) {
             return '';
@@ -187,7 +187,7 @@ final class PrintVisitor implements ComponentVisitor
         return ' implements ' . \implode(' & ', $interfaces);
     }
 
-    private function printDirectiveUsages(\Graphpinator\Directive\DirectiveUsageSet $set) : string
+    private function printDirectiveUsages(\Graphpinator\DirectiveUsage\DirectiveUsageSet $set) : string
     {
         $return = '';
 
@@ -199,7 +199,7 @@ final class PrintVisitor implements ComponentVisitor
     }
 
     private function printItems(
-        \Graphpinator\Field\FieldSet|\Graphpinator\Argument\ArgumentSet|\Graphpinator\Type\Enum\EnumItemSet $set,
+        \Graphpinator\Field\FieldSet|\Graphpinator\Argument\ArgumentSet|\Graphpinator\EnumItem\EnumItemSet $set,
     ) : string
     {
         $result = '';

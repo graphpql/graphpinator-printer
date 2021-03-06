@@ -148,7 +148,7 @@ final class TestSchema
 
             public function __construct()
             {
-                parent::__construct(new \Graphpinator\Utils\ConcreteSet([
+                parent::__construct(new \Graphpinator\Type\ConcreteSet([
                     TestSchema::getSimpleType(),
                     TestSchema::getChildType(),
                 ]));
@@ -285,21 +285,21 @@ final class TestSchema
 
             public function __construct()
             {
-                parent::__construct(new \Graphpinator\Type\Enum\EnumItemSet([
-                    new \Graphpinator\Type\Enum\EnumItem('A', 'single line description'),
-                    (new \Graphpinator\Type\Enum\EnumItem('B'))
+                parent::__construct(new \Graphpinator\EnumItem\EnumItemSet([
+                    new \Graphpinator\EnumItem\EnumItem('A', 'single line description'),
+                    (new \Graphpinator\EnumItem\EnumItem('B'))
                         ->setDeprecated(),
-                    new \Graphpinator\Type\Enum\EnumItem('C', 'multi line' . \PHP_EOL . 'description'),
-                    (new \Graphpinator\Type\Enum\EnumItem('D', 'single line description'))
+                    new \Graphpinator\EnumItem\EnumItem('C', 'multi line' . \PHP_EOL . 'description'),
+                    (new \Graphpinator\EnumItem\EnumItem('D', 'single line description'))
                         ->setDeprecated('reason'),
                 ]));
             }
         };
     }
 
-    public static function getSimpleScalar() : \Graphpinator\Type\Scalar\ScalarType
+    public static function getSimpleScalar() : \Graphpinator\Type\ScalarType
     {
-        return new class extends \Graphpinator\Type\Scalar\ScalarType
+        return new class extends \Graphpinator\Type\ScalarType
         {
             protected const NAME = 'SimpleScalar';
 
@@ -336,7 +336,7 @@ final class TestSchema
 
             public function __construct()
             {
-                parent::__construct(new \Graphpinator\Utils\InterfaceSet([
+                parent::__construct(new \Graphpinator\Type\InterfaceSet([
                     TestSchema::getParentInterface(),
                 ]));
             }
@@ -381,7 +381,7 @@ final class TestSchema
 
             public function __construct()
             {
-                parent::__construct(new \Graphpinator\Utils\InterfaceSet([
+                parent::__construct(new \Graphpinator\Type\InterfaceSet([
                     TestSchema::getChildInterface(),
                     TestSchema::getSecondInterface(),
                 ]));
@@ -422,11 +422,6 @@ final class TestSchema
             protected const NAME = 'simpleDirective';
             protected const REPEATABLE = true;
 
-            public function validateType(
-                ?\Graphpinator\Type\Contract\Definition $definition,
-                \Graphpinator\Value\ArgumentValueSet $arguments,
-            ) : bool {}
-
             protected function getFieldDefinition(): \Graphpinator\Argument\ArgumentSet
             {
                 return new \Graphpinator\Argument\ArgumentSet([
@@ -438,8 +433,13 @@ final class TestSchema
             {
             }
 
-            public function resolveFieldAfter(\Graphpinator\Value\FieldValue $fieldValue, \Graphpinator\Value\ArgumentValueSet $arguments,) : string
+            public function resolveFieldAfter(\Graphpinator\Value\ArgumentValueSet $arguments, \Graphpinator\Value\FieldValue $fieldValue) : string
             {
+            }
+
+            public function validateFieldUsage(\Graphpinator\Field\Field $field, \Graphpinator\Value\ArgumentValueSet $arguments,): bool
+            {
+                return true;
             }
         };
     }
