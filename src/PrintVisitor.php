@@ -116,8 +116,8 @@ final class PrintVisitor implements ComponentVisitor
         $schema = $this->printItemDescription($argument->getDescription())
             . $argument->getName() . ': ' . $argument->getType()->printName();
 
-        if ($argument->getDefaultValue() instanceof \Graphpinator\Value\InputedValue) {
-            $schema .= ' = ' . $this->printValue($argument->getDefaultValue());
+        if ($argument->getDefaultValue() instanceof \Graphpinator\Value\ArgumentValue) {
+            $schema .= ' = ' . $this->printValue($argument->getDefaultValue()->getValue());
         }
 
         return $schema . $this->printDirectiveUsages($argument->getDirectiveUsages());
@@ -130,7 +130,7 @@ final class PrintVisitor implements ComponentVisitor
 
         foreach ($directiveUsage->getArgumentValues() as $argument) {
             // do not print default value
-            if ($argument->getValue()->getRawValue() === $argument->getArgument()->getDefaultValue()?->getRawValue()) {
+            if ($argument->getValue()->getRawValue() === $argument->getArgument()->getDefaultValue()?->getValue()->getRawValue()) {
                 continue;
             }
 
