@@ -143,7 +143,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           number: Int!
         }
         
-        type ChildType implements ChildInterface & SecondInterface {
+        type ChildType implements ParentInterface & ChildInterface & SecondInterface {
           name: String!
           number: Int!
           secondField: String!
