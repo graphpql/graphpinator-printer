@@ -11,21 +11,21 @@ final class HtmlVisitor implements PrintComponentVisitor
         $normalizedDescription = static::normalizeString($schema->getDescription());
 
         if ($schema->getMutation() instanceof \Graphpinator\Type\Type) {
-            $mutation = '<span class="fieldname">mutation</span>';
+            $mutation = '<span class="field-name">mutation</span>';
             $mutation .= '<span class="colon">:&nbsp;</span>';
-            $mutation .= '<a class="fieldtype" href="#graphql-type-' . $schema->getMutation()->getName() . '">' . $schema->getMutation()->getName() . '</a>';
+            $mutation .= '<a class="field-type" href="#graphql-type-' . $schema->getMutation()->getName() . '">' . $schema->getMutation()->getName() . '</a>';
         } else {
-            $mutation = '<span class="fieldname">mutation</span>';
+            $mutation = '<span class="field-name">mutation</span>';
             $mutation .= '<span class="colon">:&nbsp;</span>';
             $mutation .= '<span class="null">null</span>';
         }
 
         if ($schema->getSubscription() instanceof \Graphpinator\Type\Type) {
-            $subscription = '<span class="fieldname">subscription</span>';
+            $subscription = '<span class="field-name">subscription</span>';
             $subscription .= '<span class="colon">:&nbsp;</span>';
-            $subscription .= '<a class="fieldtype" href="#graphql-type-' . $schema->getSubscription()->getName() . '">' . $schema->getSubscription()->getName() . '</a>';
+            $subscription .= '<a class="field-type" href="#graphql-type-' . $schema->getSubscription()->getName() . '">' . $schema->getSubscription()->getName() . '</a>';
         } else {
-            $subscription = '<span class="fieldname">subscription</span>';
+            $subscription = '<span class="field-name">subscription</span>';
             $subscription .= '<span class="colon">:&nbsp;</span>';
             $subscription .= '<span class="null">null</span>';
         }
@@ -37,9 +37,9 @@ final class HtmlVisitor implements PrintComponentVisitor
                 <span class="bracket-curly">{</span>
             </div>
             <div class="line offset-1">
-                <span class="fieldname">query</span>
+                <span class="field-name">query</span>
                 <span class="colon">:&nbsp;</span>
-                <a class="fieldtype" href="#graphql-type-Query">{$schema->getQuery()->getName()}</a>
+                <a class="field-type" href="#graphql-type-Query">{$schema->getQuery()->getName()}</a>
             </div>
             <div class="line offset-1">
                 {$mutation}
@@ -106,7 +106,7 @@ final class HtmlVisitor implements PrintComponentVisitor
         $typeNames = [];
 
         foreach ($union->getTypes() as $type) {
-            $typeNames[] = '<a class="uniontype" href="#graphql-type-' . $type->getName() . '">' . $type->getName() . '</a>';
+            $typeNames[] = '<a class="union-type" href="#graphql-type-' . $type->getName() . '">' . $type->getName() . '</a>';
         }
 
         $types = \implode('&nbsp;<span class="vertical-line">|</span>&nbsp;', $typeNames);
@@ -188,7 +188,7 @@ final class HtmlVisitor implements PrintComponentVisitor
         }
 
         $directiveAdditional .= '<span class="keyword">&nbsp;on&nbsp;</span>';
-        $directiveAdditional .= '<span class="location">' . \implode('&nbsp;|&nbsp;', $directive->getLocations()) . '</span>';
+        $directiveAdditional .= '<span class="location">' . \implode('&nbsp;<span class="vertical-line">|</span>&nbsp;', $directive->getLocations()) . '</span>';
 
         return <<<EOL
         <section>
@@ -208,10 +208,10 @@ final class HtmlVisitor implements PrintComponentVisitor
 
         return <<<EOL
         <div class="line offset-1">
-            <span class="fieldname">{$field->getName()}</span>
+            <span class="field-name">{$field->getName()}</span>
             <div class="arguments">{$this->printArguments($field)}</div>
             <span class="colon">:&nbsp;</span>
-            <a class="fieldtype" href="#graphql-type-{$field->getType()->getShapingType()->getNamedType()->printName()}" title="{$normalizedDescription}">{$name}</a>
+            <a class="field-type" href="#graphql-type-{$field->getType()->getShapingType()->getNamedType()->printName()}" title="{$normalizedDescription}">{$name}</a>
             {$this->printDirectiveUsages($field->getDirectiveUsages())}
         </div>
         EOL;
@@ -265,9 +265,8 @@ final class HtmlVisitor implements PrintComponentVisitor
     {
         $normalizedDescription = static::normalizeString($enumItem->getDescription());
 
-        return <<<EOL
-            <span class="enumitem line" title="{$normalizedDescription}">{$enumItem->getName()}{$this->printDirectiveUsages($enumItem->getDirectiveUsages())}</span>
-        EOL;
+        return '<span class="enum-item line" title="' . $normalizedDescription . '">' . $enumItem->getName()
+            . $this->printDirectiveUsages($enumItem->getDirectiveUsages()) . '</span>';
     }
 
     public function glue(array $entries) : string
@@ -281,7 +280,7 @@ final class HtmlVisitor implements PrintComponentVisitor
             return '';
         }
 
-        return '&nbsp;implements&nbsp;' . \implode('&nbsp;&&nbsp;', self::recursiveGetInterfaces($implements));
+        return '&nbsp;implements&nbsp;' . \implode('&nbsp;<span class="ampersand">&</span>&nbsp;', self::recursiveGetInterfaces($implements));
     }
 
     /**
@@ -333,7 +332,7 @@ final class HtmlVisitor implements PrintComponentVisitor
         }
 
         if ($value instanceof \Graphpinator\Value\EnumValue) {
-            $className = 'enumliteral';
+            $className = 'enum-literal';
         }
 
         if ($value instanceof \Graphpinator\Value\ScalarValue) {
@@ -344,17 +343,15 @@ final class HtmlVisitor implements PrintComponentVisitor
             }
 
             if (\is_int($rawValue)) {
-                $className = 'intliteral';
+                $className = 'int-literal';
             }
 
             if (\is_float($rawValue)) {
-                $className = 'floatliteral';
+                $className = 'float-literal';
             }
         }
 
-        return <<<EOL
-            <span class="{$className}">{$value->printValue()}</span>
-        EOL;
+        return '<span class="' . $className . '">' . $value->printValue() . '</span>';
     }
 
     private function printValue(\Graphpinator\Value\InputedValue $value) : string
@@ -393,9 +390,7 @@ final class HtmlVisitor implements PrintComponentVisitor
 
         $components = \implode('<span class="comma">,</span>', $component);
 
-        return <<<EOL
-            {$openingChar}<span class="value">{$components}</span>{$closingChar}
-        EOL;
+        return $openingChar . '<span class="value">' . $components . '</span>' . $closingChar;
     }
 
     private function printArguments(\Graphpinator\Directive\Directive|\Graphpinator\Field\Field $component) : string
