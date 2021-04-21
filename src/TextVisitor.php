@@ -181,13 +181,19 @@ final class TextVisitor implements PrintComponentVisitor
             return '';
         }
 
-        $interfaces = [];
+        return ' implements ' . \implode(' & ', self::recursiveGetInterfaces($implements));
+    }
+
+    private static function recursiveGetInterfaces(\Graphpinator\Type\InterfaceSet $implements) : array
+    {
+        $return = [];
 
         foreach ($implements as $interface) {
-            $interfaces[] = $interface->getName();
+            $return += self::recursiveGetInterfaces($interface->getInterfaces());
+            $return[] = $interface->getName();
         }
 
-        return ' implements ' . \implode(' & ', $interfaces);
+        return $return;
     }
 
     private function printDirectiveUsages(\Graphpinator\DirectiveUsage\DirectiveUsageSet $set) : string
