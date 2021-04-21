@@ -106,16 +106,16 @@ final class HtmlVisitor implements PrintComponentVisitor
         $typeNames = [];
 
         foreach ($union->getTypes() as $type) {
-            $typeNames[] = '<a class="typename" href="#graphql-type-' . $type->getName() . '">' . $type->getName() . '</a>';
+            $typeNames[] = '<a class="uniontype" href="#graphql-type-' . $type->getName() . '">' . $type->getName() . '</a>';
         }
 
-        $types = \implode(' | ', $typeNames);
+        $types = \implode('&nbsp;<span class="vertical-line">|</span>&nbsp;', $typeNames);
 
         return <<<EOL
         <section>
             <div class="line">
                 <span class="keyword" id="graphql-type-{$union->getName()}" title="{$normalizedDescription}">union&nbsp;</span>
-                <span class="typename">{$union->getName()} = {$types}</span>
+                <span class="typename">{$union->getName()}&nbsp;<span class="equals">=</span>&nbsp;{$types}</span>
             </div>
         </section>
         EOL;
@@ -184,11 +184,11 @@ final class HtmlVisitor implements PrintComponentVisitor
         $directiveAdditional = $this->printArguments($directive);
 
         if ($directive->isRepeatable()) {
-            $directiveAdditional .= ' <span class="keyword">&nbsp;repeatable</span>';
+            $directiveAdditional .= '<span class="keyword">&nbsp;repeatable</span>';
         }
 
         $directiveAdditional .= '<span class="keyword">&nbsp;on&nbsp;</span>';
-        $directiveAdditional .= '<span class="location">' . \implode(' | ', $directive->getLocations()) . '</span>';
+        $directiveAdditional .= '<span class="location">' . \implode('&nbsp;|&nbsp;', $directive->getLocations()) . '</span>';
 
         return <<<EOL
         <section>
@@ -287,7 +287,7 @@ final class HtmlVisitor implements PrintComponentVisitor
             $interfaces[] = '<a class="typename" href="#graphql-type-' . $interface->getName() . '">' . $interface->getName() . '</a>';
         }
 
-        return '&nbsp;implements&nbsp;' . \implode(' & ', $interfaces);
+        return '&nbsp;implements&nbsp;' . \implode('&nbsp;&&nbsp;', $interfaces);
     }
 
     private function printDirectiveUsages(\Graphpinator\DirectiveUsage\DirectiveUsageSet $set) : string
@@ -343,7 +343,7 @@ final class HtmlVisitor implements PrintComponentVisitor
         }
 
         return <<<EOL
-                <span class="{$className}">{$value->printValue()}</span>
+            <span class="{$className}">{$value->printValue()}</span>
         EOL;
     }
 
@@ -384,7 +384,7 @@ final class HtmlVisitor implements PrintComponentVisitor
         $components = \implode('<span class="comma">,</span>', $component);
 
         return <<<EOL
-                {$openingChar}<span class="value">{$components}</span>{$closingChar}
+            {$openingChar}<span class="value">{$components}</span>{$closingChar}
         EOL;
     }
 
@@ -403,11 +403,9 @@ final class HtmlVisitor implements PrintComponentVisitor
 
     private static function normalizeString(?string $input) : string
     {
-        if (!\is_string($input)) {
-            return '';
-        }
-
-        return \htmlspecialchars($input);
+        return \is_string($input)
+            ? \htmlspecialchars($input)
+            : '';
     }
 
     private static function printName(string $input) : string
