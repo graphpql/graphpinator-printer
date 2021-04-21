@@ -17,7 +17,7 @@ final class Printer
     )
     {
         $this->visitor = $visitor
-            ?? new PrintVisitor();
+            ?? new TextVisitor();
         $this->sorter = $sorter
             ?? new AlphabeticalSorter();
     }

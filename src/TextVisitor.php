@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Printer;
 
-final class PrintVisitor implements PrintComponentVisitor
+final class TextVisitor implements PrintComponentVisitor
 {
     private const INDENT_SPACES = 2;
 

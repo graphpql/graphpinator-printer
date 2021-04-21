@@ -208,7 +208,7 @@ final class HtmlVisitor implements PrintComponentVisitor
 
         return <<<EOL
         <div class="line offset-1">
-            <span class="fieldname" id="graphql-type-{$field->getName()}">{$field->getName()}</span>
+            <span class="fieldname">{$field->getName()}</span>
             <div class="arguments">{$this->printArguments($field)}</div>
             <span class="colon">:&nbsp;</span>
             <a class="fieldtype" href="#graphql-type-{$field->getType()->getShapingType()->getNamedType()->printName()}" title="{$normalizedDescription}">{$name}</a>
