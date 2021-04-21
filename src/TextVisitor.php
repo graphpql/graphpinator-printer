@@ -184,6 +184,10 @@ final class TextVisitor implements PrintComponentVisitor
         return ' implements ' . \implode(' & ', self::recursiveGetInterfaces($implements));
     }
 
+    /**
+     * @param \Graphpinator\Type\InterfaceSet $implements
+     * @return array<string>
+     */
     private static function recursiveGetInterfaces(\Graphpinator\Type\InterfaceSet $implements) : array
     {
         $return = [];

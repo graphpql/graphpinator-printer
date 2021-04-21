@@ -281,13 +281,23 @@ final class HtmlVisitor implements PrintComponentVisitor
             return '';
         }
 
-        $interfaces = [];
+        return '&nbsp;implements&nbsp;' . \implode('&nbsp;&&nbsp;', self::recursiveGetInterfaces($implements));
+    }
+
+    /**
+     * @param \Graphpinator\Type\InterfaceSet $implements
+     * @return array<string>
+     */
+    private static function recursiveGetInterfaces(\Graphpinator\Type\InterfaceSet $implements) : array
+    {
+        $return = [];
 
         foreach ($implements as $interface) {
-            $interfaces[] = '<a class="typename" href="#graphql-type-' . $interface->getName() . '">' . $interface->getName() . '</a>';
+            $return += self::recursiveGetInterfaces($interface->getInterfaces());
+            $return[] = '<a class="typename" href="#graphql-type-' . $interface->getName() . '">' . $interface->getName() . '</a>';
         }
 
-        return '&nbsp;implements&nbsp;' . \implode('&nbsp;&&nbsp;', $interfaces);
+        return $return;
     }
 
     private function printDirectiveUsages(\Graphpinator\DirectiveUsage\DirectiveUsageSet $set) : string
