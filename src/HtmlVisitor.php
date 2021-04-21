@@ -13,7 +13,7 @@ final class HtmlVisitor implements PrintComponentVisitor
         if ($schema->getMutation() instanceof \Graphpinator\Type\Type) {
             $mutation = '<span class="fieldname">mutation</span>';
             $mutation .= '<span class="colon">:&nbsp;</span>';
-            $mutation .= '<a class="fieldtype" href="#graphql-type-{$schema->getMutation()->getName()}">' . $schema->getMutation()->getName() . '</a>';
+            $mutation .= '<a class="fieldtype" href="#graphql-type-' . $schema->getMutation()->getName() . '">' . $schema->getMutation()->getName() . '</a>';
         } else {
             $mutation = '<span class="fieldname">mutation</span>';
             $mutation .= '<span class="colon">:&nbsp;</span>';
@@ -23,7 +23,7 @@ final class HtmlVisitor implements PrintComponentVisitor
         if ($schema->getSubscription() instanceof \Graphpinator\Type\Type) {
             $subscription = '<span class="fieldname">subscription</span>';
             $subscription .= '<span class="colon">:&nbsp;</span>';
-            $subscription .= '<a class="fieldtype" href="#graphql-type-{$schema->getSubscription()->getName()}">' . $schema->getSubscription()->getName() . '</a>';
+            $subscription .= '<a class="fieldtype" href="#graphql-type-' . $schema->getSubscription()->getName() . '">' . $schema->getSubscription()->getName() . '</a>';
         } else {
             $subscription = '<span class="fieldname">subscription</span>';
             $subscription .= '<span class="colon">:&nbsp;</span>';
@@ -62,7 +62,7 @@ final class HtmlVisitor implements PrintComponentVisitor
         <section>
             <div class="line">
                 <span class="keyword" id="graphql-type-{$type->getName()}" title="{$normalizedDescription}">type&nbsp;</span>
-                <span class="typename">{$type->getName()}</a>
+                <span class="typename">{$type->getName()}</span>
                 <span class="implements">{$this->printImplements($type->getInterfaces())}</span>
                 <span class="usage">{$this->printDirectiveUsages($type->getDirectiveUsages())}</span>
                 <span class="bracket-curly">&nbsp;{</span>
@@ -84,7 +84,7 @@ final class HtmlVisitor implements PrintComponentVisitor
         return <<<EOL
         <section>
             <div class="line">
-                <span class="keyword" id="graphql-type-{$interface->getName()}" title="{$normalizedDescription}">interface&nbsp;</a>
+                <span class="keyword" id="graphql-type-{$interface->getName()}" title="{$normalizedDescription}">interface&nbsp;</span>
                 <span class="typename">{$interface->getName()}</span>
                 <span class="implements">{$this->printImplements($interface->getInterfaces())}</span>
                 <span class="usage">{$this->printDirectiveUsages($interface->getDirectiveUsages())}</span>
@@ -150,7 +150,7 @@ final class HtmlVisitor implements PrintComponentVisitor
         return <<<EOL
         <section>
             <div class="line">
-                <span class="keyword" id="graphql-type-{$scalar->getName()}" title="{$normalizedDescription}">scalar </span>
+                <span class="keyword" id="graphql-type-{$scalar->getName()}" title="{$normalizedDescription}">scalar&nbsp;</span>
                 <span class="typename">{$scalar->getName()}</span>
             </div>
         </section>
@@ -164,7 +164,7 @@ final class HtmlVisitor implements PrintComponentVisitor
         return <<<EOL
         <section>
             <div class="line">
-                <span class="keyword" id="graphql-type-{$enum->getName()}" title="{$normalizedDescription}">enum </span>
+                <span class="keyword" id="graphql-type-{$enum->getName()}" title="{$normalizedDescription}">enum&nbsp;</span>
                 <span class="typename">{$enum->getName()}</span>
                 <span class="bracket-curly">&nbsp;{</span>
             </div>
@@ -193,8 +193,8 @@ final class HtmlVisitor implements PrintComponentVisitor
         return <<<EOL
         <section>
             <div class="line">
-                <span class="keyword" id="graphql-type-{$directive->getName()}" title="{$normalizedDescription}">directive</span>
-                <span class="typename">&nbsp;@{$directive->getName()}</span>
+                <span class="keyword" id="graphql-type-{$directive->getName()}" title="{$normalizedDescription}">directive&nbsp;</span>
+                <span class="typename">@{$directive->getName()}</span>
                 {$directiveAdditional}
             </div>
         </section>
@@ -209,7 +209,7 @@ final class HtmlVisitor implements PrintComponentVisitor
         return <<<EOL
         <div class="line offset-1">
             <span class="fieldname" id="graphql-type-{$field->getName()}">{$field->getName()}</span>
-            <span class="arguments">{$this->printArguments($field)}</span>
+            <div class="arguments">{$this->printArguments($field)}</div>
             <span class="colon">:&nbsp;</span>
             <a class="fieldtype" href="#graphql-type-{$field->getType()->getShapingType()->getNamedType()->printName()}" title="{$normalizedDescription}">{$name}</a>
             {$this->printDirectiveUsages($field->getDirectiveUsages())}
@@ -308,13 +308,13 @@ final class HtmlVisitor implements PrintComponentVisitor
         $result = '';
 
         foreach ($set as $item) {
-            $result .= '<span class="line item">' . $item->accept($this) . '</span>';
+            $result .= '<div class="item">' . $item->accept($this) . '</div>';
         }
 
         return $result;
     }
 
-    private function printLeafValue(\Graphpinator\Value\InputedValue $value)
+    private function printLeafValue(\Graphpinator\Value\InputedValue $value) : string
     {
         $className = '';
 

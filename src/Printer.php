@@ -8,11 +8,11 @@ final class Printer
 {
     use \Nette\SmartObject;
 
-    private \Graphpinator\Typesystem\EntityVisitor $visitor;
+    private \Graphpinator\Printer\PrintComponentVisitor $visitor;
     private \Graphpinator\Printer\Sorter $sorter;
 
     public function __construct(
-        ?\Graphpinator\Typesystem\EntityVisitor $visitor = null,
+        ?\Graphpinator\Printer\PrintComponentVisitor $visitor = null,
         ?\Graphpinator\Printer\Sorter $sorter = null,
     )
     {
