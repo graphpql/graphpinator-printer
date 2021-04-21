@@ -31,6 +31,6 @@ final class Printer
             $entries[] = $printable->accept($this->visitor);
         }
 
-        return \implode(\PHP_EOL . \PHP_EOL, $entries);
+        return $this->visitor->glue($entries);
     }
 }
