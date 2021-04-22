@@ -10,13 +10,11 @@ final class HtmlVisitor implements PrintComponentVisitor
     {
         $normalizedDescription = static::normalizeString($schema->getQuery()->getDescription());
         $mutation = $schema->getMutation() instanceof \Graphpinator\Type\Type
-            ? '<a class="field-type" href="#graphql-type-' . $schema->getMutation()->getName() . '" 
-                    title="' . static::normalizeString($schema->getMutation()->getDescription()) . '">' . $schema->getMutation()->getName() . '</a>'
+            ? '<a class="field-type" href="#graphql-type-' . $schema->getMutation()->getName() . '" title="' . static::normalizeString($schema->getMutation()->getDescription()) . '">' . $schema->getMutation()->getName() . '</a>'
             : '<span class="null">null</span>';
 
         $subscription = $schema->getSubscription() instanceof \Graphpinator\Type\Type
-            ? '<a class="field-type" href="#graphql-type-' . $schema->getSubscription()->getName() . '" 
-                    title="' . static::normalizeString($schema->getSubscription()->getDescription()) . '">' . $schema->getSubscription()->getName() . '</a>'
+            ? '<a class="field-type" href="#graphql-type-' . $schema->getSubscription()->getName() . '" title="' . static::normalizeString($schema->getSubscription()->getDescription()) . '">' . $schema->getSubscription()->getName() . '</a>'
             : $subscription = '<span class="null">null</span>';
 
         return <<<EOL
