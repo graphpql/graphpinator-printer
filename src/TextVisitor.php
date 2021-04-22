@@ -185,7 +185,6 @@ final class TextVisitor implements PrintComponentVisitor
     }
 
     /**
-     * @param \Graphpinator\Type\InterfaceSet $implements
      * @return array<string>
      */
     private static function recursiveGetInterfaces(\Graphpinator\Type\InterfaceSet $implements) : array
