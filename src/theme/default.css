@@ -1,8 +1,7 @@
-html {
+.graphpinator-schema {
     font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
-}
-body {
     background: rgb(39, 40, 34);
+    padding: 10px;
 }
 .offset-1 {
     padding-left: 20px;

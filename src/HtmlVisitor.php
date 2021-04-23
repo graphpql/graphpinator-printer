@@ -10,12 +10,14 @@ final class HtmlVisitor implements PrintComponentVisitor
     {
         $normalizedDescription = static::normalizeString($schema->getQuery()->getDescription());
         $mutation = $schema->getMutation() instanceof \Graphpinator\Type\Type
-            ? '<a class="field-type" href="#graphql-type-' . $schema->getMutation()->getName() . '" title="' . static::normalizeString($schema->getMutation()->getDescription()) . '">' . $schema->getMutation()->getName() . '</a>'
+            ? '<a class="field-type" href="#graphql-type-' . $schema->getMutation()->getName()
+                . '" title="' . static::normalizeString($schema->getMutation()->getDescription()) . '">' . $schema->getMutation()->getName() . '</a>'
             : '<span class="null">null</span>';
 
         $subscription = $schema->getSubscription() instanceof \Graphpinator\Type\Type
-            ? '<a class="field-type" href="#graphql-type-' . $schema->getSubscription()->getName() . '" title="' . static::normalizeString($schema->getSubscription()->getDescription()) . '">' . $schema->getSubscription()->getName() . '</a>'
-            : $subscription = '<span class="null">null</span>';
+            ? '<a class="field-type" href="#graphql-type-' . $schema->getSubscription()->getName()
+                . '" title="' . static::normalizeString($schema->getSubscription()->getDescription()) . '">' . $schema->getSubscription()->getName() . '</a>'
+            : '<span class="null">null</span>';
 
         return <<<EOL
         <section>
@@ -254,15 +256,17 @@ final class HtmlVisitor implements PrintComponentVisitor
 
     public function visitEnumItem(\Graphpinator\EnumItem\EnumItem $enumItem) : string
     {
-        $normalizedDescription = static::normalizeString($enumItem->getDescription());
-
-        return '<span class="enum-item line" title="' . $normalizedDescription . '">' . $enumItem->getName()
+        return '<span class="description">' . $this->printItemDescription($enumItem->getDescription()) . '</span><span class="enum-item line">' . $enumItem->getName()
             . $this->printDirectiveUsages($enumItem->getDirectiveUsages()) . '</span>';
     }
 
     public function glue(array $entries) : string
     {
-        return \preg_replace(['/\>\s+\</', '/\>\s*(&nbsp;)?\s+\</'], ['><', '>&nbsp;<'], \implode('', $entries));
+        //Replace whitespace between tags
+        $temp = \preg_replace('/\>\s+\</', '><', \implode('', $entries));
+
+        //Replace whitespace between tags but leave out &nbsp;
+        return \preg_replace('/\>((\s+(&nbsp;){1}\s*)|(\s*(&nbsp;){1}\s+))\</', '>&nbsp;<', $temp);
     }
 
     private function printImplements(\Graphpinator\Type\InterfaceSet $implements) : string
