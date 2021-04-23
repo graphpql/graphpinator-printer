@@ -57,7 +57,7 @@ final class HtmlVisitor implements PrintComponentVisitor
                 <span class="keyword" id="graphql-type-{$type->getName()}">type</span>&nbsp;
                 <span class="typename">{$type->getName()}</span>
                 <span class="implements">{$this->printImplements($type->getInterfaces())}</span>
-                <span class="usage">{$this->printDirectiveUsages($type->getDirectiveUsages())}</span>&nbsp;
+                {$this->printDirectiveUsages($type->getDirectiveUsages())}&nbsp;
                 <span class="bracket-curly">{</span>
             </div>
             <div class="line">
@@ -79,7 +79,7 @@ final class HtmlVisitor implements PrintComponentVisitor
                 <span class="keyword" id="graphql-type-{$interface->getName()}">interface</span>&nbsp;
                 <span class="typename">{$interface->getName()}</span>
                 <span class="implements">{$this->printImplements($interface->getInterfaces())}</span>
-                <span class="usage">{$this->printDirectiveUsages($interface->getDirectiveUsages())}</span>&nbsp;
+                {$this->printDirectiveUsages($interface->getDirectiveUsages())}&nbsp;
                 <span class="bracket-curly">{</span>
             </div>
             <div class="line">
@@ -122,7 +122,7 @@ final class HtmlVisitor implements PrintComponentVisitor
                 {$this->printDescription($input->getDescription())}
                 <span class="keyword" id="graphql-type-{$input->getName()}">input</span>&nbsp;
                 <span class="typename">{$input->getName()}</span>
-                <span class="usage">{$this->printDirectiveUsages($input->getDirectiveUsages())}</span>&nbsp;
+                {$this->printDirectiveUsages($input->getDirectiveUsages())}&nbsp;
                 <span class="bracket-curly">{</span>
             </div>
             <div class="line offset-1">
