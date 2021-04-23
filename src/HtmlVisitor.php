@@ -262,11 +262,13 @@ final class HtmlVisitor implements PrintComponentVisitor
 
     public function glue(array $entries) : string
     {
+        $html = '<div class="graphpinator-schema">' . \implode('', $entries) . '</div>';
+
         //Replace whitespace between tags
-        $temp = \preg_replace('/\>\s+\</', '><', \implode('', $entries));
+        $html = \preg_replace('/\>\s+\</', '><', $html);
 
         //Replace whitespace between tags but leave out &nbsp;
-        return \preg_replace('/\>((\s+(&nbsp;){1}\s*)|(\s*(&nbsp;){1}\s+))\</', '>&nbsp;<', $temp);
+        return \preg_replace('/\>((\s+(&nbsp;){1}\s*)|(\s*(&nbsp;){1}\s+))\</', '>&nbsp;<', $html);
     }
 
     private function printImplements(\Graphpinator\Type\InterfaceSet $implements) : string
