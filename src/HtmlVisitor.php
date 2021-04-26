@@ -8,15 +8,13 @@ final class HtmlVisitor implements PrintComponentVisitor
 {
     public function visitSchema(\Graphpinator\Type\Schema $schema) : string
     {
-        $normalizedDescription = static::normalizeString($schema->getQuery()->getDescription());
+        $query = static::printTypeLink('field-type', $schema->getQuery());
         $mutation = $schema->getMutation() instanceof \Graphpinator\Type\Type
-            ? '<a class="field-type" href="#graphql-type-' . $schema->getMutation()->getName()
-            . '" title="' . static::normalizeString($schema->getMutation()->getDescription()) . '">' . $schema->getMutation()->getName() . '</a>'
+            ? static::printTypeLink('field-type', $schema->getMutation())
             : '<span class="null">null</span>';
 
         $subscription = $schema->getSubscription() instanceof \Graphpinator\Type\Type
-            ? '<a class="field-type" href="#graphql-type-' . $schema->getSubscription()->getName()
-            . '" title="' . static::normalizeString($schema->getSubscription()->getDescription()) . '">' . $schema->getSubscription()->getName() . '</a>'
+            ? static::printTypeLink('field-type', $schema->getSubscription())
             : '<span class="null">null</span>';
 
         return <<<EOL
@@ -29,7 +27,7 @@ final class HtmlVisitor implements PrintComponentVisitor
             <div class="line offset-1">
                 <span class="field-name">query</span>
                 <span class="colon">:</span>&nbsp;
-                <a class="field-type" href="#graphql-type-Query" title="{$normalizedDescription}">{$schema->getQuery()->getName()}</a>
+                {$query}
             </div>
             <div class="line offset-1">
                 <span class="field-name">mutation</span>
