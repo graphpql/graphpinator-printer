@@ -11,12 +11,12 @@ final class HtmlVisitor implements PrintComponentVisitor
         $normalizedDescription = static::normalizeString($schema->getQuery()->getDescription());
         $mutation = $schema->getMutation() instanceof \Graphpinator\Type\Type
             ? '<a class="field-type" href="#graphql-type-' . $schema->getMutation()->getName()
-                . '" title="' . static::normalizeString($schema->getMutation()->getDescription()) . '">' . $schema->getMutation()->getName() . '</a>'
+            . '" title="' . static::normalizeString($schema->getMutation()->getDescription()) . '">' . $schema->getMutation()->getName() . '</a>'
             : '<span class="null">null</span>';
 
         $subscription = $schema->getSubscription() instanceof \Graphpinator\Type\Type
             ? '<a class="field-type" href="#graphql-type-' . $schema->getSubscription()->getName()
-                . '" title="' . static::normalizeString($schema->getSubscription()->getDescription()) . '">' . $schema->getSubscription()->getName() . '</a>'
+            . '" title="' . static::normalizeString($schema->getSubscription()->getDescription()) . '">' . $schema->getSubscription()->getName() . '</a>'
             : '<span class="null">null</span>';
 
         return <<<EOL
@@ -97,8 +97,7 @@ final class HtmlVisitor implements PrintComponentVisitor
         $typeNames = [];
 
         foreach ($union->getTypes() as $type) {
-            $normalizedDescription = static::normalizeString($type->getDescription());
-            $typeNames[] = '<a class="union-type" href="#graphql-type-' . $type->getName() . '" title="' . $normalizedDescription . '">' . $type->getName() . '</a>';
+            $typeNames[] = static::printTypeLink('union-type', $type);
         }
 
         $types = \implode('&nbsp;<span class="vertical-line">|</span>&nbsp;', $typeNames);
@@ -193,8 +192,7 @@ final class HtmlVisitor implements PrintComponentVisitor
 
     public function visitField(\Graphpinator\Field\Field $field) : string
     {
-        $normalizedDescription = static::normalizeString($field->getType()->getNamedType()->getDescription());
-        $name = static::normalizePunctuation($field->getType()->printName());
+        $link = static::printTypeLink('field-type', $field->getType());
 
         return <<<EOL
         <div class="line offset-1">
@@ -202,7 +200,7 @@ final class HtmlVisitor implements PrintComponentVisitor
             <span class="field-name">{$field->getName()}</span>
             <div class="arguments">{$this->printArguments($field)}</div>
             <span class="colon">:</span>&nbsp;
-            <a class="field-type" href="#graphql-type-{$field->getType()->getNamedType()->printName()}" title="{$normalizedDescription}">{$name}</a>
+            {$link}
             {$this->printDirectiveUsages($field->getDirectiveUsages())}
         </div>
         EOL;
@@ -211,8 +209,7 @@ final class HtmlVisitor implements PrintComponentVisitor
     public function visitArgument(\Graphpinator\Argument\Argument $argument) : string
     {
         $defaultValue = '';
-        $name = static::normalizePunctuation($argument->getType()->printName());
-        $normalizedDescription = static::normalizeString($argument->getType()->getNamedType()->getDescription());
+        $link = static::printTypeLink('argument-type', $argument->getType());
 
         if ($argument->getDefaultValue() instanceof \Graphpinator\Value\ArgumentValue) {
             $defaultValue .= '&nbsp;<span class="equals">=</span>&nbsp;';
@@ -223,7 +220,7 @@ final class HtmlVisitor implements PrintComponentVisitor
             {$this->printItemDescription($argument->getDescription())}
             <span class="argument-name">{$argument->getName()}</span>
             <span class="colon">:</span>&nbsp;
-            <a class="argument-type" href="#graphql-type-{$argument->getType()->getNamedType()->printName()}" title="{$normalizedDescription}">{$name}</a>
+            {$link}
             {$defaultValue}
             {$this->printDirectiveUsages($argument->getDirectiveUsages())}
         EOL;
@@ -231,7 +228,7 @@ final class HtmlVisitor implements PrintComponentVisitor
 
     public function visitDirectiveUsage(\Graphpinator\DirectiveUsage\DirectiveUsage $directiveUsage) : string
     {
-        $schema = '&nbsp;<span class="typename">@' . $directiveUsage->getDirective()->getName() . '</span>';
+        $schema = '&nbsp;<span class="typename">' . static::printDirectiveLink($directiveUsage) . '</span>';
         $printableArguments = [];
 
         foreach ($directiveUsage->getArgumentValues() as $argument) {
@@ -242,7 +239,7 @@ final class HtmlVisitor implements PrintComponentVisitor
 
             $printableArgument = '<span class="directive-usage-name">' . $argument->getArgument()->getName() . '</span>';
             $printableArgument .= '<span class="colon">:</span>&nbsp;';
-            $printableArgument .= '<span class="directive-usage-value">' . static::normalizePunctuation($argument->getValue()->printValue()) . '</span>';
+            $printableArgument .= '<span class="directive-usage-value">' . static::highlightPunctuation($argument->getValue()->printValue()) . '</span>';
 
             $printableArguments[] =  $printableArgument;
         }
@@ -288,9 +285,8 @@ final class HtmlVisitor implements PrintComponentVisitor
         $return = [];
 
         foreach ($implements as $interface) {
-            $normalizedDescription = static::normalizeString($interface->getDescription());
             $return += self::recursiveGetInterfaces($interface->getInterfaces());
-            $return[] = '<a class="typename" href="#graphql-type-' . $interface->getName() . '" title="' . $normalizedDescription . '">' . $interface->getName() . '</a>';
+            $return[] = static::printTypeLink('typename', $interface);
         }
 
         return $return;
@@ -442,12 +438,35 @@ final class HtmlVisitor implements PrintComponentVisitor
             : '';
     }
 
-    private static function normalizePunctuation(string $input) : string
+    private static function highlightPunctuation(string $input) : string
     {
         $input = \str_replace('!', '<span class="exclamation-mark">!</span>', $input);
         $input = \str_replace('[', '<span class="bracket-square">[</span>', $input);
         $input = \str_replace(']', '<span class="bracket-square">]</span>', $input);
 
         return $input;
+    }
+
+    private static function printTypeLink(string $class, \Graphpinator\Type\Contract\Definition $component) : string
+    {
+        if (\str_starts_with(\get_class($component->getNamedType()), 'Graphpinator\Type\Spec')) {
+            $link = '#';
+        } else {
+            $link = '#graphql-type-' . $component->getNamedType()->printName();
+        }
+
+        return '<a class="' . $class . '" href="' . $link
+            . '" title="' . static::normalizeString($component->getNamedType()->getDescription()) . '">' . static::highlightPunctuation($component->printName()). '</a>';
+    }
+
+    private static function printDirectiveLink(\Graphpinator\DirectiveUsage\DirectiveUsage $directiveUsage)
+    {
+        if (\str_starts_with(\get_class($directiveUsage->getDirective()), 'Graphpinator\Directive\Spec')) {
+            $link = '#';
+        } else {
+            $link = '#graphql-type-' . $directiveUsage->getDirective()->getName();
+        }
+
+        return '<a class="typename" href="' . $link . '">@' . $directiveUsage->getDirective()->getName() . '</a>';
     }
 }
