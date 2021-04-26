@@ -459,7 +459,7 @@ final class HtmlVisitor implements PrintComponentVisitor
             . '" title="' . static::normalizeString($component->getNamedType()->getDescription()) . '">' . static::highlightPunctuation($component->printName()). '</a>';
     }
 
-    private static function printDirectiveLink(\Graphpinator\DirectiveUsage\DirectiveUsage $directiveUsage)
+    private static function printDirectiveLink(\Graphpinator\DirectiveUsage\DirectiveUsage $directiveUsage) : string
     {
         if (\str_starts_with(\get_class($directiveUsage->getDirective()), 'Graphpinator\Directive\Spec')) {
             $link = '#';
