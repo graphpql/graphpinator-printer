@@ -125,7 +125,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
      */
     public function testSimple(\Graphpinator\Typesystem\Entity $type, string $print) : void
     {
-        $visitor = new \Graphpinator\Printer\PrintVisitor();
+        $visitor = new \Graphpinator\Printer\TextVisitor();
         self::assertSame($print, $type->accept($visitor));
     }
 
@@ -306,7 +306,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         EOL;
 
         $printer = new \Graphpinator\Printer\Printer(
-            new \Graphpinator\Printer\PrintVisitor(),
+            new \Graphpinator\Printer\TextVisitor(),
         );
 
         self::assertSame($expected, $printer->printSchema(TestSchema::getSchema()));
@@ -329,7 +329,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         ];
 
         $printer = new \Graphpinator\Printer\Printer(
-            new \Graphpinator\Printer\PrintVisitor(),
+            new \Graphpinator\Printer\TextVisitor(),
             new \Graphpinator\Printer\TypeKindSorter(),
         );
         $schema = $printer->printSchema(TestSchema::getSchema());

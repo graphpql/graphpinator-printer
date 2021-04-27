@@ -4,9 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Printer;
 
-use Graphpinator\Typesystem\ComponentVisitor;
-
-final class PrintVisitor implements ComponentVisitor
+final class TextVisitor implements PrintComponentVisitor
 {
     private const INDENT_SPACES = 2;
 
@@ -150,6 +148,11 @@ final class PrintVisitor implements ComponentVisitor
             . $enumItem->getName() . $this->printDirectiveUsages($enumItem->getDirectiveUsages());
     }
 
+    public function glue(array $entries) : string
+    {
+        return \implode(\PHP_EOL . \PHP_EOL, $entries);
+    }
+
     private function printDescription(?string $description) : string
     {
         if ($description === null) {
@@ -181,6 +184,9 @@ final class PrintVisitor implements ComponentVisitor
         return ' implements ' . \implode(' & ', self::recursiveGetInterfaces($implements));
     }
 
+    /**
+     * @return array<string>
+     */
     private static function recursiveGetInterfaces(\Graphpinator\Type\InterfaceSet $implements) : array
     {
         $return = [];
