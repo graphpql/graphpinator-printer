@@ -27,10 +27,10 @@
 .enum-item, .enum-literal {
     color: rgb(249, 38, 114);
 }
-.true, .false {
+.true, .false, .null {
     color: rgb(174, 129, 255);
 }
-.int-literal, .float-literal, .null, .comma, .colon, .argument-type, .field-type, .union-type, .bracket-round, .bracket-curly {
+.int-literal, .float-literal, .comma, .colon, .argument-type, .field-type, .union-type, .bracket-round, .bracket-curly {
     color: white;
 }
 .equals, .vertical-line, .exclamation-mark, .location {
