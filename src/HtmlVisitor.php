@@ -179,10 +179,10 @@ final class HtmlVisitor implements PrintComponentVisitor
             . '</span>';
 
         return <<<EOL
-        <section>
+        <section id="graphql-directive-{$directive->getName()}">
             <div class="line">
                 {$this->printDescription($directive->getDescription())}
-                <span class="keyword" id="graphql-type-{$directive->getName()}">directive</span>&nbsp;
+                <span class="keyword">directive</span>&nbsp;
                 <span class="typename">@{$directive->getName()}</span>
                 {$directiveAdditional}
             </div>
@@ -245,7 +245,9 @@ final class HtmlVisitor implements PrintComponentVisitor
         }
 
         if (\count($printableArguments)) {
-            $schema .= '<span class="bracket-round">(</span>' . \implode('<span class="comma">,</span>&nbsp;', $printableArguments) . '<span class="bracket-round">)</span>';
+            $schema .= '<span class="bracket-round">(</span>'
+                . \implode('<span class="comma">,</span>&nbsp;', $printableArguments)
+                . '<span class="bracket-round">)</span>';
         }
 
         return $schema;
@@ -448,26 +450,38 @@ final class HtmlVisitor implements PrintComponentVisitor
         return $input;
     }
 
-    private static function printTypeLink(string $class, \Graphpinator\Type\Contract\Definition $component) : string
+    private static function printTypeLink(string $class, \Graphpinator\Type\Contract\Definition $type) : string
     {
-        if (\str_starts_with(\get_class($component->getNamedType()), 'Graphpinator\Type\Spec')) {
-            $link = '#';
+        return match ($type::class) {
+            \Graphpinator\Type\NotNullType::class =>
+                self::printTypeLink($class, $type->getInnerType()) . '<span class="exclamation-mark">!</span>',
+            \Graphpinator\Type\ListType::class =>
+                '<span class="bracket-square">[</span>' . self::printTypeLink($class, $type->getInnerType()) . '<span class="bracket-square">]</span>',
+            default => self::printNamedTypeLink($class, $type),
+        };
+    }
+
+    private static function printNamedTypeLink(string $class, \Graphpinator\Type\Contract\NamedDefinition $type) : string
+    {
+        if (\str_starts_with($type->getNamedType()::class, 'Graphpinator\Type\Spec')) {
+            $href = '';
         } else {
-            $link = '#graphql-type-' . $component->getNamedType()->printName();
+            $href = 'href="#graphql-type-' . $type->getNamedType()->printName(). '" ';
         }
 
-        return '<a class="' . $class . '" href="' . $link
-            . '" title="' . static::normalizeString($component->getNamedType()->getDescription()) . '">' . static::highlightPunctuation($component->printName()). '</a>';
+        return '<a class="' . $class . '" ' . $href . 'title="' . static::normalizeString($type->getNamedType()->getDescription()) . '">'
+            . $type->printName()
+            . '</a>';
     }
 
     private static function printDirectiveLink(\Graphpinator\DirectiveUsage\DirectiveUsage $directiveUsage) : string
     {
         if (\str_starts_with(\get_class($directiveUsage->getDirective()), 'Graphpinator\Directive\Spec')) {
-            $link = '#';
+            $href = '';
         } else {
-            $link = '#graphql-type-' . $directiveUsage->getDirective()->getName();
+            $href = ' href="#graphql-directive-' . $directiveUsage->getDirective()->getName(). '"';
         }
 
-        return '<a class="typename" href="' . $link . '">@' . $directiveUsage->getDirective()->getName() . '</a>';
+        return '<a class="typename"' . $href . '>@' . $directiveUsage->getDirective()->getName() . '</a>';
     }
 }
