@@ -445,34 +445,35 @@ final class HtmlVisitor implements PrintComponentVisitor
     {
         return match ($type::class) {
             \Graphpinator\Type\NotNullType::class =>
-                self::printTypeLink($class, $type->getInnerType()) . '<span class="exclamation-mark">!</span>',
+                self::printTypeLink($class, $type->getInnerType()) .
+                '<span class="exclamation-mark">!</span>',
             \Graphpinator\Type\ListType::class =>
-                '<span class="bracket-square">[</span>' . self::printTypeLink($class, $type->getInnerType()) . '<span class="bracket-square">]</span>',
+                '<span class="bracket-square">[</span>' .
+                self::printTypeLink($class, $type->getInnerType()) .
+                '<span class="bracket-square">]</span>',
             default => self::printNamedTypeLink($class, $type),
         };
     }
 
     private static function printNamedTypeLink(string $class, \Graphpinator\Type\Contract\NamedDefinition $type) : string
     {
-        if (\str_starts_with($type->getNamedType()::class, 'Graphpinator\Type\Spec')) {
-            $href = '';
-        } else {
-            $href = 'href="#graphql-type-' . $type->getNamedType()->printName(). '" ';
-        }
+        $href = \str_starts_with($type->getNamedType()::class, 'Graphpinator\Type\Spec')
+            ? ''
+            : 'href="#graphql-type-' . $type->getNamedType()->getName(). '"';
 
-        return '<a class="' . $class . '" ' . $href . 'title="' . static::normalizeString($type->getNamedType()->getDescription()) . '">'
+        return '<a class="' . $class . '" ' . $href . ' title="' . self::normalizeString($type->getNamedType()->getDescription()) . '">'
             . $type->printName()
             . '</a>';
     }
 
     private static function printDirectiveLink(\Graphpinator\DirectiveUsage\DirectiveUsage $directiveUsage) : string
     {
-        if (\str_starts_with(\get_class($directiveUsage->getDirective()), 'Graphpinator\Directive\Spec')) {
-            $href = '';
-        } else {
-            $href = ' href="#graphql-directive-' . $directiveUsage->getDirective()->getName(). '"';
-        }
+        $href = \str_starts_with($directiveUsage->getDirective()::class, 'Graphpinator\Directive\Spec')
+            ? ''
+            : 'href="#graphql-directive-' . $directiveUsage->getDirective()->getName(). '"';
 
-        return '<a class="typename"' . $href . '>@' . $directiveUsage->getDirective()->getName() . '</a>';
+        return '<a class="typename" ' . $href . ' title="' . self::normalizeString($directiveUsage->getDirective()->getDescription()) . '">@'
+            . $directiveUsage->getDirective()->getName()
+            . '</a>';
     }
 }
