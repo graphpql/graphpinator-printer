@@ -237,9 +237,9 @@ final class HtmlVisitor implements PrintComponentVisitor
                 continue;
             }
 
-            $printableArgument = '<span class="directive-usage-name">' . $argument->getArgument()->getName() . '</span>';
+            $printableArgument = '<span class="argument-name">' . $argument->getArgument()->getName() . '</span>';
             $printableArgument .= '<span class="colon">:</span>&nbsp;';
-            $printableArgument .= '<span class="directive-usage-value">' . static::highlightPunctuation($argument->getValue()->printValue()) . '</span>';
+            $printableArgument .= '<span class="argument-value">' . $this->printValue($argument->getValue()) . '</span>';
 
             $printableArguments[] =  $printableArgument;
         }
@@ -439,15 +439,6 @@ final class HtmlVisitor implements PrintComponentVisitor
         return \is_string($input)
             ? \htmlspecialchars($input)
             : '';
-    }
-
-    private static function highlightPunctuation(string $input) : string
-    {
-        $input = \str_replace('!', '<span class="exclamation-mark">!</span>', $input);
-        $input = \str_replace('[', '<span class="bracket-square">[</span>', $input);
-        $input = \str_replace(']', '<span class="bracket-square">]</span>', $input);
-
-        return $input;
     }
 
     private static function printTypeLink(string $class, \Graphpinator\Type\Contract\Definition $type) : string
