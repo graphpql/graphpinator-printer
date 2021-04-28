@@ -49,10 +49,10 @@ final class HtmlVisitor implements PrintComponentVisitor
     public function visitType(\Graphpinator\Type\Type $type) : string
     {
         return <<<EOL
-        <section>
+        <section id="graphql-type-{$type->getName()}">
             <div class="line">
                 {$this->printDescription($type->getDescription())}
-                <span class="keyword" id="graphql-type-{$type->getName()}">type</span>&nbsp;
+                <span class="keyword">type</span>&nbsp;
                 <span class="typename">{$type->getName()}</span>
                 <span class="implements">{$this->printImplements($type->getInterfaces())}</span>
                 {$this->printDirectiveUsages($type->getDirectiveUsages())}&nbsp;
@@ -71,10 +71,10 @@ final class HtmlVisitor implements PrintComponentVisitor
     public function visitInterface(\Graphpinator\Type\InterfaceType $interface) : string
     {
         return <<<EOL
-        <section>
+        <section id="graphql-type-{$interface->getName()}">
             <div class="line">
                 {$this->printDescription($interface->getDescription())}
-                <span class="keyword" id="graphql-type-{$interface->getName()}">interface</span>&nbsp;
+                <span class="keyword">interface</span>&nbsp;
                 <span class="typename">{$interface->getName()}</span>
                 <span class="implements">{$this->printImplements($interface->getInterfaces())}</span>
                 {$this->printDirectiveUsages($interface->getDirectiveUsages())}&nbsp;
@@ -101,10 +101,10 @@ final class HtmlVisitor implements PrintComponentVisitor
         $types = \implode('&nbsp;<span class="vertical-line">|</span>&nbsp;', $typeNames);
 
         return <<<EOL
-        <section>
+        <section id="graphql-type-{$union->getName()}">
             <div class="line">
                 {$this->printDescription($union->getDescription())}
-                <span class="keyword" id="graphql-type-{$union->getName()}">union</span>&nbsp;
+                <span class="keyword">union</span>&nbsp;
                 <span class="typename">{$union->getName()}&nbsp;<span class="equals">=</span>&nbsp;{$types}</span>
             </div>
         </section>
@@ -114,10 +114,10 @@ final class HtmlVisitor implements PrintComponentVisitor
     public function visitInput(\Graphpinator\Type\InputType $input) : string
     {
         return <<<EOL
-        <section>
+        <section id="graphql-type-{$input->getName()}">
             <div class="line">
                 {$this->printDescription($input->getDescription())}
-                <span class="keyword" id="graphql-type-{$input->getName()}">input</span>&nbsp;
+                <span class="keyword">input</span>&nbsp;
                 <span class="typename">{$input->getName()}</span>
                 {$this->printDirectiveUsages($input->getDirectiveUsages())}&nbsp;
                 <span class="bracket-curly">{</span>
@@ -135,10 +135,10 @@ final class HtmlVisitor implements PrintComponentVisitor
     public function visitScalar(\Graphpinator\Type\ScalarType $scalar) : string
     {
         return <<<EOL
-        <section>
+        <section id="graphql-type-{$scalar->getName()}">
             <div class="line">
                 {$this->printDescription($scalar->getDescription())}
-                <span class="keyword" id="graphql-type-{$scalar->getName()}">scalar</span>&nbsp;
+                <span class="keyword">scalar</span>&nbsp;
                 <span class="typename">{$scalar->getName()}</span>
             </div>
         </section>
@@ -148,10 +148,10 @@ final class HtmlVisitor implements PrintComponentVisitor
     public function visitEnum(\Graphpinator\Type\EnumType $enum) : string
     {
         return <<<EOL
-        <section>
+        <section id="graphql-type-{$enum->getName()}">
             <div class="line">
                 {$this->printDescription($enum->getDescription())}
-                <span class="keyword" id="graphql-type-{$enum->getName()}">enum</span>&nbsp;
+                <span class="keyword">enum</span>&nbsp;
                 <span class="typename">{$enum->getName()}</span>&nbsp;
                 <span class="bracket-curly">{</span>
             </div>
