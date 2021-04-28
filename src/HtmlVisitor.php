@@ -54,7 +54,7 @@ final class HtmlVisitor implements PrintComponentVisitor
                 {$this->printDescription($type->getDescription())}
                 <span class="keyword">type</span>&nbsp;
                 <span class="typename">{$type->getName()}</span>
-                <span class="implements">{$this->printImplements($type->getInterfaces())}</span>
+                {$this->printImplements($type->getInterfaces())}
                 {$this->printDirectiveUsages($type->getDirectiveUsages())}&nbsp;
                 <span class="bracket-curly">{</span>
             </div>
@@ -76,7 +76,7 @@ final class HtmlVisitor implements PrintComponentVisitor
                 {$this->printDescription($interface->getDescription())}
                 <span class="keyword">interface</span>&nbsp;
                 <span class="typename">{$interface->getName()}</span>
-                <span class="implements">{$this->printImplements($interface->getInterfaces())}</span>
+                {$this->printImplements($interface->getInterfaces())}
                 {$this->printDirectiveUsages($interface->getDirectiveUsages())}&nbsp;
                 <span class="bracket-curly">{</span>
             </div>
@@ -272,7 +272,8 @@ final class HtmlVisitor implements PrintComponentVisitor
             return '';
         }
 
-        return '&nbsp;implements&nbsp;' . \implode('&nbsp;<span class="ampersand">&</span>&nbsp;', self::recursiveGetInterfaces($implements));
+        return '&nbsp;<span class="keyword">implements</span>&nbsp;'
+            . \implode('&nbsp;<span class="ampersand">&</span>&nbsp;', self::recursiveGetInterfaces($implements));
     }
 
     /**

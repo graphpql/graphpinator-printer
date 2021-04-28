@@ -12,7 +12,7 @@
 .line {
     display:block;
 }
-.keyword, .ampersand, .implements {
+.keyword, .ampersand {
     color: rgb(102, 217, 239);
 }
 .typename {
