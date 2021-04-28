@@ -174,7 +174,9 @@ final class HtmlVisitor implements PrintComponentVisitor
         }
 
         $directiveAdditional .= '&nbsp;<span class="keyword">on</span>&nbsp;';
-        $directiveAdditional .= '<span class="location">' . \implode('&nbsp;<span class="vertical-line">|</span>&nbsp;', $directive->getLocations()) . '</span>';
+        $directiveAdditional .= '<span class="enum-literal">'
+            . \implode('</span>&nbsp;<span class="vertical-line">|</span>&nbsp;<span class="enum-literal">', $directive->getLocations())
+            . '</span>';
 
         return <<<EOL
         <section>

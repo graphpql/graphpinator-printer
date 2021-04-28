@@ -33,7 +33,7 @@
 .int-literal, .float-literal, .comma, .colon, .argument-type, .field-type, .union-type, .bracket-round, .bracket-curly {
     color: white;
 }
-.equals, .vertical-line, .exclamation-mark, .location {
+.equals, .vertical-line, .exclamation-mark {
     color: red;
 }
 .value-name {
