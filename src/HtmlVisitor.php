@@ -18,7 +18,7 @@ final class HtmlVisitor implements PrintComponentVisitor
             : '<span class="null">null</span>';
 
         return <<<EOL
-        <section id="graphql-schema" class="section-schema">
+        <section id="graphql-schema">
             <div class="line">
                 {$this->printDescription($schema->getDescription())}
                 <span class="keyword">schema</span>&nbsp;

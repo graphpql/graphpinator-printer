@@ -51,7 +51,7 @@
 section {
     margin-top: 15px;
 }
-.section-schema {
+.section:first-child {
     margin-top: 0;
 }
 a {
