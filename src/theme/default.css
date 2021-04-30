@@ -48,11 +48,8 @@
 .value-name {
     color: green;
 }
-section {
+section:not(:first-child) {
     margin-top: 15px;
-}
-.section:first-child {
-    margin-top: 0;
 }
 a {
     text-decoration: none;
