@@ -30,7 +30,16 @@
 .true, .false, .null {
     color: rgb(174, 129, 255);
 }
-.int-literal, .float-literal, .comma, .colon, .argument-type, .field-type, .union-type, .bracket-round, .bracket-curly {
+.int-literal, .float-literal, .comma, .colon, .bracket-round, .bracket-curly {
+    color: white;
+}
+.field-type > .typename {
+    color: white;
+}
+.argument-type > .typename {
+    color: white;
+}
+.union-type > .typename {
     color: white;
 }
 .equals, .vertical-line, .exclamation-mark {

@@ -8,13 +8,13 @@ final class HtmlVisitor implements PrintComponentVisitor
 {
     public function visitSchema(\Graphpinator\Type\Schema $schema) : string
     {
-        $query = static::printTypeLink('field-type', $schema->getQuery());
+        $query = '<span class="field-type">' . static::printTypeLink($schema->getQuery()) . '</span>';
         $mutation = $schema->getMutation() instanceof \Graphpinator\Type\Type
-            ? static::printTypeLink('field-type', $schema->getMutation())
+            ? '<span class="field-type">' . static::printTypeLink($schema->getMutation()) . '</span>'
             : '<span class="null">null</span>';
 
         $subscription = $schema->getSubscription() instanceof \Graphpinator\Type\Type
-            ? static::printTypeLink('field-type', $schema->getSubscription())
+            ? '<span class="field-type">' . static::printTypeLink($schema->getSubscription()) . '</span>'
             : '<span class="null">null</span>';
 
         return <<<EOL
@@ -95,7 +95,7 @@ final class HtmlVisitor implements PrintComponentVisitor
         $typeNames = [];
 
         foreach ($union->getTypes() as $type) {
-            $typeNames[] = static::printTypeLink('union-type', $type);
+            $typeNames[] = '<span class="union-type">' . static::printTypeLink($type) . '</span>';
         }
 
         $types = \implode('&nbsp;<span class="vertical-line">|</span>&nbsp;', $typeNames);
@@ -192,7 +192,7 @@ final class HtmlVisitor implements PrintComponentVisitor
 
     public function visitField(\Graphpinator\Field\Field $field) : string
     {
-        $link = static::printTypeLink('field-type', $field->getType());
+        $link = '<span class="field-type">' . static::printTypeLink($field->getType()) . '</span>';
 
         return <<<EOL
         <div class="line offset-1">
@@ -209,7 +209,7 @@ final class HtmlVisitor implements PrintComponentVisitor
     public function visitArgument(\Graphpinator\Argument\Argument $argument) : string
     {
         $defaultValue = '';
-        $link = static::printTypeLink('argument-type', $argument->getType());
+        $link = '<span class="argument-type">' . static::printTypeLink($argument->getType()) . '</span>';
 
         if ($argument->getDefaultValue() instanceof \Graphpinator\Value\ArgumentValue) {
             $defaultValue .= '&nbsp;<span class="equals">=</span>&nbsp;';
@@ -289,7 +289,7 @@ final class HtmlVisitor implements PrintComponentVisitor
 
         foreach ($implements as $interface) {
             $return += self::recursiveGetInterfaces($interface->getInterfaces());
-            $return[] = static::printTypeLink('typename', $interface);
+            $return[] = static::printTypeLink($interface);
         }
 
         return $return;
@@ -445,27 +445,27 @@ final class HtmlVisitor implements PrintComponentVisitor
             : '';
     }
 
-    private static function printTypeLink(string $class, \Graphpinator\Type\Contract\Definition $type) : string
+    private static function printTypeLink(\Graphpinator\Type\Contract\Definition $type) : string
     {
         return match ($type::class) {
             \Graphpinator\Type\NotNullType::class =>
-                self::printTypeLink($class, $type->getInnerType()) .
+                self::printTypeLink($type->getInnerType()) .
                 '<span class="exclamation-mark">!</span>',
             \Graphpinator\Type\ListType::class =>
                 '<span class="bracket-square">[</span>' .
-                self::printTypeLink($class, $type->getInnerType()) .
+                self::printTypeLink($type->getInnerType()) .
                 '<span class="bracket-square">]</span>',
-            default => self::printNamedTypeLink($class, $type),
+            default => self::printNamedTypeLink($type),
         };
     }
 
-    private static function printNamedTypeLink(string $class, \Graphpinator\Type\Contract\NamedDefinition $type) : string
+    private static function printNamedTypeLink(\Graphpinator\Type\Contract\NamedDefinition $type) : string
     {
         $href = \str_starts_with($type->getNamedType()::class, 'Graphpinator\Type\Spec')
             ? ''
             : 'href="#graphql-type-' . $type->getNamedType()->getName(). '"';
 
-        return '<a class="' . $class . '" ' . $href . ' title="' . self::normalizeString($type->getNamedType()->getDescription()) . '">'
+        return '<a class="typename" ' . $href . ' title="' . self::normalizeString($type->getNamedType()->getDescription()) . '">'
             . $type->printName()
             . '</a>';
     }
