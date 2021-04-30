@@ -21,7 +21,7 @@
 .bracket-square {
     color: orange;
 }
-.field-name, .argument-name {
+.field-name, .argument-name, .string-literal {
     color: rgb(166, 226, 46);
 }
 .enum-item, .enum-literal {

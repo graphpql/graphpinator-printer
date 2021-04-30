@@ -355,6 +355,10 @@ final class HtmlVisitor implements PrintComponentVisitor
             if (\is_float($rawValue)) {
                 $className = 'float-literal';
             }
+
+            if (\is_string($rawValue)) {
+                $className = 'string-literal';
+            }
         }
 
         return '<span class="' . $className . '">' . $value->printValue() . '</span>';
