@@ -198,7 +198,7 @@ final class HtmlVisitor implements PrintComponentVisitor
         <div class="line offset-1">
             {$this->printItemDescription($field->getDescription())}
             <span class="field-name">{$field->getName()}</span>
-            <div class="arguments">{$this->printArguments($field)}</div>
+            {$this->printArguments($field)}
             <span class="colon">:</span>&nbsp;
             {$link}
             {$this->printDirectiveUsages($field->getDirectiveUsages())}
@@ -408,9 +408,11 @@ final class HtmlVisitor implements PrintComponentVisitor
         $toReturn = '';
 
         if ($component->getArguments()->count() > 0) {
+            $toReturn .= '<div class="arguments">';
             $toReturn .= '<span class="bracket-round">(</span>';
             $toReturn .= '<div class="line offset-1">' . $this->printItems($component->getArguments()) . '</div>';
             $toReturn .= '<span class="bracket-round">)</span>';
+            $toReturn .= '</div>';
         }
 
         return $toReturn;
