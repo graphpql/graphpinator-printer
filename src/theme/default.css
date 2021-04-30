@@ -21,7 +21,7 @@
 .bracket-square {
     color: orange;
 }
-.field-name, .argument-name {
+.field-name, .argument-name, .string-literal {
     color: rgb(166, 226, 46);
 }
 .enum-item, .enum-literal {
@@ -30,7 +30,16 @@
 .true, .false, .null {
     color: rgb(174, 129, 255);
 }
-.int-literal, .float-literal, .comma, .colon, .argument-type, .field-type, .union-type, .bracket-round, .bracket-curly {
+.int-literal, .float-literal, .comma, .colon, .bracket-round, .bracket-curly {
+    color: white;
+}
+.field-type > .typename {
+    color: white;
+}
+.argument-type > .typename {
+    color: white;
+}
+.union-type > .typename {
     color: white;
 }
 .equals, .vertical-line, .exclamation-mark {
@@ -39,8 +48,8 @@
 .value-name {
     color: green;
 }
-section {
-    margin-top:15px;
+section:not(:first-child) {
+    margin-top: 15px;
 }
 a {
     text-decoration: none;
