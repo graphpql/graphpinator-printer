@@ -18,7 +18,7 @@ final class HtmlVisitor implements PrintComponentVisitor
             : '<span class="null">null</span>';
 
         return <<<EOL
-        <section>
+        <section class="section-schema">
             <div class="line">
                 {$this->printDescription($schema->getDescription())}
                 <span class="keyword">schema</span>&nbsp;

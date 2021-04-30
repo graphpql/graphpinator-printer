@@ -40,7 +40,10 @@
     color: green;
 }
 section {
-    margin-top:15px;
+    margin-top: 15px;
+}
+.section-schema {
+    margin-top: 0;
 }
 a {
     text-decoration: none;
