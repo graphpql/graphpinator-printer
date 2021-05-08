@@ -20,26 +20,30 @@ final class HtmlVisitor implements PrintComponentVisitor
         return <<<EOL
         <section id="graphql-schema">
             {$this->printDescription($schema->getDescription())}
-            <div>
+            <div class="line">
                 <span class="keyword">schema</span>&nbsp;
                 <span class="bracket-curly">{</span>
             </div>
-            <div>
-                <span class="field-name offset-1">query</span>
-                <span class="colon">:</span>&nbsp;
-                {$query}
+            <div class="offset">
+                <div class="line">
+                    <span class="field-name">query</span>
+                    <span class="colon">:</span>&nbsp;
+                    {$query}
+                </div>
+                <div class="line">
+                    <span class="field-name">mutation</span>
+                    <span class="colon">:</span>&nbsp;
+                    {$mutation}
+                </div>
+                <div class="line">
+                    <span class="field-name">subscription</span>
+                    <span class="colon">:</span>&nbsp;
+                    {$subscription}
+                </div>
             </div>
-            <div>
-                <span class="field-name offset-1">mutation</span>
-                <span class="colon">:</span>&nbsp;
-                {$mutation}
+            <div class="line">
+                <span class="bracket-curly">}</span>
             </div>
-            <div>
-                <span class="field-name offset-1">subscription</span>
-                <span class="colon">:</span>&nbsp;
-                {$subscription}
-            </div>
-            <div class="bracket-curly">}</div>
             {$this->emptyLine()}
         </section>
         EOL;
@@ -50,15 +54,19 @@ final class HtmlVisitor implements PrintComponentVisitor
         return <<<EOL
         <section id="graphql-type-{$type->getName()}">
             {$this->printDescription($type->getDescription())}
-            <div>
+            <div class="line">
                 <span class="keyword">type</span>&nbsp;
                 <span class="typename">{$type->getName()}</span>
                 {$this->printImplements($type->getInterfaces())}
                 {$this->printDirectiveUsages($type->getDirectiveUsages())}&nbsp;
                 <span class="bracket-curly">{</span>
             </div>
-            {$this->printItems($type->getFields())}
-            <div class="bracket-curly">}</div>
+            <div class="offset">
+                {$this->printItems($type->getFields())}
+            </div>
+            <div class="line">
+                <span class="bracket-curly">}</span>
+            </div>
             {$this->emptyLine()}
         </section>
         EOL;
@@ -69,15 +77,19 @@ final class HtmlVisitor implements PrintComponentVisitor
         return <<<EOL
         <section id="graphql-type-{$interface->getName()}">
             {$this->printDescription($interface->getDescription())}
-            <div>
+            <div class="line">
                 <span class="keyword">interface</span>&nbsp;
                 <span class="typename">{$interface->getName()}</span>
                 {$this->printImplements($interface->getInterfaces())}
                 {$this->printDirectiveUsages($interface->getDirectiveUsages())}&nbsp;
                 <span class="bracket-curly">{</span>
             </div>
-            {$this->printItems($interface->getFields())}
-            <div class="bracket-curly">}</div>
+            <div class="offset">
+                {$this->printItems($interface->getFields())}
+            </div>
+            <div class="line">
+                <span class="bracket-curly">}</span>
+            </div>
             {$this->emptyLine()}
         </section>
         EOL;
@@ -96,7 +108,7 @@ final class HtmlVisitor implements PrintComponentVisitor
         return <<<EOL
         <section id="graphql-type-{$union->getName()}">
             {$this->printDescription($union->getDescription())}
-            <div>
+            <div class="line">
                 <span class="keyword">union</span>&nbsp;
                 <span class="typename">{$union->getName()}&nbsp;<span class="equals">=</span>&nbsp;{$types}</span>
             </div>
@@ -110,14 +122,18 @@ final class HtmlVisitor implements PrintComponentVisitor
         return <<<EOL
         <section id="graphql-type-{$input->getName()}">
             {$this->printDescription($input->getDescription())}
-            <div>
+            <div class="line">
                 <span class="keyword">input</span>&nbsp;
                 <span class="typename">{$input->getName()}</span>
                 {$this->printDirectiveUsages($input->getDirectiveUsages())}&nbsp;
                 <span class="bracket-curly">{</span>
             </div>
-            {$this->printItems($input->getArguments())}
-            <div class="bracket-curly">}</div>
+            <div class="offset">
+                {$this->printItems($input->getArguments())}
+            </div>
+            <div class="line">
+                <span class="bracket-curly">}</span>
+            </div>
             {$this->emptyLine()}
         </section>
         EOL;
@@ -128,7 +144,7 @@ final class HtmlVisitor implements PrintComponentVisitor
         return <<<EOL
         <section id="graphql-type-{$scalar->getName()}">
             {$this->printDescription($scalar->getDescription())}
-            <div>
+            <div class="line">
                 <span class="keyword">scalar</span>&nbsp;
                 <span class="typename">{$scalar->getName()}</span>
             </div>
@@ -142,13 +158,17 @@ final class HtmlVisitor implements PrintComponentVisitor
         return <<<EOL
         <section id="graphql-type-{$enum->getName()}">
             {$this->printDescription($enum->getDescription())}
-            <div>
+            <div class="line">
                 <span class="keyword">enum</span>&nbsp;
                 <span class="typename">{$enum->getName()}</span>&nbsp;
                 <span class="bracket-curly">{</span>
             </div>
-            {$this->printItems($enum->getItems())}
-            <div class="bracket-curly">}</div>
+            <div class="offset">
+                {$this->printItems($enum->getItems())}
+            </div>
+            <div class="line">
+                <span class="bracket-curly">}</span>
+            </div>
             {$this->emptyLine()}
         </section>
         EOL;
@@ -165,7 +185,7 @@ final class HtmlVisitor implements PrintComponentVisitor
             //Wrap last ) element into div
             $directiveAdditional = \preg_replace(
                 '~(.*)<span class="bracket-round">\)<\/span>~su',
-                '${1}<div><span class="bracket-round">)</span>',
+                '${1}<div class="line"><span class="bracket-round">)</span>',
                 $directiveAdditional
             );
         }
@@ -182,7 +202,7 @@ final class HtmlVisitor implements PrintComponentVisitor
         return <<<EOL
         <section id="graphql-directive-{$directive->getName()}">
             {$this->printDescription($directive->getDescription())}
-            <div>
+            <div class="line">
             <span class="keyword">directive</span>&nbsp;
             <span class="typename">@{$directive->getName()}</span>
             {$directiveAdditional}
@@ -203,21 +223,19 @@ final class HtmlVisitor implements PrintComponentVisitor
             //Wrap last ) element into div
             $arguments = \preg_replace(
                 '~(.*)<span class="bracket-round">\)<\/span>~su',
-                '${1}<div class="offset-1"><span class="bracket-round">)</span>',
+                '${1}<div class="line offset"><span class="bracket-round">)</span>',
                 $arguments,
             );
-
-            //Replace offset-1 with offset-2 because we are dealing with field's argument
-            $arguments = \str_replace('<div class="offset-1 argument">', '<div class="offset-2 argument">', $arguments);
         }
 
         return <<<EOL
             {$this->printItemDescription($field->getDescription())}
-            <div><span class="field-name offset-1">{$field->getName()}</span>
-            {$arguments}
-            <span class="colon">:</span>&nbsp;
-            {$link}
-            {$this->printDirectiveUsages($field->getDirectiveUsages())}
+            <div class="line">
+                <span class="field-name offset">{$field->getName()}</span>
+                {$arguments}
+                <span class="colon">:</span>&nbsp;
+                {$link}
+                {$this->printDirectiveUsages($field->getDirectiveUsages())}
             </div>
         EOL;
     }
@@ -234,12 +252,14 @@ final class HtmlVisitor implements PrintComponentVisitor
 
         return <<<EOL
             {$this->printItemDescription($argument->getDescription())}
-            <div class="offset-1 argument">
-                <span class="argument-name">{$argument->getName()}</span>
-                <span class="colon">:</span>&nbsp;
-                {$link}
-                {$defaultValue}
-                {$this->printDirectiveUsages($argument->getDirectiveUsages())}
+            <div class="offset">
+                <div class="line">
+                    <span class="argument-name">{$argument->getName()}</span>
+                    <span class="colon">:</span>&nbsp;
+                    {$link}
+                    {$defaultValue}
+                    {$this->printDirectiveUsages($argument->getDirectiveUsages())}
+                </div>
             </div>
         EOL;
     }
@@ -273,7 +293,7 @@ final class HtmlVisitor implements PrintComponentVisitor
 
     public function visitEnumItem(\Graphpinator\EnumItem\EnumItem $enumItem) : string
     {
-        return $this->printItemDescription($enumItem->getDescription()) . '<div class="enum-item offset-1">' . $enumItem->getName()
+        return $this->printItemDescription($enumItem->getDescription()) . '<div class="line enum-item offset">' . $enumItem->getName()
             . $this->printDirectiveUsages($enumItem->getDirectiveUsages()) . '</div>';
     }
 
@@ -427,7 +447,7 @@ final class HtmlVisitor implements PrintComponentVisitor
 
         if ($component->getArguments()->count() > 0) {
             $toReturn .= '<span class="bracket-round">(</span>';
-            $toReturn .= $this->printItems($component->getArguments());
+            $toReturn .= '<div class="offset">' . $this->printItems($component->getArguments()) . '</div>';
             $toReturn .= '<span class="bracket-round">)</span>';
         }
 
@@ -440,7 +460,9 @@ final class HtmlVisitor implements PrintComponentVisitor
             return '';
         }
 
-        return '<div class="description">"""</div><div class="description">' . \htmlspecialchars($description) .  '</div><div class="description">"""</div>';
+        return '<div class="line description">"""</div><div class="line description">'
+            . \htmlspecialchars($description)
+            .  '</div><div class="line description">"""</div>';
     }
 
     private function printItemDescription(?string $description) : string
@@ -450,12 +472,12 @@ final class HtmlVisitor implements PrintComponentVisitor
         }
 
         if (!\str_contains($description, \PHP_EOL)) {
-            return '<div class="description offset-1">"' . $description . '"<br></div>';
+            return '<div class="line description offset">"' . $description . '"<br></div>';
         }
 
-        return '<div class="description offset-1">"""</div><div class="description offset-1">'
-            . \str_replace(\PHP_EOL, '</div><div class="description offset-1">', $description)
-            . '</div><div class="description offset-1">"""</div>';
+        return '<div class="line description offset">"""</div><div class="line description offset">'
+            . \str_replace(\PHP_EOL, '</div><div class="line description offset">', $description)
+            . '</div><div class="line description offset">"""</div>';
     }
 
     private static function normalizeString(?string $input) : string
@@ -503,6 +525,6 @@ final class HtmlVisitor implements PrintComponentVisitor
 
     private static function emptyLine() : string
     {
-        return '<div>&nbsp;</div>';
+        return '<div class="line">&nbsp;</div>';
     }
 }

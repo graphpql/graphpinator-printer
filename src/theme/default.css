@@ -4,32 +4,8 @@
     padding: 10px;
     counter-reset: line;
 }
-.graphpinator-schema > section {
-    display: block;
-}
-.graphpinator-schema > section > div {
-    position: relative;
-    padding-left: 65px;
-}
-.graphpinator-schema > section > div:before {
-    counter-increment: line;
-    content: counter(line);
-    display: inline-block;
-    border-right: 1px solid #ddd;
-    padding: 0 .5em;
-    color: #888;
-    width: 40px;
-    left: 0;
-    position: absolute;
-}
-.offset-1 {
+.offset {
     padding-left: 25px !important;
-}
-.colon {
-    /*margin-right: 5px*/
-}
-.line {
-    display:block;
 }
 .keyword, .ampersand {
     color: rgb(102, 217, 239);
@@ -73,19 +49,31 @@ a {
 a[href]:hover {
     text-decoration: underline;
 }
-.arguments {
-    display: inline;
-}
 .description {
     color: grey;
 }
-.item > .offset-1 {
+.graphpinator-schema > section {
+    display: block;
+}
+.graphpinator-schema > section > div, .graphpinator-schema > section > .offset {
+    position: relative;
+    padding-left: 65px;
+}
+.line:before {
+    counter-increment: line;
+    content: counter(line);
     display: inline-block;
+    border-right: 1px solid #ddd;
+    padding: 0 .5em;
+    color: #888;
+    width: 40px;
+    left: 0;
+    position: absolute;
 }
-section > .offset-1 {
-    padding-left: 85px !important;
+.offset > .line:before { 
+    margin-right: 20px; 
 }
-section > .offset-2 {
-    padding-left: 105px !important;
+.offset > .offset > .line:before { 
+    margin-right: 40px 
 }
 
