@@ -4,8 +4,8 @@
     padding: 10px;
     counter-reset: line;
 }
-.offset {
-    padding-left: 25px !important;
+.graphpinator-schema > .line{
+    position: relative;
 }
 .keyword, .ampersand {
     color: rgb(102, 217, 239);
@@ -55,9 +55,12 @@ a[href]:hover {
 .graphpinator-schema > section {
     display: block;
 }
-.graphpinator-schema > section > div, .graphpinator-schema > section > .offset {
+.graphpinator-schema > section > .line, .graphpinator-schema > section > .offset, .graphpinator-schema > section > .description {
     position: relative;
     padding-left: 65px;
+}
+.offset {
+    padding-left: 20px;
 }
 .line:before {
     counter-increment: line;
@@ -70,10 +73,9 @@ a[href]:hover {
     left: 0;
     position: absolute;
 }
-.offset > .line:before { 
-    margin-right: 20px; 
+.offset > .line, .offset > .description {
+    margin-left: 20px;
 }
-.offset > .offset > .line:before { 
-    margin-right: 40px 
+.offset > .offset > .line {
+    margin-left: 20px;
 }
-
