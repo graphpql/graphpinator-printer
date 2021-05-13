@@ -42,7 +42,7 @@ final class HtmlVisitor implements PrintComponentVisitor
                 </div>
             </div>
             <div class="line">
-                <div class="bracket-curly">}</div>
+                <span class="bracket-curly">}</span>
             </div>
         </section>
         EOL;
@@ -64,7 +64,7 @@ final class HtmlVisitor implements PrintComponentVisitor
                 {$this->printItems($type->getFields())}
             </div>
             <div class="line">
-                <div class="bracket-curly">}</div>
+                <span class="bracket-curly">}</span>
             </div>
         </section>
         EOL;
@@ -86,7 +86,7 @@ final class HtmlVisitor implements PrintComponentVisitor
                 {$this->printItems($interface->getFields())}
             </div>
             <div class="line">
-                <div class="bracket-curly">}</div>
+                <span class="bracket-curly">}</span>
             </div>
         </section>
         EOL;
@@ -128,7 +128,7 @@ final class HtmlVisitor implements PrintComponentVisitor
                 {$this->printItems($input->getArguments())}
             </div>
             <div class="line">
-                <div class="bracket-curly">}</div>
+                <span class="bracket-curly">}</span>
             </div>
         </section>
         EOL;
@@ -161,7 +161,7 @@ final class HtmlVisitor implements PrintComponentVisitor
                 {$this->printItems($enum->getItems())}
             </div>
             <div class="line">
-                <div class="bracket-curly">}</div>
+                <span class="bracket-curly">}</span>
             </div>
         </section>
         EOL;
@@ -456,7 +456,7 @@ final class HtmlVisitor implements PrintComponentVisitor
         $description = self::normalizeString($type->getNamedType()->getDescription());
 
         return <<<EOL
-        <a class="typename"  {$href} title="{$description}">{$type->printName()}</a>
+        <a class="typename" {$href} title="{$description}">{$type->printName()}</a>
         EOL;
     }
 
