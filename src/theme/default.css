@@ -2,15 +2,10 @@
     font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
     background: rgb(39, 40, 34);
     padding: 10px;
+    counter-reset: line;
 }
-.offset-1 {
-    padding-left: 20px;
-}
-.colon {
-    /*margin-right: 5px*/
-}
-.line {
-    display:block;
+.graphpinator-schema > .line{
+    position: relative;
 }
 .keyword, .ampersand {
     color: rgb(102, 217, 239);
@@ -48,18 +43,39 @@
 .value-name {
     color: green;
 }
-section:not(:first-child) {
-    margin-top: 15px;
-}
 a {
     text-decoration: none;
 }
 a[href]:hover {
     text-decoration: underline;
 }
-.arguments {
-    display: inline;
-}
 .description {
     color: grey;
+}
+.graphpinator-schema > section {
+    display: block;
+}
+.graphpinator-schema > section > .line, .graphpinator-schema > section > .offset, .graphpinator-schema > section > .description {
+    position: relative;
+    padding-left: 65px;
+}
+.offset {
+    padding-left: 20px;
+}
+.line:before {
+    counter-increment: line;
+    content: counter(line);
+    display: inline-block;
+    border-right: 1px solid #ddd;
+    padding: 0 .5em;
+    color: #888;
+    width: 40px;
+    left: 0;
+    position: absolute;
+}
+.offset > .line, .offset > .description {
+    margin-left: 20px;
+}
+.offset > .offset > .line {
+    margin-left: 20px;
 }

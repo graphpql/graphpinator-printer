@@ -19,25 +19,27 @@ final class HtmlVisitor implements PrintComponentVisitor
 
         return <<<EOL
         <section id="graphql-schema">
+            {$this->printDescription($schema->getDescription())}
             <div class="line">
-                {$this->printDescription($schema->getDescription())}
                 <span class="keyword">schema</span>&nbsp;
                 <span class="bracket-curly">{</span>
             </div>
-            <div class="line offset-1">
-                <span class="field-name">query</span>
-                <span class="colon">:</span>&nbsp;
-                {$query}
-            </div>
-            <div class="line offset-1">
-                <span class="field-name">mutation</span>
-                <span class="colon">:</span>&nbsp;
-                {$mutation}
-            </div>
-            <div class="line offset-1">
-                <span class="field-name">subscription</span>
-                <span class="colon">:</span>&nbsp;
-                {$subscription}
+            <div class="offset">
+                <div class="line">
+                    <span class="field-name">query</span>
+                    <span class="colon">:</span>&nbsp;
+                    {$query}
+                </div>
+                <div class="line">
+                    <span class="field-name">mutation</span>
+                    <span class="colon">:</span>&nbsp;
+                    {$mutation}
+                </div>
+                <div class="line">
+                    <span class="field-name">subscription</span>
+                    <span class="colon">:</span>&nbsp;
+                    {$subscription}
+                </div>
             </div>
             <div class="line">
                 <span class="bracket-curly">}</span>
@@ -50,15 +52,15 @@ final class HtmlVisitor implements PrintComponentVisitor
     {
         return <<<EOL
         <section id="graphql-type-{$type->getName()}">
+            {$this->printDescription($type->getDescription())}
             <div class="line">
-                {$this->printDescription($type->getDescription())}
                 <span class="keyword">type</span>&nbsp;
                 <span class="typename">{$type->getName()}</span>
                 {$this->printImplements($type->getInterfaces())}
                 {$this->printDirectiveUsages($type->getDirectiveUsages())}&nbsp;
                 <span class="bracket-curly">{</span>
             </div>
-            <div class="line">
+            <div class="offset">
                 {$this->printItems($type->getFields())}
             </div>
             <div class="line">
@@ -72,15 +74,15 @@ final class HtmlVisitor implements PrintComponentVisitor
     {
         return <<<EOL
         <section id="graphql-type-{$interface->getName()}">
+            {$this->printDescription($interface->getDescription())}
             <div class="line">
-                {$this->printDescription($interface->getDescription())}
                 <span class="keyword">interface</span>&nbsp;
                 <span class="typename">{$interface->getName()}</span>
                 {$this->printImplements($interface->getInterfaces())}
                 {$this->printDirectiveUsages($interface->getDirectiveUsages())}&nbsp;
                 <span class="bracket-curly">{</span>
             </div>
-            <div class="line">
+            <div class="offset">
                 {$this->printItems($interface->getFields())}
             </div>
             <div class="line">
@@ -102,8 +104,8 @@ final class HtmlVisitor implements PrintComponentVisitor
 
         return <<<EOL
         <section id="graphql-type-{$union->getName()}">
+            {$this->printDescription($union->getDescription())}
             <div class="line">
-                {$this->printDescription($union->getDescription())}
                 <span class="keyword">union</span>&nbsp;
                 <span class="typename">{$union->getName()}&nbsp;<span class="equals">=</span>&nbsp;{$types}</span>
             </div>
@@ -115,14 +117,14 @@ final class HtmlVisitor implements PrintComponentVisitor
     {
         return <<<EOL
         <section id="graphql-type-{$input->getName()}">
+            {$this->printDescription($input->getDescription())}
             <div class="line">
-                {$this->printDescription($input->getDescription())}
                 <span class="keyword">input</span>&nbsp;
                 <span class="typename">{$input->getName()}</span>
                 {$this->printDirectiveUsages($input->getDirectiveUsages())}&nbsp;
                 <span class="bracket-curly">{</span>
             </div>
-            <div class="line offset-1">
+            <div class="offset">
                 {$this->printItems($input->getArguments())}
             </div>
             <div class="line">
@@ -136,8 +138,8 @@ final class HtmlVisitor implements PrintComponentVisitor
     {
         return <<<EOL
         <section id="graphql-type-{$scalar->getName()}">
+            {$this->printDescription($scalar->getDescription())}
             <div class="line">
-                {$this->printDescription($scalar->getDescription())}
                 <span class="keyword">scalar</span>&nbsp;
                 <span class="typename">{$scalar->getName()}</span>
             </div>
@@ -149,13 +151,13 @@ final class HtmlVisitor implements PrintComponentVisitor
     {
         return <<<EOL
         <section id="graphql-type-{$enum->getName()}">
+            {$this->printDescription($enum->getDescription())}
             <div class="line">
-                {$this->printDescription($enum->getDescription())}
                 <span class="keyword">enum</span>&nbsp;
                 <span class="typename">{$enum->getName()}</span>&nbsp;
                 <span class="bracket-curly">{</span>
             </div>
-            <div class="line offset-1">
+            <div class="offset">
                 {$this->printItems($enum->getItems())}
             </div>
             <div class="line">
@@ -167,24 +169,22 @@ final class HtmlVisitor implements PrintComponentVisitor
 
     public function visitDirective(\Graphpinator\Directive\Directive $directive) : string
     {
-        $directiveAdditional = $this->printArguments($directive);
-
-        if ($directive->isRepeatable()) {
-            $directiveAdditional .= '&nbsp;<span class="keyword">repeatable</span>';
-        }
-
-        $directiveAdditional .= '&nbsp;<span class="keyword">on</span>&nbsp;';
-        $directiveAdditional .= '<span class="enum-literal">'
-            . \implode('</span>&nbsp;<span class="vertical-line">|</span>&nbsp;<span class="enum-literal">', $directive->getLocations())
-            . '</span>';
+        $repeatable = $directive->isRepeatable()
+            ? '&nbsp;<span class="keyword">repeatable</span>'
+            : '';
+        $locations = \implode(
+            '</span>&nbsp;<span class="vertical-line">|</span>&nbsp;<span class="enum-literal">',
+            $directive->getLocations(),
+        );
 
         return <<<EOL
         <section id="graphql-directive-{$directive->getName()}">
+            {$this->printDescription($directive->getDescription())}
             <div class="line">
-                {$this->printDescription($directive->getDescription())}
                 <span class="keyword">directive</span>&nbsp;
                 <span class="typename">@{$directive->getName()}</span>
-                {$directiveAdditional}
+                {$this->printArguments($directive)}
+                {$repeatable}&nbsp;<span class="keyword">on</span>&nbsp;<span class="enum-literal">{$locations}</span>
             </div>
         </section>
         EOL;
@@ -192,15 +192,15 @@ final class HtmlVisitor implements PrintComponentVisitor
 
     public function visitField(\Graphpinator\Field\Field $field) : string
     {
-        $link = '<span class="field-type">' . static::printTypeLink($field->getType()) . '</span>';
+        $link = static::printTypeLink($field->getType());
 
         return <<<EOL
-        <div class="line offset-1">
-            {$this->printItemDescription($field->getDescription())}
+        {$this->printItemDescription($field->getDescription())}
+        <div class="line">
             <span class="field-name">{$field->getName()}</span>
             {$this->printArguments($field)}
             <span class="colon">:</span>&nbsp;
-            {$link}
+            <span class="field-type">{$link}</span>
             {$this->printDirectiveUsages($field->getDirectiveUsages())}
         </div>
         EOL;
@@ -217,12 +217,14 @@ final class HtmlVisitor implements PrintComponentVisitor
         }
 
         return <<<EOL
-            {$this->printItemDescription($argument->getDescription())}
+        {$this->printItemDescription($argument->getDescription())}
+        <div class="line">
             <span class="argument-name">{$argument->getName()}</span>
             <span class="colon">:</span>&nbsp;
             {$link}
             {$defaultValue}
             {$this->printDirectiveUsages($argument->getDirectiveUsages())}
+        </div>
         EOL;
     }
 
@@ -255,13 +257,13 @@ final class HtmlVisitor implements PrintComponentVisitor
 
     public function visitEnumItem(\Graphpinator\EnumItem\EnumItem $enumItem) : string
     {
-        return $this->printItemDescription($enumItem->getDescription()) . '<span class="enum-item line">' . $enumItem->getName()
-            . $this->printDirectiveUsages($enumItem->getDirectiveUsages()) . '</span>';
+        return $this->printItemDescription($enumItem->getDescription()) . '<div class="line enum-item">' . $enumItem->getName()
+            . $this->printDirectiveUsages($enumItem->getDirectiveUsages()) . '</div>';
     }
 
     public function glue(array $entries) : string
     {
-        $html = '<div class="graphpinator-schema">' . \implode('', $entries) . '</div>';
+        $html = '<div class="graphpinator-schema">' . \implode(self::emptyLine(), $entries) . '</div>';
 
         //Replace whitespace between tags
         $html = \preg_replace('/\>\s+\</', '><', $html);
@@ -318,10 +320,10 @@ final class HtmlVisitor implements PrintComponentVisitor
             $currentHasDescription = $item->getDescription() !== null;
 
             if (!$isFirst && ($previousHasDescription || $currentHasDescription)) {
-                $result .= '<br>';
+                $result .= static::emptyLine();
             }
 
-            $result .= '<div class="item">' . $item->accept($this) . '</div>';
+            $result .= $item->accept($this);
             $previousHasDescription = $currentHasDescription;
             $isFirst = false;
         }
@@ -331,35 +333,16 @@ final class HtmlVisitor implements PrintComponentVisitor
 
     private function printLeafValue(\Graphpinator\Value\InputedValue $value) : string
     {
-        $className = '';
-
-        if ($value instanceof \Graphpinator\Value\NullValue) {
-            $className = 'null';
-        }
-
-        if ($value instanceof \Graphpinator\Value\EnumValue) {
-            $className = 'enum-literal';
-        }
-
-        if ($value instanceof \Graphpinator\Value\ScalarValue) {
-            $rawValue = $value->getRawValue();
-
-            if (\is_bool($rawValue)) {
-                $className = $rawValue ? 'true' : 'false';
-            }
-
-            if (\is_int($rawValue)) {
-                $className = 'int-literal';
-            }
-
-            if (\is_float($rawValue)) {
-                $className = 'float-literal';
-            }
-
-            if (\is_string($rawValue)) {
-                $className = 'string-literal';
-            }
-        }
+        $className = match ($value::class) {
+            \Graphpinator\Value\NullInputedValue::class => 'null',
+            \Graphpinator\Value\EnumValue::class => 'enum-literal',
+            \Graphpinator\Value\ScalarValue::class => match (\get_debug_type($value->getRawValue())) {
+                'bool' => $value->getRawValue() ? 'true' : 'false',
+                'int' => 'int-literal',
+                'float' => 'float-literal',
+                'string' => 'string-literal',
+            },
+        };
 
         return '<span class="' . $className . '">' . $value->printValue() . '</span>';
     }
@@ -405,17 +388,19 @@ final class HtmlVisitor implements PrintComponentVisitor
 
     private function printArguments(\Graphpinator\Directive\Directive|\Graphpinator\Field\Field $component) : string
     {
-        $toReturn = '';
-
-        if ($component->getArguments()->count() > 0) {
-            $toReturn .= '<div class="arguments">';
-            $toReturn .= '<span class="bracket-round">(</span>';
-            $toReturn .= '<div class="line offset-1">' . $this->printItems($component->getArguments()) . '</div>';
-            $toReturn .= '<span class="bracket-round">)</span>';
-            $toReturn .= '</div>';
+        if ($component->getArguments()->count() === 0) {
+            return '';
         }
 
-        return $toReturn;
+        return <<<EOL
+            <span class="bracket-round">(</span>
+        </div>
+        <div class="offset">
+            {$this->printItems($component->getArguments())}
+        </div>
+        <div class="line">
+            <span class="bracket-round">)</span>
+        EOL;
     }
 
     private function printDescription(?string $description) : string
@@ -424,7 +409,15 @@ final class HtmlVisitor implements PrintComponentVisitor
             return '';
         }
 
-        return '<span class="description">"""<br>' . $description .  '<br>"""<br></span>';
+        $lines = \str_replace(\PHP_EOL, '</div><div class="line">', \htmlspecialchars($description));
+
+        return <<<EOL
+        <div class="description">
+            <div class="line">"""</div>
+            <div class="line">{$lines}</div>
+            <div class="line">"""</div>
+        </div>
+        EOL;
     }
 
     private function printItemDescription(?string $description) : string
@@ -433,18 +426,12 @@ final class HtmlVisitor implements PrintComponentVisitor
             return '';
         }
 
-        if (!\str_contains($description, \PHP_EOL)) {
-            return '<span class="description">"' . $description . '"<br></span>';
+        if (\str_contains($description, \PHP_EOL)) {
+            return $this->printDescription($description);
         }
 
-        return '<span class="description">"""<br>' . \str_replace(\PHP_EOL, '<br>', $description) . '<br>"""<br></span>';
-    }
-
-    private static function normalizeString(?string $input) : string
-    {
-        return \is_string($input)
-            ? \htmlspecialchars($input)
-            : '';
+        // single line description
+        return '<div class="description"><div class="line">"' . \htmlspecialchars($description) . '"</div></div>';
     }
 
     private static function printTypeLink(\Graphpinator\Type\Contract\Definition $type) : string
@@ -466,10 +453,11 @@ final class HtmlVisitor implements PrintComponentVisitor
         $href = \str_starts_with($type->getNamedType()::class, 'Graphpinator\Type\Spec')
             ? ''
             : 'href="#graphql-type-' . $type->getNamedType()->getName(). '"';
+        $description = self::normalizeString($type->getNamedType()->getDescription());
 
-        return '<a class="typename" ' . $href . ' title="' . self::normalizeString($type->getNamedType()->getDescription()) . '">'
-            . $type->printName()
-            . '</a>';
+        return <<<EOL
+        <a class="typename" {$href} title="{$description}">{$type->printName()}</a>
+        EOL;
     }
 
     private static function printDirectiveLink(\Graphpinator\DirectiveUsage\DirectiveUsage $directiveUsage) : string
@@ -477,9 +465,22 @@ final class HtmlVisitor implements PrintComponentVisitor
         $href = \str_starts_with($directiveUsage->getDirective()::class, 'Graphpinator\Directive\Spec')
             ? ''
             : 'href="#graphql-directive-' . $directiveUsage->getDirective()->getName(). '"';
+        $description = self::normalizeString($directiveUsage->getDirective()->getDescription());
 
-        return '<a class="typename" ' . $href . ' title="' . self::normalizeString($directiveUsage->getDirective()->getDescription()) . '">@'
-            . $directiveUsage->getDirective()->getName()
-            . '</a>';
+        return <<<EOL
+        <a class="typename" {$href} title="{$description}">@{$directiveUsage->getDirective()->getName()}</a>
+        EOL;
+    }
+
+    private static function normalizeString(?string $input) : string
+    {
+        return \is_string($input)
+            ? \htmlspecialchars($input)
+            : '';
+    }
+
+    private static function emptyLine() : string
+    {
+        return '<div class="line">&nbsp;</div>';
     }
 }
