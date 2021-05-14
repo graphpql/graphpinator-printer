@@ -6,8 +6,11 @@ namespace Graphpinator\Printer;
 
 final class HtmlVisitor implements PrintComponentVisitor
 {
+    private \Graphpinator\Type\Schema $schema;
+
     public function visitSchema(\Graphpinator\Type\Schema $schema) : string
     {
+        $this->schema = $schema;
         $query = '<span class="field-type">' . static::printTypeLink($schema->getQuery()) . '</span>';
         $mutation = $schema->getMutation() instanceof \Graphpinator\Type\Type
             ? '<span class="field-type">' . static::printTypeLink($schema->getMutation()) . '</span>'
@@ -263,7 +266,10 @@ final class HtmlVisitor implements PrintComponentVisitor
 
     public function glue(array $entries) : string
     {
-        $html = '<div class="graphpinator-schema"><div class="code">' . \implode(self::emptyLine(), $entries) . '</div></div>';
+        $html = static::printFloatingButtons($this->schema)
+            . '<div class="graphpinator-schema"><div class="code">'
+            . \implode(self::emptyLine(), $entries)
+            . '</div></div>';
         // Replace whitespace between tags
         $html = \preg_replace('/\>\s+\</', '><', $html);
         // Replace whitespace between tags but leave out &nbsp;
@@ -475,6 +481,25 @@ final class HtmlVisitor implements PrintComponentVisitor
 
         return <<<EOL
         <a class="typename" {$href} title="{$description}">@{$directiveUsage->getDirective()->getName()}</a>
+        EOL;
+    }
+
+    private static function printFloatingButtons(\Graphpinator\Type\Schema $schema) : string
+    {
+        $mutation = $schema->getMutation() instanceof \Graphpinator\Type\Type
+            ? '<a href="#graphql-type-' . $schema->getMutation()->getNamedType()->getName() . '" class="floating-button" title="Go to mutation root type">M</a>'
+            : '';
+        $subscription = $schema->getSubscription() instanceof \Graphpinator\Type\Type
+            ? '<a href="#graphql-type-' . $schema->getSubscription()->getNamedType()->getName() . '" class="floating-button" title="Go to subscription root type">S</a>'
+            : '';
+
+        return <<<EOL
+        <div class="floating-container">
+            <a href="#graphql-schema" class="floating-button" title="Go to top">&uarr;</a>
+            <a href="#graphql-type-{$schema->getQuery()->getNamedType()->getName()}" class="floating-button" title="Go to query root type">Q</a>
+            {$mutation}
+            {$subscription}
+        </div>
         EOL;
     }
 
