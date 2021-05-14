@@ -18,6 +18,7 @@ final class HtmlVisitor implements PrintComponentVisitor
             : '<span class="null">null</span>';
 
         return <<<EOL
+        {$this->printFloatingButtons($schema)}
         <section id="graphql-schema">
             {$this->printDescription($schema->getDescription())}
             <div class="line">
@@ -475,6 +476,24 @@ final class HtmlVisitor implements PrintComponentVisitor
 
         return <<<EOL
         <a class="typename" {$href} title="{$description}">@{$directiveUsage->getDirective()->getName()}</a>
+        EOL;
+    }
+
+    private static function printFloatingButtons(\Graphpinator\Type\Schema $schema) : string
+    {
+        $mutation = $schema->getMutation() instanceof \Graphpinator\Type\Type
+            ? '<a href="#graphql-type-' . $schema->getMutation()->getNamedType()->getName() . '" class="floating-button" title="Go to mutation root type">M</a>'
+            : '';
+        $subscription = $schema->getSubscription() instanceof \Graphpinator\Type\Type
+            ? '<a href="#graphql-type-' . $schema->getSubscription()->getNamedType()->getName() . '" class="floating-button" title="Go to subscription root type">S</a>'
+            : '';
+        return <<<EOL
+        <div class="floating-container">
+            <a href="#graphpinator-schema" class="floating-button" title="Go to top">&uarr;</a>
+            <a href="#graphql-type-{$schema->getQuery()->getNamedType()->getName()}" class="floating-button" title="Go to query root type">Q</a>
+            {$mutation}
+            {$subscription}
+        </div>
         EOL;
     }
 

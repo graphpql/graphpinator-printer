@@ -68,3 +68,21 @@ a[href]:hover {
     color: #888;
     text-align: right;
 }
+section:target {
+    background-color: rgb(49, 50, 43);
+}
+.floating-container {
+    position:fixed;
+    top:20px;
+    right:20px;
+    z-index: 100;
+}
+.floating-button {
+    color: white;
+    border: 1px solid white;
+    padding: 4px 8px 4px 8px;
+    font-size: 22px;
+}
+.floating-button:not(:first-child) {
+    margin-left: 5px;
+}
