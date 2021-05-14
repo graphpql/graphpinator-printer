@@ -490,9 +490,9 @@ final class HtmlVisitor implements PrintComponentVisitor
     {
         $result = '';
         $matches = [];
-        \preg_match('/(<a .+?<\/a>)/', $schemaString, $matches);
+        \preg_match_all('/(<a .+?<\/a>)/', $schemaString, $matches);
 
-        foreach ($matches as $index => $match) {
+        foreach ($matches[0] as $index => $match) {
             $match = \preg_replace('/(?<=>).*?(?=<)/', self::LINK_TEXTS[$index], $match);
             $match = \preg_replace('/(?<=title=").*?(?=")/', self::LINK_TITLES[$index], $match);
             $match = \str_replace('class="typename"', 'class="floating-button"', $match);
