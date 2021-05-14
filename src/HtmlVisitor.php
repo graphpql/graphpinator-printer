@@ -264,7 +264,7 @@ final class HtmlVisitor implements PrintComponentVisitor
 
     public function glue(array $entries) : string
     {
-        $html = '<div class="graphpinator-schema"><div class="code">' . \implode(self::emptyLine(), $entries) . '</div></div>';
+        $html = '<div class="graphpinator-schema" id="graphpinator-schema"><div class="code">' . \implode(self::emptyLine(), $entries) . '</div></div>';
         // Replace whitespace between tags
         $html = \preg_replace('/\>\s+\</', '><', $html);
         // Replace whitespace between tags but leave out &nbsp;
@@ -487,6 +487,7 @@ final class HtmlVisitor implements PrintComponentVisitor
         $subscription = $schema->getSubscription() instanceof \Graphpinator\Type\Type
             ? '<a href="#graphql-type-' . $schema->getSubscription()->getNamedType()->getName() . '" class="floating-button" title="Go to subscription root type">S</a>'
             : '';
+
         return <<<EOL
         <div class="floating-container">
             <a href="#graphpinator-schema" class="floating-button" title="Go to top">&uarr;</a>
