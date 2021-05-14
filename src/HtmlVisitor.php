@@ -8,6 +8,9 @@ final class HtmlVisitor implements PrintComponentVisitor
 {
     use \Nette\SmartObject;
 
+    private const LINK_TEXTS = ['Q', 'M', 'S'];
+    private const LINK_TITLES = ['Go to query root type', 'Go to mutation root type', 'Go to subscription root type'];
+
     public function visitSchema(\Graphpinator\Type\Schema $schema) : string
     {
         $query = '<span class="field-type">' . self::printTypeLink($schema->getQuery()) . '</span>';
@@ -270,9 +273,9 @@ final class HtmlVisitor implements PrintComponentVisitor
             . \implode(self::emptyLine(), $entries)
             . '</div></div>';
         // Replace whitespace between tags
-        $html = \preg_replace('/\>\s+\</', '><', $html);
+        $html = \preg_replace('/>\s+</', '><', $html);
         // Replace whitespace between tags but leave out &nbsp;
-        $html = \preg_replace('/\>((\s+(&nbsp;){1}\s*)|(\s*(&nbsp;){1}\s+))\</', '>&nbsp;<', $html);
+        $html = \preg_replace('/>((\s+(&nbsp;){1}\s*)|(\s*(&nbsp;){1}\s+))</', '>&nbsp;<', $html);
         // Replace empty line div with empty line containing &nbsp; (empty divs are ignored by browsers)
         return \str_replace('<div class="line"></div>', self::emptyLine(), $html);
     }
@@ -485,19 +488,21 @@ final class HtmlVisitor implements PrintComponentVisitor
 
     private static function printFloatingButtons(string $schemaString) : string
     {
-        $mutation = $schema->getMutation() instanceof \Graphpinator\Type\Type
-            ? '<a href="#graphql-type-' . $schema->getMutation()->getNamedType()->getName() . '" class="floating-button" title="Go to mutation root type">M</a>'
-            : '';
-        $subscription = $schema->getSubscription() instanceof \Graphpinator\Type\Type
-            ? '<a href="#graphql-type-' . $schema->getSubscription()->getNamedType()->getName() . '" class="floating-button" title="Go to subscription root type">S</a>'
-            : '';
+        $result = '';
+        $matches = [];
+        \preg_match('/(<a .+?<\/a>)/', $schemaString, $matches);
+
+        foreach ($matches as $index => $match) {
+            $match = \preg_replace('/(?<=>).*?(?=<)/', self::LINK_TEXTS[$index], $match);
+            $match = \preg_replace('/(?<=title=").*?(?=")/', self::LINK_TITLES[$index], $match);
+            $match = \str_replace('class="typename"', 'class="floating-button"', $match);
+            $result .= $match;
+        }
 
         return <<<EOL
         <div class="floating-container">
-            <a href="#graphql-schema" class="floating-button" title="Go to top">&uarr;</a>
-            <a href="#graphql-type-{$schema->getQuery()->getNamedType()->getName()}" class="floating-button" title="Go to query root type">Q</a>
-            {$mutation}
-            {$subscription}
+            <a class="floating-button" href="#graphql-schema" title="Go to top">&uarr;</a>
+            {$result}
         </div>
         EOL;
     }
