@@ -3,9 +3,11 @@
     background: rgb(39, 40, 34);
     padding: 10px;
     counter-reset: line;
+    overflow-x: scroll;
 }
-.graphpinator-schema > .line{
+.graphpinator-schema > .code {
     position: relative;
+    padding-left: 65px;
 }
 .keyword, .ampersand {
     color: rgb(102, 217, 239);
@@ -43,40 +45,26 @@
 .value-name {
     color: green;
 }
+.description {
+    color: grey;
+}
 a {
     text-decoration: none;
 }
 a[href]:hover {
     text-decoration: underline;
 }
-.description {
-    color: grey;
-}
-.graphpinator-schema > section {
-    display: block;
-}
-.graphpinator-schema > section > .line, .graphpinator-schema > section > .offset, .graphpinator-schema > section > .description {
-    position: relative;
-    padding-left: 65px;
-}
 .offset {
     padding-left: 20px;
 }
 .line:before {
+    position: absolute;
+    left: 0;
+    width: 40px;
     counter-increment: line;
     content: counter(line);
-    display: inline-block;
     border-right: 1px solid #ddd;
     padding-right: 10px;
     color: #888;
-    width: 40px;
-    left: 0;
-    position: absolute;
     text-align: right;
-}
-.offset > .line, .offset > .description {
-    margin-left: 20px;
-}
-.offset > .offset > .line {
-    margin-left: 20px;
 }
