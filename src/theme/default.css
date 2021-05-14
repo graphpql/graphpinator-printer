@@ -67,11 +67,12 @@ a[href]:hover {
     content: counter(line);
     display: inline-block;
     border-right: 1px solid #ddd;
-    padding: 0 .5em;
+    padding-right: 10px;
     color: #888;
     width: 40px;
     left: 0;
     position: absolute;
+    text-align: right;
 }
 .offset > .line, .offset > .description {
     margin-left: 20px;
