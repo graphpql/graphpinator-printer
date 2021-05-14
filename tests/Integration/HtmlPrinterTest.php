@@ -330,12 +330,13 @@ final class HtmlPrinterTest extends \PHPUnit\Framework\TestCase
                 schema
                 
                 description
+                    indent
                 EOL),
                 <<<'EOL'
                 <section id="graphql-schema">
                     <div class="description">
                     <div class="line">"""</div>
-                    <div class="line">Multiline</div><div class="line">&nbsp;</div><div class="line">schema</div><div class="line">&nbsp;</div><div class="line">description</div>
+                    <div class="line">Multiline</div><div class="line">&nbsp;</div><div class="line">schema</div><div class="line">&nbsp;</div><div class="line">description</div><div class="line">    indent</div>
                     <div class="line">"""</div>
                 </div>
                     <div class="line">

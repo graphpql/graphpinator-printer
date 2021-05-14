@@ -413,7 +413,7 @@ final class HtmlVisitor implements PrintComponentVisitor
         $printedLines = '';
 
         foreach ($lines as $line) {
-            $line = \trim($line);
+            $line = \rtrim($line);
             $printedLines .= '<div class="line">' . ($line === '' ? '&nbsp;' : $line) . '</div>';
         }
 
