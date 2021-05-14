@@ -51,7 +51,7 @@
 a {
     text-decoration: none;
 }
-a[href]:hover {
+a.typename[href]:hover {
     text-decoration: underline;
 }
 .offset {
@@ -76,12 +76,20 @@ section:target {
     top:20px;
     right:20px;
     z-index: 100;
+    padding: 12px;
+    background-color: grey;
+    border-radius: 10px;
 }
 .floating-button {
     color: white;
     border: 1px solid white;
+    border-radius: 5px;
     padding: 4px 8px 4px 8px;
     font-size: 22px;
+    font-weight: bold;
+}
+.floating-button:hover {
+    border: 2px solid white;
 }
 .floating-button:not(:first-child) {
     margin-left: 5px;
