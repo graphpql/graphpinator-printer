@@ -6,18 +6,17 @@ namespace Graphpinator\Printer;
 
 final class HtmlVisitor implements PrintComponentVisitor
 {
-    private \Graphpinator\Type\Schema $schema;
+    use \Nette\SmartObject;
 
     public function visitSchema(\Graphpinator\Type\Schema $schema) : string
     {
-        $this->schema = $schema;
-        $query = '<span class="field-type">' . static::printTypeLink($schema->getQuery()) . '</span>';
+        $query = '<span class="field-type">' . self::printTypeLink($schema->getQuery()) . '</span>';
         $mutation = $schema->getMutation() instanceof \Graphpinator\Type\Type
-            ? '<span class="field-type">' . static::printTypeLink($schema->getMutation()) . '</span>'
+            ? '<span class="field-type">' . self::printTypeLink($schema->getMutation()) . '</span>'
             : '<span class="null">null</span>';
 
         $subscription = $schema->getSubscription() instanceof \Graphpinator\Type\Type
-            ? '<span class="field-type">' . static::printTypeLink($schema->getSubscription()) . '</span>'
+            ? '<span class="field-type">' . self::printTypeLink($schema->getSubscription()) . '</span>'
             : '<span class="null">null</span>';
 
         return <<<EOL
@@ -100,7 +99,7 @@ final class HtmlVisitor implements PrintComponentVisitor
         $typeNames = [];
 
         foreach ($union->getTypes() as $type) {
-            $typeNames[] = '<span class="union-type">' . static::printTypeLink($type) . '</span>';
+            $typeNames[] = '<span class="union-type">' . self::printTypeLink($type) . '</span>';
         }
 
         $types = \implode('&nbsp;<span class="vertical-line">|</span>&nbsp;', $typeNames);
@@ -195,7 +194,7 @@ final class HtmlVisitor implements PrintComponentVisitor
 
     public function visitField(\Graphpinator\Field\Field $field) : string
     {
-        $link = static::printTypeLink($field->getType());
+        $link = self::printTypeLink($field->getType());
 
         return <<<EOL
         {$this->printItemDescription($field->getDescription())}
@@ -212,7 +211,7 @@ final class HtmlVisitor implements PrintComponentVisitor
     public function visitArgument(\Graphpinator\Argument\Argument $argument) : string
     {
         $defaultValue = '';
-        $link = '<span class="argument-type">' . static::printTypeLink($argument->getType()) . '</span>';
+        $link = '<span class="argument-type">' . self::printTypeLink($argument->getType()) . '</span>';
 
         if ($argument->getDefaultValue() instanceof \Graphpinator\Value\ArgumentValue) {
             $defaultValue .= '&nbsp;<span class="equals">=</span>&nbsp;';
@@ -233,7 +232,7 @@ final class HtmlVisitor implements PrintComponentVisitor
 
     public function visitDirectiveUsage(\Graphpinator\DirectiveUsage\DirectiveUsage $directiveUsage) : string
     {
-        $schema = '&nbsp;<span class="typename">' . static::printDirectiveLink($directiveUsage) . '</span>';
+        $schema = '&nbsp;<span class="typename">' . self::printDirectiveLink($directiveUsage) . '</span>';
         $printableArguments = [];
 
         foreach ($directiveUsage->getArgumentValues() as $argument) {
@@ -266,8 +265,8 @@ final class HtmlVisitor implements PrintComponentVisitor
 
     public function glue(array $entries) : string
     {
-        $html = static::printFloatingButtons($this->schema)
-            . '<div class="graphpinator-schema"><div class="code">'
+        $html = '<div class="graphpinator-schema"><div class="code">'
+            . self::printFloatingButtons($entries[0])
             . \implode(self::emptyLine(), $entries)
             . '</div></div>';
         // Replace whitespace between tags
@@ -297,7 +296,7 @@ final class HtmlVisitor implements PrintComponentVisitor
 
         foreach ($implements as $interface) {
             $return += self::recursiveGetInterfaces($interface->getInterfaces());
-            $return[] = static::printTypeLink($interface);
+            $return[] = self::printTypeLink($interface);
         }
 
         return $return;
@@ -484,7 +483,7 @@ final class HtmlVisitor implements PrintComponentVisitor
         EOL;
     }
 
-    private static function printFloatingButtons(\Graphpinator\Type\Schema $schema) : string
+    private static function printFloatingButtons(string $schemaString) : string
     {
         $mutation = $schema->getMutation() instanceof \Graphpinator\Type\Type
             ? '<a href="#graphql-type-' . $schema->getMutation()->getNamedType()->getName() . '" class="floating-button" title="Go to mutation root type">M</a>'
