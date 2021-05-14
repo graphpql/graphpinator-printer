@@ -409,12 +409,18 @@ final class HtmlVisitor implements PrintComponentVisitor
             return '';
         }
 
-        $lines = \str_replace(\PHP_EOL, '</div><div class="line">', \htmlspecialchars($description));
+        $lines = \explode(\PHP_EOL, \htmlspecialchars($description));
+        $printedLines = '';
+
+        foreach ($lines as $line) {
+            $line = \trim($line);
+            $printedLines .= '<div class="line">' . ($line === '' ? '&nbsp;' : $line) . '</div>';
+        }
 
         return <<<EOL
         <div class="description">
             <div class="line">"""</div>
-            <div class="line">{$lines}</div>
+            {$printedLines}
             <div class="line">"""</div>
         </div>
         EOL;

@@ -324,12 +324,18 @@ final class HtmlPrinterTest extends \PHPUnit\Framework\TestCase
                 EOL,
             ],
             [
-                TestSchema::getFullSchema()->setDescription('Schema description'),
+                TestSchema::getFullSchema()->setDescription(<<<EOL
+                Multiline
+                
+                schema
+                
+                description
+                EOL),
                 <<<'EOL'
                 <section id="graphql-schema">
                     <div class="description">
                     <div class="line">"""</div>
-                    <div class="line">Schema description</div>
+                    <div class="line">Multiline</div><div class="line">&nbsp;</div><div class="line">schema</div><div class="line">&nbsp;</div><div class="line">description</div>
                     <div class="line">"""</div>
                 </div>
                     <div class="line">
