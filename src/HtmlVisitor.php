@@ -6,8 +6,11 @@ namespace Graphpinator\Printer;
 
 final class HtmlVisitor implements PrintComponentVisitor
 {
+    private \Graphpinator\Type\Schema $schema;
+
     public function visitSchema(\Graphpinator\Type\Schema $schema) : string
     {
+        $this->schema = $schema;
         $query = '<span class="field-type">' . static::printTypeLink($schema->getQuery()) . '</span>';
         $mutation = $schema->getMutation() instanceof \Graphpinator\Type\Type
             ? '<span class="field-type">' . static::printTypeLink($schema->getMutation()) . '</span>'
@@ -18,7 +21,6 @@ final class HtmlVisitor implements PrintComponentVisitor
             : '<span class="null">null</span>';
 
         return <<<EOL
-        {$this->printFloatingButtons($schema)}
         <section id="graphql-schema">
             {$this->printDescription($schema->getDescription())}
             <div class="line">
@@ -264,7 +266,10 @@ final class HtmlVisitor implements PrintComponentVisitor
 
     public function glue(array $entries) : string
     {
-        $html = '<div class="graphpinator-schema" id="graphpinator-schema"><div class="code">' . \implode(self::emptyLine(), $entries) . '</div></div>';
+        $html = static::printFloatingButtons($this->schema)
+            . '<div class="graphpinator-schema"><div class="code">'
+            . \implode(self::emptyLine(), $entries)
+            . '</div></div>';
         // Replace whitespace between tags
         $html = \preg_replace('/\>\s+\</', '><', $html);
         // Replace whitespace between tags but leave out &nbsp;
@@ -490,7 +495,7 @@ final class HtmlVisitor implements PrintComponentVisitor
 
         return <<<EOL
         <div class="floating-container">
-            <a href="#graphpinator-schema" class="floating-button" title="Go to top">&uarr;</a>
+            <a href="#graphql-schema" class="floating-button" title="Go to top">&uarr;</a>
             <a href="#graphql-type-{$schema->getQuery()->getNamedType()->getName()}" class="floating-button" title="Go to query root type">Q</a>
             {$mutation}
             {$subscription}
