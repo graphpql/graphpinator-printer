@@ -263,7 +263,7 @@ final class HtmlVisitor implements PrintComponentVisitor
 
     public function glue(array $entries) : string
     {
-        $html = '<div class="graphpinator-schema">' . \implode(self::emptyLine(), $entries) . '</div>';
+        $html = '<div class="graphpinator-schema"><div class="code">' . \implode(self::emptyLine(), $entries) . '</div></div>';
         // Replace whitespace between tags
         $html = \preg_replace('/\>\s+\</', '><', $html);
         // Replace whitespace between tags but leave out &nbsp;
