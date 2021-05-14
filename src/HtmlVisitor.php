@@ -264,12 +264,12 @@ final class HtmlVisitor implements PrintComponentVisitor
     public function glue(array $entries) : string
     {
         $html = '<div class="graphpinator-schema">' . \implode(self::emptyLine(), $entries) . '</div>';
-
-        //Replace whitespace between tags
+        // Replace whitespace between tags
         $html = \preg_replace('/\>\s+\</', '><', $html);
-
-        //Replace whitespace between tags but leave out &nbsp;
-        return \preg_replace('/\>((\s+(&nbsp;){1}\s*)|(\s*(&nbsp;){1}\s+))\</', '>&nbsp;<', $html);
+        // Replace whitespace between tags but leave out &nbsp;
+        $html = \preg_replace('/\>((\s+(&nbsp;){1}\s*)|(\s*(&nbsp;){1}\s+))\</', '>&nbsp;<', $html);
+        // Replace empty line div with empty line containing &nbsp; (empty divs are ignored by browsers)
+        return \str_replace('<div class="line"></div>', self::emptyLine(), $html);
     }
 
     private function printImplements(\Graphpinator\Type\InterfaceSet $implements) : string
@@ -320,7 +320,7 @@ final class HtmlVisitor implements PrintComponentVisitor
             $currentHasDescription = $item->getDescription() !== null;
 
             if (!$isFirst && ($previousHasDescription || $currentHasDescription)) {
-                $result .= static::emptyLine();
+                $result .= self::emptyLine();
             }
 
             $result .= $item->accept($this);
