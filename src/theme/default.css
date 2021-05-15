@@ -1,7 +1,7 @@
 .graphpinator-schema {
     font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
     background: rgb(39, 40, 34);
-    padding: 10px;
+    padding: 10px 0 10px 10px;
     counter-reset: line;
     overflow-x: scroll;
 }
