@@ -1,0 +1,21 @@
+$color_background_main: rgb(39, 40, 34);
+$color_background_highlight: rgb(49, 50, 43);
+$color_keyword: rgb(102, 217, 239);
+$color_typename: rgb(230, 219, 116);
+$color_bracket_square: rgb(255,165,0);
+$color_value_name: rgb(0, 128, 0);
+$color_description: rgb(128, 128, 128);
+$color_inner_typename: rgb(255, 255, 255);
+$color_group_1: rgb(166, 226, 46);
+$color_group_2: rgb(255, 255, 255);
+$color_group_3: rgb(255, 0, 0);
+$color_enum: rgb(249, 38, 114);
+$color_literal: rgb(174, 129, 255);
+$color_floating_container: rgb(128, 128, 128);
+$color_floating_button_text: rgb(255, 255, 255);
+$color_floating_button_border: rgb(255, 255, 255);
+$color_floating_button_hover_border: rgb(255, 255, 255);
+$color_line_numbers_text: rgb(136, 136, 136);
+$color_line_numbers_border: rgb(221, 221, 221);
+
+@import 'main.scss';
