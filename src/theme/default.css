@@ -1,13 +1,13 @@
 .graphpinator-schema {
     font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
     background: rgb(39, 40, 34);
-    padding: 10px;
+    padding: 10px 0 10px 10px;
     counter-reset: line;
     overflow-x: scroll;
 }
 .graphpinator-schema > .code {
     position: relative;
-    padding-left: 65px;
+    padding-left: 75px;
 }
 .keyword, .ampersand {
     color: rgb(102, 217, 239);
@@ -93,4 +93,10 @@ section:target {
 }
 .floating-button:not(:first-child) {
     margin-left: 5px;
+}
+.self-link:hover:before {
+    content: "\01F517";
+    margin-left: -16px;
+    font-size: 14px;
+    padding-right: 2px;
 }

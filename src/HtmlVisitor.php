@@ -26,8 +26,10 @@ final class HtmlVisitor implements PrintComponentVisitor
         <section id="graphql-schema">
             {$this->printDescription($schema->getDescription())}
             <div class="line">
-                <span class="keyword">schema</span>&nbsp;
-                <span class="bracket-curly">{</span>
+                <a href="#graphql-schema" class="self-link">
+                    <span class="keyword">schema</span>
+                </a>
+                &nbsp;<span class="bracket-curly">{</span>
             </div>
             <div class="offset">
                 <div class="line">
@@ -59,8 +61,10 @@ final class HtmlVisitor implements PrintComponentVisitor
         <section id="graphql-type-{$type->getName()}">
             {$this->printDescription($type->getDescription())}
             <div class="line">
-                <span class="keyword">type</span>&nbsp;
-                <span class="typename">{$type->getName()}</span>
+                <a href="#graphql-type-{$type->getName()}" class="self-link">
+                    <span class="keyword">type</span>&nbsp;
+                    <span class="typename">{$type->getName()}</span>
+                </a>
                 {$this->printImplements($type->getInterfaces())}
                 {$this->printDirectiveUsages($type->getDirectiveUsages())}&nbsp;
                 <span class="bracket-curly">{</span>
@@ -81,8 +85,10 @@ final class HtmlVisitor implements PrintComponentVisitor
         <section id="graphql-type-{$interface->getName()}">
             {$this->printDescription($interface->getDescription())}
             <div class="line">
-                <span class="keyword">interface</span>&nbsp;
-                <span class="typename">{$interface->getName()}</span>
+                <a href="#graphql-type-{$interface->getName()}" class="self-link">
+                    <span class="keyword">interface</span>&nbsp;
+                    <span class="typename">{$interface->getName()}</span>
+                </a>
                 {$this->printImplements($interface->getInterfaces())}
                 {$this->printDirectiveUsages($interface->getDirectiveUsages())}&nbsp;
                 <span class="bracket-curly">{</span>
@@ -111,8 +117,11 @@ final class HtmlVisitor implements PrintComponentVisitor
         <section id="graphql-type-{$union->getName()}">
             {$this->printDescription($union->getDescription())}
             <div class="line">
-                <span class="keyword">union</span>&nbsp;
-                <span class="typename">{$union->getName()}&nbsp;<span class="equals">=</span>&nbsp;{$types}</span>
+                <a href="#graphql-type-{$union->getName()}" class="self-link">
+                    <span class="keyword">union</span>&nbsp;
+                    <span class="typename">{$union->getName()}</span>
+                </a>
+                &nbsp;<span class="equals">=</span>&nbsp;{$types}
             </div>
         </section>
         EOL;
@@ -124,8 +133,10 @@ final class HtmlVisitor implements PrintComponentVisitor
         <section id="graphql-type-{$input->getName()}">
             {$this->printDescription($input->getDescription())}
             <div class="line">
-                <span class="keyword">input</span>&nbsp;
-                <span class="typename">{$input->getName()}</span>
+                <a href="#graphql-type-{$input->getName()}" class="self-link">
+                    <span class="keyword">input</span>&nbsp;
+                    <span class="typename">{$input->getName()}</span>
+                </a>
                 {$this->printDirectiveUsages($input->getDirectiveUsages())}&nbsp;
                 <span class="bracket-curly">{</span>
             </div>
@@ -145,8 +156,10 @@ final class HtmlVisitor implements PrintComponentVisitor
         <section id="graphql-type-{$scalar->getName()}">
             {$this->printDescription($scalar->getDescription())}
             <div class="line">
-                <span class="keyword">scalar</span>&nbsp;
-                <span class="typename">{$scalar->getName()}</span>
+                <a href="#graphql-type-{$scalar->getName()}" class="self-link">
+                    <span class="keyword">scalar</span>&nbsp;
+                    <span class="typename">{$scalar->getName()}</span>
+                </a>
             </div>
         </section>
         EOL;
@@ -158,9 +171,11 @@ final class HtmlVisitor implements PrintComponentVisitor
         <section id="graphql-type-{$enum->getName()}">
             {$this->printDescription($enum->getDescription())}
             <div class="line">
-                <span class="keyword">enum</span>&nbsp;
-                <span class="typename">{$enum->getName()}</span>&nbsp;
-                <span class="bracket-curly">{</span>
+                <a href="#graphql-type-{$enum->getName()}" class="self-link">
+                    <span class="keyword">enum</span>&nbsp;
+                    <span class="typename">{$enum->getName()}</span>
+                </a>
+                &nbsp;<span class="bracket-curly">{</span>
             </div>
             <div class="offset">
                 {$this->printItems($enum->getItems())}
@@ -186,8 +201,10 @@ final class HtmlVisitor implements PrintComponentVisitor
         <section id="graphql-directive-{$directive->getName()}">
             {$this->printDescription($directive->getDescription())}
             <div class="line">
-                <span class="keyword">directive</span>&nbsp;
-                <span class="typename">@{$directive->getName()}</span>
+                <a href="#graphql-directive-{$directive->getName()}" class="self-link">
+                    <span class="keyword">directive</span>&nbsp;
+                    <span class="typename">@{$directive->getName()}</span>
+                </a>
                 {$this->printArguments($directive)}
                 {$repeatable}&nbsp;<span class="keyword">on</span>&nbsp;<span class="enum-literal">{$locations}</span>
             </div>
