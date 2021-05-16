@@ -94,9 +94,13 @@ section:target {
 .floating-button:not(:first-child) {
     margin-left: 5px;
 }
-.self-link:hover:before {
+.self-link:before {
     content: "\01F517";
     margin-left: -16px;
     font-size: 14px;
     padding-right: 2px;
+    opacity: 0;
+}
+.self-link:hover:before {
+    opacity: 1;
 }
