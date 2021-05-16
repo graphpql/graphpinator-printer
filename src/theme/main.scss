@@ -10,7 +10,7 @@
         padding-left: 75px;
     }
 
-    .keyword {
+    .keyword, .true, .false, .null {
         color: $color_keyword;
     }
 
@@ -22,7 +22,7 @@
         color: $color_bracket_square;
     }
 
-    .field-name, .argument-name, .string-literal {
+    .field-name, .argument-name {
         color: $color_group_1;
     }
 
@@ -30,23 +30,15 @@
         color: $color_group_2;
     }
 
-    .true, .false, .null {
+    .string-literal, .int-literal, .float-literal {
         color: $color_group_3;
     }
 
-    .int-literal, .float-literal, .comma, .colon, .bracket-round, .bracket-curly {
+    .comma, .colon, .bracket-round, .bracket-curly {
         color: $color_group_4;
     }
 
-    .field-type > .typename {
-        color: $color_inner_typename;
-    }
-
-    .argument-type > .typename {
-        color: $color_inner_typename;
-    }
-
-    .union-type > .typename {
+    .field-type > .typename, .argument-type > .typename, .union-type > .typename {
         color: $color_inner_typename;
     }
 
