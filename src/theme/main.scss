@@ -1,113 +1,133 @@
 .graphpinator-schema {
     font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
-    background: rgb(39, 40, 34);
+    background: $color_background_main;
     padding: 10px 0 10px 10px;
     counter-reset: line;
     overflow-x: scroll;
 
-    > .code {
+    &> .code {
         position: relative;
         padding-left: 75px;
     }
-}
-.keyword {
-    color: $color_keyword;
-}
-.typename {
-    color: $color_typename;
-}
-.bracket-square {
-    color: $color_bracket_square;
-}
-.field-name, .argument-name, .string-literal {
-    color: $color_group_1;
-}
-.enum-item, .enum-literal {
-    color: $color_group_2;
-}
-.true, .false, .null {
-    color: $color_group_3;
-}
-.int-literal, .float-literal, .comma, .colon, .bracket-round, .bracket-curly {
-    color: $color_group_4;
-}
-.field-type > .typename {
-    color: $color_inner_typename;
-}
-.argument-type > .typename {
-    color: $color_inner_typename;
-}
-.union-type > .typename {
-    color: $color_inner_typename;
-}
-.equals, .vertical-line, .exclamation-mark, .ampersand {
-    color: $color_group_5;
-}
-.value-name {
-    color: $color_value_name;
-}
-.description {
-    color: $color_description;
-}
-a {
-    text-decoration: none;
 
-    &.typename[href]:hover {
-        text-decoration: underline;
-    }
-}
-.offset {
-    padding-left: 20px;
-}
-.line:before {
-    position: absolute;
-    left: 0;
-    width: 40px;
-    counter-increment: line;
-    content: counter(line);
-    border-right: 1px solid $color_line_border;
-    padding-right: 10px;
-    color: $color_line_text;
-    text-align: right;
-}
-section:target {
-    background-color: $color_background_highlight;
-}
-.floating-container {
-    position:fixed;
-    top:20px;
-    right:20px;
-    z-index: 100;
-    padding: 12px;
-    background-color: $color_floating_container;
-    border-radius: 10px;
-}
-.floating-button {
-    color: $color_floating_button_text;
-    border: 1px solid $color_floating_button_border;
-    border-radius: 5px;
-    padding: 4px 8px 4px 8px;
-    font-size: 22px;
-    font-weight: bold;
-
-    &:hover {
-        border: 2px solid $color_floating_button_hover_border;
+    .keyword {
+        color: $color_keyword;
     }
 
-    &:not(:first-child) {
-        margin-left: 5px;
-    }
-}
-.self-link {
-    &:before {
-        content: "\01F517";
-        margin-left: -16px;
-        font-size: 14px;
-        padding-right: 2px;
-        opacity: 0;
+    .typename {
+        color: $color_typename;
     }
 
-    &:hover:before {
-        opacity: 1;
+    .bracket-square {
+        color: $color_bracket_square;
+    }
+
+    .field-name, .argument-name, .string-literal {
+        color: $color_group_1;
+    }
+
+    .enum-item, .enum-literal {
+        color: $color_group_2;
+    }
+
+    .true, .false, .null {
+        color: $color_group_3;
+    }
+
+    .int-literal, .float-literal, .comma, .colon, .bracket-round, .bracket-curly {
+        color: $color_group_4;
+    }
+
+    .field-type > .typename {
+        color: $color_inner_typename;
+    }
+
+    .argument-type > .typename {
+        color: $color_inner_typename;
+    }
+
+    .union-type > .typename {
+        color: $color_inner_typename;
+    }
+
+    .equals, .vertical-line, .exclamation-mark, .ampersand {
+        color: $color_group_5;
+    }
+
+    .value-name {
+        color: $color_value_name;
+    }
+
+    .description {
+        color: $color_description;
+    }
+
+    a {
+        text-decoration: none;
+
+        &.typename[href]:hover {
+            text-decoration: underline;
+        }
+    }
+
+    .offset {
+        padding-left: 20px;
+    }
+
+    .line:before {
+        position: absolute;
+        left: 0;
+        width: 40px;
+        counter-increment: line;
+        content: counter(line);
+        border-right: 1px solid $color_line_border;
+        padding-right: 10px;
+        color: $color_line_text;
+        text-align: right;
+    }
+
+    section:target {
+        background-color: $color_background_highlight;
+    }
+
+    .floating-container {
+        position:fixed;
+        top:20px;
+        right:20px;
+        z-index: 100;
+        padding: 12px;
+        background-color: $color_floating_container;
+        border-radius: 10px;
+    }
+
+    .floating-button {
+        color: $color_floating_button_text;
+        border: 1px solid $color_floating_button_border;
+        border-radius: 5px;
+        padding: 4px 8px 4px 8px;
+        font-size: 22px;
+        font-weight: bold;
+
+        &:hover {
+            border: 2px solid $color_floating_button_hover_border;
+        }
+
+        &:not(:first-child) {
+            margin-left: 5px;
+        }
+    }
+
+    .self-link {
+        &:before {
+            content: "\01F517";
+            margin-left: -16px;
+            font-size: 14px;
+            padding-right: 2px;
+            opacity: 0;
+        }
+
+        &:hover:before {
+            opacity: 1;
+        }
     }
 }
