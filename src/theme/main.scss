@@ -7,7 +7,7 @@
 
     &> .code {
         position: relative;
-        padding-left: 75px;
+        padding-left: 50px;
     }
 
     .keyword, .true, .false, .null {
@@ -78,8 +78,12 @@
         text-align: right;
     }
 
-    section:target {
-        background-color: $color_background_highlight;
+    section {
+        padding-left: 25px;
+
+        &:target {
+            background-color: $color_background_highlight;
+        }
     }
 
     .floating-container {
