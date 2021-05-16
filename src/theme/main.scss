@@ -27,15 +27,15 @@
     }
 
     .enum-item, .enum-literal {
-        color: $color_group_2;
+        color: $color_enum;
     }
 
     .string-literal, .int-literal, .float-literal {
-        color: $color_group_3;
+        color: $color_literal;
     }
 
     .comma, .colon, .bracket-round, .bracket-curly {
-        color: $color_group_4;
+        color: $color_group_2;
     }
 
     .field-type > .typename, .argument-type > .typename, .union-type > .typename {
@@ -43,7 +43,7 @@
     }
 
     .equals, .vertical-line, .exclamation-mark, .ampersand {
-        color: $color_group_5;
+        color: $color_group_3;
     }
 
     .value-name {
@@ -72,9 +72,9 @@
         width: 40px;
         counter-increment: line;
         content: counter(line);
-        border-right: 1px solid $color_line_border;
+        border-right: 1px solid $color_line_numbers_border;
         padding-right: 10px;
-        color: $color_line_text;
+        color: $color_line_numbers_text;
         text-align: right;
     }
 
