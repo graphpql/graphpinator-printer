@@ -72,8 +72,11 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
                   enumValues(
                     includeDeprecated: Boolean! = false
                   ): [__EnumValue!]
-                  inputFields: [__InputValue!]
+                  inputFields(
+                    includeDeprecated: Boolean! = false
+                  ): [__InputValue!]
                   ofType: __Type
+                  specifiedByURL: String
                 }
                 EOL,
             ],

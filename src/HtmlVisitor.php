@@ -265,7 +265,7 @@ final class HtmlVisitor implements PrintComponentVisitor
             $printableArgument .= '<span class="colon">:</span>&nbsp;';
             $printableArgument .= '<span class="argument-value">' . $this->printValue($argument->getValue()) . '</span>';
 
-            $printableArguments[] =  $printableArgument;
+            $printableArguments[] = $printableArgument;
         }
 
         if (\count($printableArguments)) {
@@ -294,18 +294,9 @@ final class HtmlVisitor implements PrintComponentVisitor
         $html = \preg_replace('/>\s+</', '><', $html);
         // Replace whitespace between tags but leave out &nbsp;
         $html = \preg_replace('/>((\s+(&nbsp;){1}\s*)|(\s*(&nbsp;){1}\s+))</', '>&nbsp;<', $html);
+
         // Replace empty line div with empty line containing &nbsp; (empty divs are ignored by browsers)
         return \str_replace('<div class="line"></div>', self::emptyLine(), $html);
-    }
-
-    private function printImplements(\Graphpinator\Type\InterfaceSet $implements) : string
-    {
-        if (\count($implements) === 0) {
-            return '';
-        }
-
-        return '&nbsp;<span class="keyword">implements</span>&nbsp;'
-            . \implode('&nbsp;<span class="ampersand">&</span>&nbsp;', self::recursiveGetInterfaces($implements));
     }
 
     /**
@@ -321,6 +312,87 @@ final class HtmlVisitor implements PrintComponentVisitor
         }
 
         return $return;
+    }
+
+    private static function printTypeLink(\Graphpinator\Type\Contract\Definition $type) : string
+    {
+        return match ($type::class) {
+            \Graphpinator\Type\NotNullType::class =>
+                self::printTypeLink($type->getInnerType()) .
+                '<span class="exclamation-mark">!</span>',
+            \Graphpinator\Type\ListType::class =>
+                '<span class="bracket-square">[</span>' .
+                self::printTypeLink($type->getInnerType()) .
+                '<span class="bracket-square">]</span>',
+            default => self::printNamedTypeLink($type),
+        };
+    }
+
+    private static function printNamedTypeLink(\Graphpinator\Type\Contract\NamedDefinition $type) : string
+    {
+        $href = \str_starts_with($type->getNamedType()::class, 'Graphpinator\Type\Spec')
+            ? ''
+            : 'href="#graphql-type-' . $type->getNamedType()->getName() . '"';
+        $description = self::normalizeString($type->getNamedType()->getDescription());
+
+        return <<<EOL
+        <a class="typename" {$href} title="{$description}">{$type->printName()}</a>
+        EOL;
+    }
+
+    private static function printDirectiveLink(\Graphpinator\DirectiveUsage\DirectiveUsage $directiveUsage) : string
+    {
+        $href = \str_starts_with($directiveUsage->getDirective()::class, 'Graphpinator\Directive\Spec')
+            ? ''
+            : 'href="#graphql-directive-' . $directiveUsage->getDirective()->getName() . '"';
+        $description = self::normalizeString($directiveUsage->getDirective()->getDescription());
+
+        return <<<EOL
+        <a class="typename" {$href} title="{$description}">@{$directiveUsage->getDirective()->getName()}</a>
+        EOL;
+    }
+
+    private static function printFloatingButtons(string $schemaString) : string
+    {
+        $result = '';
+        $matches = [];
+        \preg_match_all('/(<a .+?<\/a>)/', $schemaString, $matches);
+
+        foreach ($matches[0] as $index => $match) {
+            $match = \preg_replace('/(?<=>).*?(?=<)/', self::LINK_TEXTS[$index], $match);
+            $match = \preg_replace('/(?<=title=").*?(?=")/', self::LINK_TITLES[$index], $match);
+            $match = \str_replace('class="typename"', 'class="floating-button"', $match);
+            $result .= $match;
+        }
+
+        return <<<EOL
+        <div class="floating-container">
+            <a class="floating-button" href="#graphql-schema" title="Go to top">&uarr;</a>
+            {$result}
+        </div>
+        EOL;
+    }
+
+    private static function normalizeString(?string $input) : string
+    {
+        return \is_string($input)
+            ? \htmlspecialchars($input)
+            : '';
+    }
+
+    private static function emptyLine() : string
+    {
+        return '<div class="line">&nbsp;</div>';
+    }
+
+    private function printImplements(\Graphpinator\Type\InterfaceSet $implements) : string
+    {
+        if (\count($implements) === 0) {
+            return '';
+        }
+
+        return '&nbsp;<span class="keyword">implements</span>&nbsp;'
+            . \implode('&nbsp;<span class="ampersand">&</span>&nbsp;', self::recursiveGetInterfaces($implements));
     }
 
     private function printDirectiveUsages(\Graphpinator\DirectiveUsage\DirectiveUsageSet $set) : string
@@ -388,7 +460,8 @@ final class HtmlVisitor implements PrintComponentVisitor
             foreach ($value as $key => $innerValue) {
                 \assert($innerValue instanceof \Graphpinator\Value\ArgumentValue);
 
-                $component[] = '<span class="value-name">' . $key . '</span><span class="colon">:</span>' . $this->printValue($innerValue->getValue());
+                $component[] = '<span class="value-name">' . $key . '</span><span class="colon">:</span>'
+                    . $this->printValue($innerValue->getValue());
             }
         } elseif ($value instanceof \Graphpinator\Value\ListInputedValue) {
             $openingChar = '<span class="bracket-square">[</span>';
@@ -464,76 +537,5 @@ final class HtmlVisitor implements PrintComponentVisitor
 
         // single line description
         return '<div class="description"><div class="line">"' . \htmlspecialchars($description) . '"</div></div>';
-    }
-
-    private static function printTypeLink(\Graphpinator\Type\Contract\Definition $type) : string
-    {
-        return match ($type::class) {
-            \Graphpinator\Type\NotNullType::class =>
-                self::printTypeLink($type->getInnerType()) .
-                '<span class="exclamation-mark">!</span>',
-            \Graphpinator\Type\ListType::class =>
-                '<span class="bracket-square">[</span>' .
-                self::printTypeLink($type->getInnerType()) .
-                '<span class="bracket-square">]</span>',
-            default => self::printNamedTypeLink($type),
-        };
-    }
-
-    private static function printNamedTypeLink(\Graphpinator\Type\Contract\NamedDefinition $type) : string
-    {
-        $href = \str_starts_with($type->getNamedType()::class, 'Graphpinator\Type\Spec')
-            ? ''
-            : 'href="#graphql-type-' . $type->getNamedType()->getName(). '"';
-        $description = self::normalizeString($type->getNamedType()->getDescription());
-
-        return <<<EOL
-        <a class="typename" {$href} title="{$description}">{$type->printName()}</a>
-        EOL;
-    }
-
-    private static function printDirectiveLink(\Graphpinator\DirectiveUsage\DirectiveUsage $directiveUsage) : string
-    {
-        $href = \str_starts_with($directiveUsage->getDirective()::class, 'Graphpinator\Directive\Spec')
-            ? ''
-            : 'href="#graphql-directive-' . $directiveUsage->getDirective()->getName(). '"';
-        $description = self::normalizeString($directiveUsage->getDirective()->getDescription());
-
-        return <<<EOL
-        <a class="typename" {$href} title="{$description}">@{$directiveUsage->getDirective()->getName()}</a>
-        EOL;
-    }
-
-    private static function printFloatingButtons(string $schemaString) : string
-    {
-        $result = '';
-        $matches = [];
-        \preg_match_all('/(<a .+?<\/a>)/', $schemaString, $matches);
-
-        foreach ($matches[0] as $index => $match) {
-            $match = \preg_replace('/(?<=>).*?(?=<)/', self::LINK_TEXTS[$index], $match);
-            $match = \preg_replace('/(?<=title=").*?(?=")/', self::LINK_TITLES[$index], $match);
-            $match = \str_replace('class="typename"', 'class="floating-button"', $match);
-            $result .= $match;
-        }
-
-        return <<<EOL
-        <div class="floating-container">
-            <a class="floating-button" href="#graphql-schema" title="Go to top">&uarr;</a>
-            {$result}
-        </div>
-        EOL;
-    }
-
-    private static function normalizeString(?string $input) : string
-    {
-        return \is_string($input)
-            ? \htmlspecialchars($input)
-            : '';
-    }
-
-    private static function emptyLine() : string
-    {
-        return '<div class="line">&nbsp;</div>';
     }
 }
