@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Printer\Tests\Integration;
 
+//@phpcs:disable SlevomatCodingStandard.Files.LineLength.LineTooLong
 final class HtmlPrinterTest extends \PHPUnit\Framework\TestCase
 {
     public function simpleDataProvider() : array
@@ -220,7 +221,20 @@ final class HtmlPrinterTest extends \PHPUnit\Framework\TestCase
                 </div>
                 <div class="line">
                     <span class="field-name">inputFields</span>
+                        <span class="bracket-round">(</span>
+                </div>
+                <div class="offset">
                     
+                <div class="line">
+                    <span class="argument-name">includeDeprecated</span>
+                    <span class="colon">:</span>&nbsp;
+                    <span class="argument-type"><a class="typename"  title="Boolean built-in type">Boolean</a><span class="exclamation-mark">!</span></span>
+                    &nbsp;<span class="equals">=</span>&nbsp;<span class="argument-value"><span class="false">false</span></span>
+                    
+                </div>
+                </div>
+                <div class="line">
+                    <span class="bracket-round">)</span>
                     <span class="colon">:</span>&nbsp;
                     <span class="field-type"><span class="bracket-square">[</span><a class="typename" href="#graphql-type-__InputValue" title="Built-in introspection type.">__InputValue</a><span class="exclamation-mark">!</span><span class="bracket-square">]</span></span>
                     
@@ -230,6 +244,13 @@ final class HtmlPrinterTest extends \PHPUnit\Framework\TestCase
                     
                     <span class="colon">:</span>&nbsp;
                     <span class="field-type"><a class="typename" href="#graphql-type-__Type" title="Built-in introspection type.">__Type</a></span>
+                    
+                </div>
+                <div class="line">
+                    <span class="field-name">specifiedByURL</span>
+                    
+                    <span class="colon">:</span>&nbsp;
+                    <span class="field-type"><a class="typename"  title="String built-in type">String</a></span>
                     
                 </div>
                     </div>
@@ -336,7 +357,7 @@ final class HtmlPrinterTest extends \PHPUnit\Framework\TestCase
                 EOL,
             ],
             [
-                TestSchema::getFullSchema()->setDescription(<<<EOL
+                TestSchema::getFullSchema()->setDescription(<<<'EOL'
                 Multiline
                 
                 schema
