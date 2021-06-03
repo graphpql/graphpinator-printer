@@ -41,4 +41,4 @@ This is done by implementing `\Graphpinator\Printer\Sorter` and passing custom i
 #### Implementations provided by this library:
 
 - `AlphabeticalSorter` (default) - sorts types and directives alphabetically
-- `TypeKindSorter` - sorts types by their TypeKind (and than alphabetically) - interfaces first, than object types, than unions, ...
+- `TypeKindSorter` - sorts types by their TypeKind (and then alphabetically) - interfaces first, than object types, than unions, ..., directives last
