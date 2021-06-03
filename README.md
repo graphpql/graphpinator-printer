@@ -26,7 +26,7 @@ echo $printer->printSchema($schema);
 ### Output format
 
 It is possible to implement additional printing mechanisms for various output formats.
-This is done by implementing `\Graphpinator\Printer\PrintComponentVisitor` and passing custom instance to `Printer` as first constructor argument.
+This is done by implementing `\Graphpinator\Printer\PrintComponentVisitor` and passing an instance to `Printer` as first constructor argument.
 
 #### Implementations provided by this library:
 
@@ -35,8 +35,8 @@ This is done by implementing `\Graphpinator\Printer\PrintComponentVisitor` and p
 
 ### Output order
 
-It is possible to change the order types/directives in output.
-This is done by implementing `\Graphpinator\Printer\Sorter` and passing custom instance to `Printer` as second constructor argument.
+It is possible to change the order of types/directives in output.
+This is done by implementing `\Graphpinator\Printer\Sorter` and passing an instance to `Printer` as second constructor argument.
 
 #### Implementations provided by this library:
 
