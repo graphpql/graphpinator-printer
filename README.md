@@ -16,7 +16,7 @@ Install package using composer
 
 Usage of this library is very simple.
 
-```
+```php
 $schema; // instance of \Graphpinator\Type\Schema
 $printer = new \Graphpinator\Printer\Printer();
 
