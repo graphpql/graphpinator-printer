@@ -16,14 +16,15 @@ final class TextVisitor implements PrintComponentVisitor
         $subscriptionName = $schema->getSubscription() instanceof \Graphpinator\Type\Type
             ? $schema->getSubscription()->getName()
             : 'null';
+        $indentation = \str_repeat(' ', self::INDENT_SPACES);
 
-        return $this->printDescription($schema->getDescription()) . <<<EOL
-        schema {
-          query: {$schema->getQuery()->getName()}
-          mutation: {$mutationName}
-          subscription: {$subscriptionName}
-        }
-        EOL;
+        return $this->printDescription($schema->getDescription())
+            . 'schema'
+            . $this->printDirectiveUsages($schema->getDirectiveUsages()) . ' {' . \PHP_EOL
+            . $indentation . 'query: ' . $schema->getQuery()->getName() . \PHP_EOL
+            . $indentation . 'mutation: ' . $mutationName . \PHP_EOL
+            . $indentation . 'subscription: ' . $subscriptionName . \PHP_EOL
+            . '}';
     }
 
     public function visitType(\Graphpinator\Type\Type $type) : string
@@ -55,7 +56,9 @@ final class TextVisitor implements PrintComponentVisitor
         }
 
         return $this->printDescription($union->getDescription())
-            . 'union ' . $union->getName() . ' = ' . \implode(' | ', $typeNames);
+            . 'union ' . $union->getName()
+            . $this->printDirectiveUsages($union->getDirectiveUsages())
+            . ' = ' . \implode(' | ', $typeNames);
     }
 
     public function visitInput(\Graphpinator\Type\InputType $input) : string
@@ -70,13 +73,15 @@ final class TextVisitor implements PrintComponentVisitor
     public function visitScalar(\Graphpinator\Type\ScalarType $scalar) : string
     {
         return $this->printDescription($scalar->getDescription())
-            . 'scalar ' . $scalar->getName();
+            . 'scalar ' . $scalar->getName()
+            . $this->printDirectiveUsages($scalar->getDirectiveUsages());
     }
 
     public function visitEnum(\Graphpinator\Type\EnumType $enum) : string
     {
         return $this->printDescription($enum->getDescription())
-            . 'enum ' . $enum->getName() . ' {'
+            . 'enum ' . $enum->getName()
+            . $this->printDirectiveUsages($enum->getDirectiveUsages()) . ' {'
             . $this->printItems($enum->getItems()) . \PHP_EOL
             . '}';
     }
