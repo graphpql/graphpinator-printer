@@ -158,6 +158,21 @@ final class TextVisitor implements PrintComponentVisitor
         return \implode(\PHP_EOL . \PHP_EOL, $entries);
     }
 
+    /**
+     * @return array<string>
+     */
+    private static function recursiveGetInterfaces(\Graphpinator\Type\InterfaceSet $implements) : array
+    {
+        $return = [];
+
+        foreach ($implements as $interface) {
+            $return += self::recursiveGetInterfaces($interface->getInterfaces());
+            $return[] = $interface->getName();
+        }
+
+        return $return;
+    }
+
     private function printDescription(?string $description) : string
     {
         if ($description === null) {
@@ -187,21 +202,6 @@ final class TextVisitor implements PrintComponentVisitor
         }
 
         return ' implements ' . \implode(' & ', self::recursiveGetInterfaces($implements));
-    }
-
-    /**
-     * @return array<string>
-     */
-    private static function recursiveGetInterfaces(\Graphpinator\Type\InterfaceSet $implements) : array
-    {
-        $return = [];
-
-        foreach ($implements as $interface) {
-            $return += self::recursiveGetInterfaces($interface->getInterfaces());
-            $return[] = $interface->getName();
-        }
-
-        return $return;
     }
 
     private function printDirectiveUsages(\Graphpinator\DirectiveUsage\DirectiveUsageSet $set) : string

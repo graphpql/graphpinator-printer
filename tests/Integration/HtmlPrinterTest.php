@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Printer\Tests\Integration;
 
+//@phpcs:disable SlevomatCodingStandard.Files.LineLength.LineTooLong
 final class HtmlPrinterTest extends \PHPUnit\Framework\TestCase
 {
     public function simpleDataProvider() : array
@@ -359,7 +360,7 @@ final class HtmlPrinterTest extends \PHPUnit\Framework\TestCase
                 EOL,
             ],
             [
-                TestSchema::getFullSchema()->setDescription(<<<EOL
+                TestSchema::getFullSchema()->setDescription(<<<'EOL'
                 Multiline
                 
                 schema

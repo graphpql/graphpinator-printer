@@ -35,7 +35,7 @@ final class TestSchema
             return self::$types[$name];
         }
 
-        self::$types[$name] = match($name) {
+        self::$types[$name] = match ($name) {
             'Query' => self::getQuery(),
             'SimpleType' => self::getSimpleType(),
             'SimpleUnion' => self::getSimpleUnion(),
@@ -86,30 +86,33 @@ final class TestSchema
         {
             protected const NAME = 'Query';
 
+            public function validateNonNullValue($rawValue) : bool
+            {
+                return true;
+            }
+
             protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
             {
                 return new \Graphpinator\Field\ResolvableFieldSet([
                     \Graphpinator\Field\ResolvableField::create(
                         'field1',
                         \Graphpinator\Container\Container::String(),
-                        static function () : void {},
+                        static function () : void {
+                        },
                     ),
                     \Graphpinator\Field\ResolvableField::create(
                         'fieldWithDescription',
                         \Graphpinator\Container\Container::String(),
-                        static function () : void {},
+                        static function () : void {
+                        },
                     )->setDescription('Description to field'),
                     \Graphpinator\Field\ResolvableField::create(
                         'field2',
                         \Graphpinator\Container\Container::String(),
-                        static function () : void {},
+                        static function () : void {
+                        },
                     ),
                 ]);
-            }
-
-            public function validateNonNullValue($rawValue) : bool
-            {
-                return true;
             }
         };
     }
@@ -121,21 +124,21 @@ final class TestSchema
             protected const NAME = 'SimpleType';
             protected const DESCRIPTION = 'Description for SimpleType';
 
+            public function validateNonNullValue($rawValue) : bool
+            {
+                return true;
+            }
+
             protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
             {
                 return new \Graphpinator\Field\ResolvableFieldSet([
                     new \Graphpinator\Field\ResolvableField(
                         'name',
                         \Graphpinator\Container\Container::String()->notNull(),
-                        static function (\stdClass $parent) {
+                        static function (\stdClass $parent) : void {
                         },
                     ),
                 ]);
-            }
-
-            public function validateNonNullValue($rawValue) : bool
-            {
-                return true;
             }
         };
     }
@@ -190,9 +193,9 @@ final class TestSchema
     {
         return new class extends \Graphpinator\Type\InputType {
             protected const NAME = 'ComplexDefaultsInput';
-            protected const DESCRIPTION =  'ComplexDefaultsInput description';
+            protected const DESCRIPTION = 'ComplexDefaultsInput description';
 
-            protected function getFieldDefinition(): \Graphpinator\Argument\ArgumentSet
+            protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
             {
                 return new \Graphpinator\Argument\ArgumentSet([
                     \Graphpinator\Argument\Argument::create(
@@ -210,7 +213,7 @@ final class TestSchema
                 ]);
             }
 
-            protected function afterGetFieldDefinition(): void
+            protected function afterGetFieldDefinition() : void
             {
                 $this->arguments['inner']->setDefaultValue((object) [
                     'name' => 'innerDefault',
@@ -317,7 +320,9 @@ final class TestSchema
             protected const NAME = 'ParentInterface';
             protected const DESCRIPTION = 'ParentInterface Description';
 
-            public function createResolvedValue($rawValue) : \Graphpinator\Value\TypeIntermediateValue {}
+            public function createResolvedValue($rawValue) : \Graphpinator\Value\TypeIntermediateValue
+            {
+            }
 
             protected function getFieldDefinition() : \Graphpinator\Field\FieldSet
             {
@@ -341,7 +346,9 @@ final class TestSchema
                 ]));
             }
 
-            public function createResolvedValue($rawValue) : \Graphpinator\Value\TypeIntermediateValue {}
+            public function createResolvedValue($rawValue) : \Graphpinator\Value\TypeIntermediateValue
+            {
+            }
 
             protected function getFieldDefinition() : \Graphpinator\Field\FieldSet
             {
@@ -358,7 +365,9 @@ final class TestSchema
         {
             protected const NAME = 'SecondInterface';
 
-            public function createResolvedValue($rawValue) : \Graphpinator\Value\TypeIntermediateValue {}
+            public function createResolvedValue($rawValue) : \Graphpinator\Value\TypeIntermediateValue
+            {
+            }
 
             protected function getFieldDefinition() : \Graphpinator\Field\FieldSet
             {
@@ -387,30 +396,33 @@ final class TestSchema
                 ]));
             }
 
+            public function validateNonNullValue($rawValue) : bool
+            {
+                return true;
+            }
+
             protected function getFieldDefinition() : \Graphpinator\Field\ResolvableFieldSet
             {
                 return new \Graphpinator\Field\ResolvableFieldSet([
                     \Graphpinator\Field\ResolvableField::create(
                         'name',
                         \Graphpinator\Container\Container::String()->notNull(),
-                        static function (\stdClass $parent, string $argName) {},
+                        static function (\stdClass $parent, string $argName) : void {
+                        },
                     ),
                     \Graphpinator\Field\ResolvableField::create(
                         'number',
                         \Graphpinator\Container\Container::Int()->notNull(),
-                        static function (\stdClass $parent, string $argName) {},
+                        static function (\stdClass $parent, string $argName) : void {
+                        },
                     ),
                     \Graphpinator\Field\ResolvableField::create(
                         'secondField',
                         \Graphpinator\Container\Container::String()->notNull(),
-                        static function (\stdClass $parent, string $argName) {},
+                        static function (\stdClass $parent, string $argName) : void {
+                        },
                     ),
                 ]);
-            }
-
-            public function validateNonNullValue($rawValue) : bool
-            {
-                return true;
             }
         };
     }
@@ -422,13 +434,6 @@ final class TestSchema
             protected const NAME = 'simpleDirective';
             protected const REPEATABLE = true;
 
-            protected function getFieldDefinition(): \Graphpinator\Argument\ArgumentSet
-            {
-                return new \Graphpinator\Argument\ArgumentSet([
-                    \Graphpinator\Argument\Argument::create('reason', \Graphpinator\Container\Container::String()),
-                ]);
-            }
-
             public function resolveFieldBefore(\Graphpinator\Value\ArgumentValueSet $arguments) : string
             {
             }
@@ -437,9 +442,16 @@ final class TestSchema
             {
             }
 
-            public function validateFieldUsage(\Graphpinator\Field\Field $field, \Graphpinator\Value\ArgumentValueSet $arguments,): bool
+            public function validateFieldUsage(\Graphpinator\Field\Field $field, \Graphpinator\Value\ArgumentValueSet $arguments,) : bool
             {
                 return true;
+            }
+
+            protected function getFieldDefinition() : \Graphpinator\Argument\ArgumentSet
+            {
+                return new \Graphpinator\Argument\ArgumentSet([
+                    \Graphpinator\Argument\Argument::create('reason', \Graphpinator\Container\Container::String()),
+                ]);
             }
         };
     }
