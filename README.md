@@ -4,7 +4,7 @@
 
 ## Introduction
 
-This library allows printing of GraphQL schema into human-readable format. It supports multiple output formats and ordering options.
+This library allows printing of the GraphQL schema into human-readable format. It supports multiple output formats and ordering options.
 
 ## Installation
 
