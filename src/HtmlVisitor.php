@@ -29,7 +29,8 @@ final class HtmlVisitor implements PrintComponentVisitor
                 <a href="#graphql-schema" class="self-link">
                     <span class="keyword">schema</span>
                 </a>
-                &nbsp;<span class="bracket-curly">{</span>
+                {$this->printDirectiveUsages($schema->getDirectiveUsages())}&nbsp;
+                <span class="bracket-curly">{</span>
             </div>
             <div class="offset">
                 <div class="line">
@@ -121,7 +122,8 @@ final class HtmlVisitor implements PrintComponentVisitor
                     <span class="keyword">union</span>&nbsp;
                     <span class="typename">{$union->getName()}</span>
                 </a>
-                &nbsp;<span class="equals">=</span>&nbsp;{$types}
+                {$this->printDirectiveUsages($union->getDirectiveUsages())}&nbsp;
+                <span class="equals">=</span>&nbsp;{$types}
             </div>
         </section>
         EOL;
@@ -160,6 +162,7 @@ final class HtmlVisitor implements PrintComponentVisitor
                     <span class="keyword">scalar</span>&nbsp;
                     <span class="typename">{$scalar->getName()}</span>
                 </a>
+                {$this->printDirectiveUsages($scalar->getDirectiveUsages())}
             </div>
         </section>
         EOL;
@@ -175,7 +178,8 @@ final class HtmlVisitor implements PrintComponentVisitor
                     <span class="keyword">enum</span>&nbsp;
                     <span class="typename">{$enum->getName()}</span>
                 </a>
-                &nbsp;<span class="bracket-curly">{</span>
+                {$this->printDirectiveUsages($enum->getDirectiveUsages())}&nbsp;
+                <span class="bracket-curly">{</span>
             </div>
             <div class="offset">
                 {$this->printItems($enum->getItems())}

@@ -25,6 +25,7 @@ final class HtmlPrinterTest extends \PHPUnit\Framework\TestCase
                             <span class="keyword">scalar</span>&nbsp;
                             <span class="typename">Int</span>
                         </a>
+                        
                     </div>
                 </section>
                 EOL,
@@ -43,7 +44,8 @@ final class HtmlPrinterTest extends \PHPUnit\Framework\TestCase
                             <span class="keyword">enum</span>&nbsp;
                             <span class="typename">__TypeKind</span>
                         </a>
-                        &nbsp;<span class="bracket-curly">{</span>
+                        &nbsp;
+                        <span class="bracket-curly">{</span>
                     </div>
                     <div class="offset">
                         <div class="line enum-item">SCALAR</div><div class="line enum-item">OBJECT</div><div class="line enum-item">INTERFACE</div><div class="line enum-item">UNION</div><div class="line enum-item">ENUM</div><div class="line enum-item">INPUT_OBJECT</div><div class="line enum-item">LIST</div><div class="line enum-item">NON_NULL</div>
@@ -220,7 +222,20 @@ final class HtmlPrinterTest extends \PHPUnit\Framework\TestCase
                 </div>
                 <div class="line">
                     <span class="field-name">inputFields</span>
+                        <span class="bracket-round">(</span>
+                </div>
+                <div class="offset">
                     
+                <div class="line">
+                    <span class="argument-name">includeDeprecated</span>
+                    <span class="colon">:</span>&nbsp;
+                    <span class="argument-type"><a class="typename"  title="Boolean built-in type">Boolean</a><span class="exclamation-mark">!</span></span>
+                    &nbsp;<span class="equals">=</span>&nbsp;<span class="argument-value"><span class="false">false</span></span>
+                    
+                </div>
+                </div>
+                <div class="line">
+                    <span class="bracket-round">)</span>
                     <span class="colon">:</span>&nbsp;
                     <span class="field-type"><span class="bracket-square">[</span><a class="typename" href="#graphql-type-__InputValue" title="Built-in introspection type.">__InputValue</a><span class="exclamation-mark">!</span><span class="bracket-square">]</span></span>
                     
@@ -230,6 +245,13 @@ final class HtmlPrinterTest extends \PHPUnit\Framework\TestCase
                     
                     <span class="colon">:</span>&nbsp;
                     <span class="field-type"><a class="typename" href="#graphql-type-__Type" title="Built-in introspection type.">__Type</a></span>
+                    
+                </div>
+                <div class="line">
+                    <span class="field-name">specifiedByURL</span>
+                    
+                    <span class="colon">:</span>&nbsp;
+                    <span class="field-type"><a class="typename"  title="String built-in type">String</a></span>
                     
                 </div>
                     </div>
@@ -310,7 +332,8 @@ final class HtmlPrinterTest extends \PHPUnit\Framework\TestCase
                         <a href="#graphql-schema" class="self-link">
                             <span class="keyword">schema</span>
                         </a>
-                        &nbsp;<span class="bracket-curly">{</span>
+                        &nbsp;
+                        <span class="bracket-curly">{</span>
                     </div>
                     <div class="offset">
                         <div class="line">
@@ -355,7 +378,8 @@ final class HtmlPrinterTest extends \PHPUnit\Framework\TestCase
                         <a href="#graphql-schema" class="self-link">
                             <span class="keyword">schema</span>
                         </a>
-                        &nbsp;<span class="bracket-curly">{</span>
+                        &nbsp;
+                        <span class="bracket-curly">{</span>
                     </div>
                     <div class="offset">
                         <div class="line">
