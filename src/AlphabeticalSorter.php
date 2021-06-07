@@ -7,9 +7,9 @@ namespace Graphpinator\Printer;
 final class AlphabeticalSorter implements \Graphpinator\Printer\Sorter
 {
     /**
-     * @param array<\Graphpinator\Type\Contract\NamedDefinition> $types
-     * @param array<\Graphpinator\Directive\Contract\Definition> $directives
-     * @return array<\Graphpinator\Type\Contract\NamedDefinition|\Graphpinator\Directive\Contract\Definition>
+     * @param array<\Graphpinator\Typesystem\Contract\NamedType> $types
+     * @param array<\Graphpinator\Typesystem\Contract\Directive> $directives
+     * @return array<\Graphpinator\Typesystem\Contract\NamedType|\Graphpinator\Typesystem\Contract\Directive>
      */
     public function sort(array $types, array $directives) : array
     {

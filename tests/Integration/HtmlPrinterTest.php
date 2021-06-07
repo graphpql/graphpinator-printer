@@ -410,10 +410,10 @@ final class HtmlPrinterTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider simpleDataProvider
-     * @param \Graphpinator\Type\Contract\Definition $type
+     * @param \Graphpinator\Typesystem\Entity $type
      * @param string $print
      */
-    public function testSimple(\Graphpinator\Typesystem\Entity $type, string $print) : void
+    public function testSimple(\Graphpinator\Typesystem\Contract\Entity $type, string $print) : void
     {
         $visitor = new \Graphpinator\Printer\HtmlVisitor();
         self::assertSame($print, $type->accept($visitor));

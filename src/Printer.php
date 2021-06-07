@@ -22,7 +22,7 @@ final class Printer
             ?? new AlphabeticalSorter();
     }
 
-    public function printSchema(\Graphpinator\Type\Schema $schema) : string
+    public function printSchema(\Graphpinator\Typesystem\Schema $schema) : string
     {
         $entries = [$schema->accept($this->visitor)];
         $printables = $this->sorter->sort($schema->getContainer()->getTypes(), $schema->getContainer()->getDirectives());
