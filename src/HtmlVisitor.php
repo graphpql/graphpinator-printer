@@ -254,7 +254,7 @@ final class HtmlVisitor implements PrintComponentVisitor
         EOL;
     }
 
-    public function visitDirectiveUsage(\Graphpinator\DirectiveUsage\DirectiveUsage $directiveUsage) : string
+    public function visitDirectiveUsage(\Graphpinator\Typesystem\DirectiveUsage\DirectiveUsage $directiveUsage) : string
     {
         $schema = '&nbsp;<span class="typename">' . self::printDirectiveLink($directiveUsage) . '</span>';
         $printableArguments = [];
@@ -281,7 +281,7 @@ final class HtmlVisitor implements PrintComponentVisitor
         return $schema;
     }
 
-    public function visitEnumItem(\Graphpinator\EnumItem\EnumItem $enumItem) : string
+    public function visitEnumItem(\Graphpinator\Typesystem\EnumItem\EnumItem $enumItem) : string
     {
         return $this->printItemDescription($enumItem->getDescription()) . '<div class="line enum-item">' . $enumItem->getName()
             . $this->printDirectiveUsages($enumItem->getDirectiveUsages()) . '</div>';
@@ -344,7 +344,7 @@ final class HtmlVisitor implements PrintComponentVisitor
         EOL;
     }
 
-    private static function printDirectiveLink(\Graphpinator\DirectiveUsage\DirectiveUsage $directiveUsage) : string
+    private static function printDirectiveLink(\Graphpinator\Typesystem\DirectiveUsage\DirectiveUsage $directiveUsage) : string
     {
         $href = \str_starts_with($directiveUsage->getDirective()::class, 'Graphpinator\Typesystem\Spec')
             ? ''
