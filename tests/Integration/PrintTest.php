@@ -168,74 +168,32 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           innerList: [ComplexDefaultsInput] = [
             {
               name: "innerList1",
-              inner: {
-                name: "innerDefault",
-                inner: {
-                  name: "innerInnerDefault",
-                  inner: null,
-                  innerList: []
-                }
-              },
+              inner: null,
               innerList: [
                 {
                   name: "string",
-                  inner: {
-                    name: "innerDefault",
-                    inner: {
-                      name: "innerInnerDefault",
-                      inner: null,
-                      innerList: []
-                    }
-                  },
+                  inner: null,
                   innerList: null
                 },
                 {
                   name: "string",
-                  inner: {
-                    name: "innerDefault",
-                    inner: {
-                      name: "innerInnerDefault",
-                      inner: null,
-                      innerList: []
-                    }
-                  },
+                  inner: null,
                   innerList: null
                 }
               ]
             },
             {
               name: "innerList2",
-              inner: {
-                name: "innerDefault",
-                inner: {
-                  name: "innerInnerDefault",
-                  inner: null,
-                  innerList: []
-                }
-              },
+              inner: null,
               innerList: [
                 {
                   name: "string2",
-                  inner: {
-                    name: "innerDefault",
-                    inner: {
-                      name: "innerInnerDefault",
-                      inner: null,
-                      innerList: []
-                    }
-                  },
+                  inner: null,
                   innerList: null
                 },
                 {
                   name: "string2",
-                  inner: {
-                    name: "innerDefault",
-                    inner: {
-                      name: "innerInnerDefault",
-                      inner: null,
-                      innerList: []
-                    }
-                  },
+                  inner: null,
                   innerList: null
                 }
               ]
