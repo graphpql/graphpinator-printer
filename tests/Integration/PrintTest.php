@@ -8,11 +8,11 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
 {
     public function simpleDataProvider() : array
     {
-        $container = new \Graphpinator\Container\SimpleContainer([], []);
+        $container = new \Graphpinator\SimpleContainer([], []);
 
         return [
             [
-                \Graphpinator\Container\Container::Int(),
+                \Graphpinator\Typesystem\Container::Int(),
                 <<<'EOL'
                 """
                 Int built-in type (32 bit)
@@ -24,7 +24,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
                 new \Graphpinator\Introspection\TypeKind(),
                 <<<'EOL'
                 """
-                Built-in introspection enum.
+                Built-in introspection type
                 """
                 enum __TypeKind {
                   SCALAR
@@ -42,7 +42,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
                 new \Graphpinator\Introspection\Schema($container),
                 <<<'EOL'
                 """
-                Built-in introspection type.
+                Built-in introspection type
                 """
                 type __Schema {
                   description: String
@@ -58,7 +58,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
                 new \Graphpinator\Introspection\Type($container),
                 <<<'EOL'
                 """
-                Built-in introspection type.
+                Built-in introspection type
                 """
                 type __Type {
                   kind: __TypeKind!
@@ -84,7 +84,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
                 new \Graphpinator\Introspection\Directive($container),
                 <<<'EOL'
                 """
-                Built-in introspection type.
+                Built-in introspection type
                 """
                 type __Directive {
                   name: String!
