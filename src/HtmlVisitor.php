@@ -11,6 +11,16 @@ final class HtmlVisitor implements PrintComponentVisitor
     private const LINK_TEXTS = ['Q', 'M', 'S'];
     private const LINK_TITLES = ['Go to query root type', 'Go to mutation root type', 'Go to subscription root type'];
 
+    private FieldCollector $fieldCollector;
+
+    public function __construct(
+        ?FieldCollector $fieldCollector = null,
+    )
+    {
+        $this->fieldCollector = $fieldCollector
+            ?? new AllFieldCollector();
+    }
+
     public function visitSchema(\Graphpinator\Typesystem\Schema $schema) : string
     {
         $query = '<span class="field-type">' . self::printTypeLink($schema->getQuery()) . '</span>';
@@ -71,7 +81,7 @@ final class HtmlVisitor implements PrintComponentVisitor
                 <span class="bracket-curly">{</span>
             </div>
             <div class="offset">
-                {$this->printItems($type->getFields())}
+                {$this->printItems($this->fieldCollector->collect($type))}
             </div>
             <div class="line">
                 <span class="bracket-curly">}</span>
@@ -95,7 +105,7 @@ final class HtmlVisitor implements PrintComponentVisitor
                 <span class="bracket-curly">{</span>
             </div>
             <div class="offset">
-                {$this->printItems($interface->getFields())}
+                {$this->printItems($this->fieldCollector->collect($interface))}
             </div>
             <div class="line">
                 <span class="bracket-curly">}</span>

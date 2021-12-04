@@ -8,6 +8,16 @@ final class TextVisitor implements PrintComponentVisitor
 {
     private const INDENT_SPACES = 2;
 
+    private FieldCollector $fieldCollector;
+
+    public function __construct(
+        ?FieldCollector $fieldCollector = null,
+    )
+    {
+        $this->fieldCollector = $fieldCollector
+            ?? new AllFieldCollector();
+    }
+
     public function visitSchema(\Graphpinator\Typesystem\Schema $schema) : string
     {
         $mutationName = $schema->getMutation() instanceof \Graphpinator\Typesystem\Type
@@ -33,7 +43,7 @@ final class TextVisitor implements PrintComponentVisitor
             . 'type ' . $type->getName()
             . $this->printImplements($type->getInterfaces())
             . $this->printDirectiveUsages($type->getDirectiveUsages()) . ' {'
-            . $this->printItems($type->getFields()) . \PHP_EOL
+            . $this->printItems($this->fieldCollector->collect($type)) . \PHP_EOL
             . '}';
     }
 
@@ -43,7 +53,7 @@ final class TextVisitor implements PrintComponentVisitor
             . 'interface ' . $interface->getName()
             . $this->printImplements($interface->getInterfaces())
             . $this->printDirectiveUsages($interface->getDirectiveUsages()) . ' {'
-            . $this->printItems($interface->getFields()) . \PHP_EOL
+            . $this->printItems($this->fieldCollector->collect($interface)) . \PHP_EOL
             . '}';
     }
 
