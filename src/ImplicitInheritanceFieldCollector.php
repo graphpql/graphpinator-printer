@@ -4,14 +4,14 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Printer;
 
-use \Graphpinator\Typesystem\Contract\InterfaceImplementor;
-use \Graphpinator\Typesystem\Contract\Type;
 use \Graphpinator\Typesystem\Argument\Argument;
 use \Graphpinator\Typesystem\Argument\ArgumentSet;
-use \Graphpinator\Typesystem\Field\Field;
-use \Graphpinator\Typesystem\Field\FieldSet;
+use \Graphpinator\Typesystem\Contract\InterfaceImplementor;
+use \Graphpinator\Typesystem\Contract\Type;
 use \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsage;
 use \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet;
+use \Graphpinator\Typesystem\Field\Field;
+use \Graphpinator\Typesystem\Field\FieldSet;
 
 final class ImplicitInheritanceFieldCollector implements FieldCollector
 {
