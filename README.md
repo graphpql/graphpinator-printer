@@ -41,7 +41,7 @@ In order to enable implicit inheritance, it is needed to pass different `FieldCo
 ##### Strategies provided by this library:
 
 - `AllFieldCollector` (default) - standard strategy to print all fields
-- `ImplicitInheritanceFieldCollector` - strategy to confirm with Implicit inheritance RFC, inherited fields which remained the same are excluded 
+- `ImplicitInheritanceFieldCollector` - strategy to leverage Implicit inheritance RFC, inherited fields which remained the same are excluded 
 
 ### Output order
 
