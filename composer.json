@@ -12,14 +12,14 @@
     }
   ],
   "require": {
-    "infinityloop-dev/graphpinator": "^1.1",
+    "infinityloop-dev/graphpinator": "^1.4",
     "infinityloop-dev/utils": "^2.1.2",
     "nette/utils": "^3.2"
   },
   "require-dev": {
     "phpunit/phpunit": "^9.5",
-    "infection/infection": "^0.25",
-    "phpstan/phpstan": "^0.12",
+    "infection/infection": "^0.26",
+    "phpstan/phpstan": "^1.10",
     "infinityloop-dev/coding-standard": "^0.2"
   },
   "scripts": {
@@ -42,6 +42,12 @@
   "autoload-dev": {
     "psr-4": {
       "Graphpinator\\Printer\\Tests\\": "tests/"
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true,
+      "infection/extension-installer": true
     }
   }
 }

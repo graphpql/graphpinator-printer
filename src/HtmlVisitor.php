@@ -208,7 +208,7 @@ final class HtmlVisitor implements PrintComponentVisitor
             : '';
         $locations = \implode(
             '</span>&nbsp;<span class="vertical-line">|</span>&nbsp;<span class="enum-literal">',
-            $directive->getLocations(),
+            \array_column($directive->getLocations(), 'value'),
         );
 
         return <<<EOL
