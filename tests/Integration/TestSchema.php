@@ -434,11 +434,11 @@ final class TestSchema
             protected const NAME = 'simpleDirective';
             protected const REPEATABLE = true;
 
-            public function resolveFieldBefore(\Graphpinator\Value\ArgumentValueSet $arguments) : string
+            public function resolveFieldBefore(\Graphpinator\Value\ArgumentValueSet $arguments) : \Graphpinator\Typesystem\Location\SelectionDirectiveResult
             {
             }
 
-            public function resolveFieldAfter(\Graphpinator\Value\ArgumentValueSet $arguments, \Graphpinator\Value\FieldValue $fieldValue) : string
+            public function resolveFieldAfter(\Graphpinator\Value\ArgumentValueSet $arguments, \Graphpinator\Value\FieldValue $fieldValue) : \Graphpinator\Typesystem\Location\SelectionDirectiveResult
             {
             }
 
