@@ -23,7 +23,7 @@ $printer = new \Graphpinator\Printer\Printer();
 echo $printer->printSchema($schema);
 ```
 
-Advanced confogiration options (see more below)
+Advanced configiration options (see description below)
 
 ```php
 $schema; // instance of \Graphpinator\Typesystem\Schema
