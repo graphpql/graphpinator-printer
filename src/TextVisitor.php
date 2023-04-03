@@ -109,7 +109,7 @@ final class TextVisitor implements PrintComponentVisitor
             $schema .= ' repeatable';
         }
 
-        return $schema . ' on ' . \implode(' | ', $directive->getLocations());
+        return $schema . ' on ' . \implode(' | ', \array_column($directive->getLocations(), 'value'));
     }
 
     public function visitField(\Graphpinator\Typesystem\Field\Field $field) : string
