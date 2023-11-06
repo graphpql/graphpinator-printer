@@ -20,20 +20,20 @@ final class TextVisitor implements PrintComponentVisitor
 
     public function visitSchema(\Graphpinator\Typesystem\Schema $schema) : string
     {
-        $mutationName = $schema->getMutation() instanceof \Graphpinator\Typesystem\Type
-            ? $schema->getMutation()->getName()
-            : 'null';
-        $subscriptionName = $schema->getSubscription() instanceof \Graphpinator\Typesystem\Type
-            ? $schema->getSubscription()->getName()
-            : 'null';
         $indentation = \str_repeat(' ', self::INDENT_SPACES);
+        $mutationPart = $schema->getMutation() instanceof \Graphpinator\Typesystem\Type
+            ? $indentation . 'mutation: ' . $schema->getMutation()->getName() . \PHP_EOL
+            : '';
+        $subscriptionPart = $schema->getSubscription() instanceof \Graphpinator\Typesystem\Type
+            ? $indentation . 'subscription: ' . $schema->getSubscription()->getName() . \PHP_EOL
+            : '';
 
         return $this->printDescription($schema->getDescription())
             . 'schema'
             . $this->printDirectiveUsages($schema->getDirectiveUsages()) . ' {' . \PHP_EOL
             . $indentation . 'query: ' . $schema->getQuery()->getName() . \PHP_EOL
-            . $indentation . 'mutation: ' . $mutationName . \PHP_EOL
-            . $indentation . 'subscription: ' . $subscriptionName . \PHP_EOL
+            . $mutationPart
+            . $subscriptionPart
             . '}';
     }
 

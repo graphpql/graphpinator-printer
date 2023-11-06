@@ -100,8 +100,6 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
                 <<<'EOL'
                 schema {
                   query: Query
-                  mutation: null
-                  subscription: null
                 }
                 EOL,
             ],
@@ -137,8 +135,6 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         $expected = <<<'EOL'
         schema {
           query: Query
-          mutation: null
-          subscription: null
         }
         
         interface ChildInterface implements ParentInterface {
