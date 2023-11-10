@@ -7,7 +7,7 @@ namespace Graphpinator\Printer\Tests\Integration;
 //@phpcs:disable SlevomatCodingStandard.Files.LineLength.LineTooLong
 final class HtmlPrinterTest extends \PHPUnit\Framework\TestCase
 {
-    public function simpleDataProvider() : array
+    public static function simpleDataProvider() : array
     {
         $container = new \Graphpinator\SimpleContainer([], []);
 
@@ -253,6 +253,13 @@ final class HtmlPrinterTest extends \PHPUnit\Framework\TestCase
                     
                     <span class="colon">:</span>&nbsp;
                     <span class="field-type"><a class="typename"  title="String built-in type">String</a></span>
+                    
+                </div>
+                <div class="line">
+                    <span class="field-name">isOneOf</span>
+                    
+                    <span class="colon">:</span>&nbsp;
+                    <span class="field-type"><a class="typename"  title="Boolean built-in type">Boolean</a></span>
                     
                 </div>
                     </div>

@@ -6,8 +6,6 @@ namespace Graphpinator\Printer;
 
 final class HtmlVisitor implements PrintComponentVisitor
 {
-    use \Nette\SmartObject;
-
     private const LINK_TEXTS = ['Q', 'M', 'S'];
     private const LINK_TITLES = ['Go to query root type', 'Go to mutation root type', 'Go to subscription root type'];
 

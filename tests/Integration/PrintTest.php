@@ -6,7 +6,7 @@ namespace Graphpinator\Printer\Tests\Integration;
 
 final class PrintTest extends \PHPUnit\Framework\TestCase
 {
-    public function simpleDataProvider() : array
+    public static function simpleDataProvider() : array
     {
         $container = new \Graphpinator\SimpleContainer([], []);
 
@@ -77,6 +77,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
                   ): [__InputValue!]
                   ofType: __Type
                   specifiedByURL: String
+                  isOneOf: Boolean
                 }
                 EOL,
             ],

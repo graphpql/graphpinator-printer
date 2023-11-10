@@ -6,8 +6,6 @@ namespace Graphpinator\Printer;
 
 final class Printer
 {
-    use \Nette\SmartObject;
-
     private \Graphpinator\Printer\PrintComponentVisitor $visitor;
     private \Graphpinator\Printer\Sorter $sorter;
 
