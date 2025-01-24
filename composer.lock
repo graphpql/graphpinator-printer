@@ -8,33 +8,32 @@
     "packages": [
         {
             "name": "infinityloop-dev/graphpinator",
-            "version": "v1.5",
+            "version": "v1.7.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/graphpql/graphpinator.git",
-                "reference": "44ef3a100bee9c0b3cab922af1041a6ce509722d"
+                "reference": "60a948c2c3629391a1fc2c552f2ee1ff61063ad4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/graphpql/graphpinator/zipball/44ef3a100bee9c0b3cab922af1041a6ce509722d",
-                "reference": "44ef3a100bee9c0b3cab922af1041a6ce509722d",
+                "url": "https://api.github.com/repos/graphpql/graphpinator/zipball/60a948c2c3629391a1fc2c552f2ee1ff61063ad4",
+                "reference": "60a948c2c3629391a1fc2c552f2ee1ff61063ad4",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
-                "infinityloop-dev/graphpinator-common": "^1.2",
-                "infinityloop-dev/graphpinator-parser": "^1.1",
-                "infinityloop-dev/utils": "^2.2",
-                "nette/utils": "^3.2",
+                "infinityloop-dev/graphpinator-common": "^2.0",
+                "infinityloop-dev/graphpinator-parser": "^1.2",
+                "infinityloop-dev/utils": "^2.3",
                 "php": ">=8.1",
-                "psr/http-message": "^1.1 || ^2.0",
+                "psr/http-message": "^2.0",
                 "psr/log": "^3.0"
             },
             "require-dev": {
-                "infection/infection": "^0.26 || ^0.27",
-                "infinityloop-dev/coding-standard": "^0.2",
+                "infection/infection": "^0.27 || ^0.28 || ^0.29",
                 "phpstan/phpstan": "^1.10",
-                "phpunit/phpunit": "^10.0"
+                "phpunit/phpunit": "^10.4",
+                "webthinx/codestyle": "dev-main"
             },
             "suggest": {
                 "infinityloop-dev/graphpinator-constraint-directives": "Directives for additional value validation.",
@@ -64,37 +63,36 @@
                 }
             ],
             "description": "Easy-to-use & Fast GraphQL server implementation for PHP.",
-            "homepage": "https://www.infinityloop.dev/",
+            "homepage": "https://github.com/graphpql/",
             "support": {
                 "issues": "https://github.com/graphpql/graphpinator/issues",
-                "source": "https://github.com/graphpql/graphpinator/tree/v1.5"
+                "source": "https://github.com/graphpql/graphpinator/tree/v1.7.5"
             },
-            "time": "2023-11-07T15:46:27+00:00"
+            "time": "2024-10-18T08:42:02+00:00"
         },
         {
             "name": "infinityloop-dev/graphpinator-common",
-            "version": "v1.2",
+            "version": "v2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/graphpql/graphpinator-common.git",
-                "reference": "74f82575cc86a2028810df6e6ead5b0281c3e49d"
+                "reference": "fbe087fb00cdd023b3c584cd6bf403c77d0fd5be"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/graphpql/graphpinator-common/zipball/74f82575cc86a2028810df6e6ead5b0281c3e49d",
-                "reference": "74f82575cc86a2028810df6e6ead5b0281c3e49d",
+                "url": "https://api.github.com/repos/graphpql/graphpinator-common/zipball/fbe087fb00cdd023b3c584cd6bf403c77d0fd5be",
+                "reference": "fbe087fb00cdd023b3c584cd6bf403c77d0fd5be",
                 "shasum": ""
             },
             "require": {
-                "infinityloop-dev/utils": "^2.0",
-                "nette/utils": "^3.0",
+                "infinityloop-dev/utils": "^2.3",
                 "php": ">=8.0"
             },
             "require-dev": {
-                "infection/infection": "^0.20 || ^0.21",
-                "infinityloop-dev/coding-standard": "^0.1",
-                "phpstan/phpstan": "^0.12",
-                "phpunit/phpunit": "^9.3"
+                "infection/infection": "^0.27",
+                "infinityloop-dev/coding-standard": "^0.2",
+                "phpstan/phpstan": "^1.10",
+                "phpunit/phpunit": "^10.4"
             },
             "type": "library",
             "autoload": {
@@ -117,36 +115,35 @@
             "homepage": "https://www.infinityloop.dev/",
             "support": {
                 "issues": "https://github.com/graphpql/graphpinator-common/issues",
-                "source": "https://github.com/graphpql/graphpinator-common/tree/v1.2"
+                "source": "https://github.com/graphpql/graphpinator-common/tree/v2.0"
             },
-            "time": "2021-03-22T10:41:35+00:00"
+            "time": "2023-11-10T12:38:41+00:00"
         },
         {
             "name": "infinityloop-dev/graphpinator-parser",
-            "version": "v1.1.1",
+            "version": "v1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/graphpql/graphpinator-parser.git",
-                "reference": "1445936ba8854f2135bbfa9fdb31c174840b727d"
+                "reference": "760e1473312c2933ffee68fccef2b96c902597b6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/graphpql/graphpinator-parser/zipball/1445936ba8854f2135bbfa9fdb31c174840b727d",
-                "reference": "1445936ba8854f2135bbfa9fdb31c174840b727d",
+                "url": "https://api.github.com/repos/graphpql/graphpinator-parser/zipball/760e1473312c2933ffee68fccef2b96c902597b6",
+                "reference": "760e1473312c2933ffee68fccef2b96c902597b6",
                 "shasum": ""
             },
             "require": {
-                "infinityloop-dev/graphpinator-common": "^1.1",
-                "infinityloop-dev/graphpinator-tokenizer": "^1.1.1",
+                "infinityloop-dev/graphpinator-common": "^2.0",
+                "infinityloop-dev/graphpinator-tokenizer": "^1.2",
                 "infinityloop-dev/utils": "^2.0",
-                "nette/utils": "^3.0",
                 "php": ">=8.0"
             },
             "require-dev": {
-                "infection/infection": "^0.26",
+                "infection/infection": "^0.27",
                 "infinityloop-dev/coding-standard": "^0.2",
-                "phpstan/phpstan": "^1.0",
-                "phpunit/phpunit": "^9.3"
+                "phpstan/phpstan": "^1.10",
+                "phpunit/phpunit": "^10.4"
             },
             "type": "library",
             "autoload": {
@@ -169,35 +166,33 @@
             "homepage": "https://github.com/graphpql",
             "support": {
                 "issues": "https://github.com/graphpql/graphpinator-parser/issues",
-                "source": "https://github.com/graphpql/graphpinator-parser/tree/v1.1.1"
+                "source": "https://github.com/graphpql/graphpinator-parser/tree/v1.2"
             },
-            "time": "2023-10-27T16:20:59+00:00"
+            "time": "2023-11-10T14:47:00+00:00"
         },
         {
             "name": "infinityloop-dev/graphpinator-source",
-            "version": "v1.0",
+            "version": "v1.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/infinityloop-dev/graphpinator-source.git",
-                "reference": "1b6891a93883dff8c1dfd0947422d30db2a432f3"
+                "url": "https://github.com/graphpql/graphpinator-source.git",
+                "reference": "d0a2429560f3e110d03e2ff0c123373a1b779be2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/infinityloop-dev/graphpinator-source/zipball/1b6891a93883dff8c1dfd0947422d30db2a432f3",
-                "reference": "1b6891a93883dff8c1dfd0947422d30db2a432f3",
+                "url": "https://api.github.com/repos/graphpql/graphpinator-source/zipball/d0a2429560f3e110d03e2ff0c123373a1b779be2",
+                "reference": "d0a2429560f3e110d03e2ff0c123373a1b779be2",
                 "shasum": ""
             },
             "require": {
-                "infinityloop-dev/graphpinator-common": "^1.0",
-                "infinityloop-dev/utils": "^2.0",
-                "nette/utils": "^3.0",
-                "php": ">=8.0"
+                "infinityloop-dev/graphpinator-common": "^2.0",
+                "php": ">=8.1"
             },
             "require-dev": {
-                "infection/infection": "^0.23",
+                "infection/infection": "^0.27",
                 "infinityloop-dev/coding-standard": "^0.2",
-                "phpstan/phpstan": "^0.12",
-                "phpunit/phpunit": "^9.3"
+                "phpstan/phpstan": "^1.10",
+                "phpunit/phpunit": "^10.2"
             },
             "type": "library",
             "autoload": {
@@ -219,37 +214,35 @@
             "description": "Source subproject for GraPHPinator: GraphQL server implementation for PHP.",
             "homepage": "https://www.infinityloop.dev/",
             "support": {
-                "issues": "https://github.com/infinityloop-dev/graphpinator-source/issues",
-                "source": "https://github.com/infinityloop-dev/graphpinator-source/tree/v1.0"
+                "issues": "https://github.com/graphpql/graphpinator-source/issues",
+                "source": "https://github.com/graphpql/graphpinator-source/tree/v1.1"
             },
-            "time": "2021-06-01T18:07:02+00:00"
+            "time": "2023-11-10T13:14:05+00:00"
         },
         {
             "name": "infinityloop-dev/graphpinator-tokenizer",
-            "version": "v1.1.1",
+            "version": "v1.2",
             "source": {
                 "type": "git",
-                "url": "https://github.com/infinityloop-dev/graphpinator-tokenizer.git",
-                "reference": "6ad6c7cc61139d19eaa473f56e2f5b1e2351ba92"
+                "url": "https://github.com/graphpql/graphpinator-tokenizer.git",
+                "reference": "20af497ce3fd89b43bfbe993107c4b481576cb3d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/infinityloop-dev/graphpinator-tokenizer/zipball/6ad6c7cc61139d19eaa473f56e2f5b1e2351ba92",
-                "reference": "6ad6c7cc61139d19eaa473f56e2f5b1e2351ba92",
+                "url": "https://api.github.com/repos/graphpql/graphpinator-tokenizer/zipball/20af497ce3fd89b43bfbe993107c4b481576cb3d",
+                "reference": "20af497ce3fd89b43bfbe993107c4b481576cb3d",
                 "shasum": ""
             },
             "require": {
-                "infinityloop-dev/graphpinator-common": "^1.0",
+                "infinityloop-dev/graphpinator-common": "^2.0",
                 "infinityloop-dev/graphpinator-source": "^1.0",
-                "infinityloop-dev/utils": "^2.0",
-                "nette/utils": "^3.0",
-                "php": ">=8.0"
+                "php": ">=8.1"
             },
             "require-dev": {
-                "infection/infection": "^0.23",
+                "infection/infection": "^0.27",
                 "infinityloop-dev/coding-standard": "^0.2",
-                "phpstan/phpstan": "^0.12",
-                "phpunit/phpunit": "^9.3"
+                "phpstan/phpstan": "^1.10",
+                "phpunit/phpunit": "^10.4"
             },
             "type": "library",
             "autoload": {
@@ -271,23 +264,23 @@
             "description": "Tokenizer subproject for GraPHPinator: GraphQL server implementation for PHP.",
             "homepage": "https://www.infinityloop.dev/",
             "support": {
-                "issues": "https://github.com/infinityloop-dev/graphpinator-tokenizer/issues",
-                "source": "https://github.com/infinityloop-dev/graphpinator-tokenizer/tree/v1.1.1"
+                "issues": "https://github.com/graphpql/graphpinator-tokenizer/issues",
+                "source": "https://github.com/graphpql/graphpinator-tokenizer/tree/v1.2"
             },
-            "time": "2021-06-01T20:40:36+00:00"
+            "time": "2023-11-10T13:55:56+00:00"
         },
         {
             "name": "infinityloop-dev/utils",
-            "version": "v2.3",
+            "version": "v2.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/graphpql/utils.git",
-                "reference": "560a91790921ce6ebb67759b789893c884d479a3"
+                "reference": "88d67d3f86013d9a1e1694f21444235e489af005"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/graphpql/utils/zipball/560a91790921ce6ebb67759b789893c884d479a3",
-                "reference": "560a91790921ce6ebb67759b789893c884d479a3",
+                "url": "https://api.github.com/repos/graphpql/utils/zipball/88d67d3f86013d9a1e1694f21444235e489af005",
+                "reference": "88d67d3f86013d9a1e1694f21444235e489af005",
                 "shasum": ""
             },
             "require": {
@@ -320,95 +313,9 @@
             "homepage": "https://www.infinityloop.dev/",
             "support": {
                 "issues": "https://github.com/graphpql/utils/issues",
-                "source": "https://github.com/graphpql/utils/tree/v2.3"
+                "source": "https://github.com/graphpql/utils/tree/v2.3.1"
             },
-            "time": "2023-11-10T10:40:43+00:00"
-        },
-        {
-            "name": "nette/utils",
-            "version": "v3.2.10",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/nette/utils.git",
-                "reference": "a4175c62652f2300c8017fb7e640f9ccb11648d2"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/nette/utils/zipball/a4175c62652f2300c8017fb7e640f9ccb11648d2",
-                "reference": "a4175c62652f2300c8017fb7e640f9ccb11648d2",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.2 <8.4"
-            },
-            "conflict": {
-                "nette/di": "<3.0.6"
-            },
-            "require-dev": {
-                "jetbrains/phpstorm-attributes": "dev-master",
-                "nette/tester": "~2.0",
-                "phpstan/phpstan": "^1.0",
-                "tracy/tracy": "^2.3"
-            },
-            "suggest": {
-                "ext-gd": "to use Image",
-                "ext-iconv": "to use Strings::webalize(), toAscii(), chr() and reverse()",
-                "ext-intl": "to use Strings::webalize(), toAscii(), normalize() and compare()",
-                "ext-json": "to use Nette\\Utils\\Json",
-                "ext-mbstring": "to use Strings::lower() etc...",
-                "ext-tokenizer": "to use Nette\\Utils\\Reflection::getUseStatements()",
-                "ext-xml": "to use Strings::length() etc. when mbstring is not available"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.2-dev"
-                }
-            },
-            "autoload": {
-                "classmap": [
-                    "src/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause",
-                "GPL-2.0-only",
-                "GPL-3.0-only"
-            ],
-            "authors": [
-                {
-                    "name": "David Grudl",
-                    "homepage": "https://davidgrudl.com"
-                },
-                {
-                    "name": "Nette Community",
-                    "homepage": "https://nette.org/contributors"
-                }
-            ],
-            "description": "🛠  Nette Utils: lightweight utilities for string & array manipulation, image handling, safe JSON encoding/decoding, validation, slug or strong password generating etc.",
-            "homepage": "https://nette.org",
-            "keywords": [
-                "array",
-                "core",
-                "datetime",
-                "images",
-                "json",
-                "nette",
-                "paginator",
-                "password",
-                "slugify",
-                "string",
-                "unicode",
-                "utf-8",
-                "utility",
-                "validation"
-            ],
-            "support": {
-                "issues": "https://github.com/nette/utils/issues",
-                "source": "https://github.com/nette/utils/tree/v3.2.10"
-            },
-            "time": "2023-07-30T15:38:18+00:00"
+            "time": "2024-03-16T14:35:34+00:00"
         },
         {
             "name": "psr/http-message",
@@ -465,16 +372,16 @@
         },
         {
             "name": "psr/log",
-            "version": "3.0.0",
+            "version": "3.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/log.git",
-                "reference": "fe5ea303b0887d5caefd3d431c3e61ad47037001"
+                "reference": "f16e1d5863e37f8d8c2a01719f5b34baa2b714d3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/log/zipball/fe5ea303b0887d5caefd3d431c3e61ad47037001",
-                "reference": "fe5ea303b0887d5caefd3d431c3e61ad47037001",
+                "url": "https://api.github.com/repos/php-fig/log/zipball/f16e1d5863e37f8d8c2a01719f5b34baa2b714d3",
+                "reference": "f16e1d5863e37f8d8c2a01719f5b34baa2b714d3",
                 "shasum": ""
             },
             "require": {
@@ -509,9 +416,9 @@
                 "psr-3"
             ],
             "support": {
-                "source": "https://github.com/php-fig/log/tree/3.0.0"
+                "source": "https://github.com/php-fig/log/tree/3.0.2"
             },
-            "time": "2021-07-14T16:46:02+00:00"
+            "time": "2024-09-11T13:17:53+00:00"
         }
     ],
     "packages-dev": [
@@ -4444,5 +4351,5 @@
     "prefer-lowest": false,
     "platform": [],
     "platform-dev": [],
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.3.0"
 }
