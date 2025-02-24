@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "infinityloop-dev/graphpinator",
-            "version": "v1.7.5",
+            "version": "v1.7.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/graphpql/graphpinator.git",
-                "reference": "60a948c2c3629391a1fc2c552f2ee1ff61063ad4"
+                "reference": "e5b161a329b5e9ff598249ad9f2421550a3e23e1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/graphpql/graphpinator/zipball/60a948c2c3629391a1fc2c552f2ee1ff61063ad4",
-                "reference": "60a948c2c3629391a1fc2c552f2ee1ff61063ad4",
+                "url": "https://api.github.com/repos/graphpql/graphpinator/zipball/e5b161a329b5e9ff598249ad9f2421550a3e23e1",
+                "reference": "e5b161a329b5e9ff598249ad9f2421550a3e23e1",
                 "shasum": ""
             },
             "require": {
@@ -31,7 +31,7 @@
             },
             "require-dev": {
                 "infection/infection": "^0.27 || ^0.28 || ^0.29",
-                "phpstan/phpstan": "^1.10",
+                "phpstan/phpstan": "^1.10 || ^2.0",
                 "phpunit/phpunit": "^10.4",
                 "webthinx/codestyle": "dev-main"
             },
@@ -66,9 +66,9 @@
             "homepage": "https://github.com/graphpql/",
             "support": {
                 "issues": "https://github.com/graphpql/graphpinator/issues",
-                "source": "https://github.com/graphpql/graphpinator/tree/v1.7.5"
+                "source": "https://github.com/graphpql/graphpinator/tree/v1.7.6"
             },
-            "time": "2024-10-18T08:42:02+00:00"
+            "time": "2025-02-21T10:25:06+00:00"
         },
         {
             "name": "infinityloop-dev/graphpinator-common",
