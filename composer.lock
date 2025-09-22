@@ -1557,16 +1557,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "2.1.20",
+            "version": "2.1.28",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "a9ccfef95210f92ba6feea6e8d1eef42b5605499"
+                "reference": "578fa296a166605d97b94091f724f1257185d278"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/a9ccfef95210f92ba6feea6e8d1eef42b5605499",
-                "reference": "a9ccfef95210f92ba6feea6e8d1eef42b5605499",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/578fa296a166605d97b94091f724f1257185d278",
+                "reference": "578fa296a166605d97b94091f724f1257185d278",
                 "shasum": ""
             },
             "require": {
@@ -1611,7 +1611,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-07-26T20:45:26+00:00"
+            "time": "2025-09-19T08:58:49+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
