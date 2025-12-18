@@ -7,7 +7,6 @@ namespace Graphpinator\Printer\Tests\Integration;
 use Graphpinator\SimpleContainer;
 use Graphpinator\Typesystem\Argument\Argument;
 use Graphpinator\Typesystem\Argument\ArgumentSet;
-use Graphpinator\Typesystem\Attribute\Description;
 use Graphpinator\Typesystem\Container;
 use Graphpinator\Typesystem\Directive;
 use Graphpinator\Typesystem\EnumItem\EnumItem;
@@ -332,7 +331,7 @@ final class TestSchema
                 return true;
             }
 
-            public function coerceOutput(mixed $rawValue): string|int|float|bool
+            public function coerceOutput(mixed $rawValue) : string|int|float|bool
             {
                 return true;
             }

@@ -4,16 +4,16 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Printer\Tests\Integration;
 
-use Graphpinator\Typesystem\Introspection\Directive;
-use Graphpinator\Typesystem\Introspection\Schema;
-use Graphpinator\Typesystem\Introspection\Type;
-use Graphpinator\Typesystem\Introspection\TypeKind;
 use Graphpinator\Printer\Printer;
 use Graphpinator\Printer\TextVisitor;
 use Graphpinator\Printer\TypeKindSorter;
 use Graphpinator\SimpleContainer;
 use Graphpinator\Typesystem\Container;
 use Graphpinator\Typesystem\Contract\Entity;
+use Graphpinator\Typesystem\Introspection\Directive;
+use Graphpinator\Typesystem\Introspection\Schema;
+use Graphpinator\Typesystem\Introspection\Type;
+use Graphpinator\Typesystem\Introspection\TypeKind;
 use PHPUnit\Framework\TestCase;
 
 final class PrintTest extends TestCase
