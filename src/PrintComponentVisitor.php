@@ -4,7 +4,12 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Printer;
 
-interface PrintComponentVisitor extends \Graphpinator\Typesystem\Contract\ComponentVisitor
+use Graphpinator\Typesystem\Contract\ComponentVisitor;
+
+/**
+ * @extends ComponentVisitor<string>
+ */
+interface PrintComponentVisitor extends ComponentVisitor
 {
     /**
      * @param array<string> $entries

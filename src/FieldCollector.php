@@ -4,8 +4,8 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Printer;
 
-use \Graphpinator\Typesystem\Contract\InterfaceImplementor;
-use \Graphpinator\Typesystem\Field\FieldSet;
+use Graphpinator\Typesystem\Contract\InterfaceImplementor;
+use Graphpinator\Typesystem\Field\FieldSet;
 
 interface FieldCollector
 {

@@ -4,94 +4,107 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Printer\Tests\Feature;
 
-final class ImplicitInheritanceTest extends \PHPUnit\Framework\TestCase
+use Graphpinator\Printer\ImplicitInheritanceFieldCollector;
+use Graphpinator\Printer\TextVisitor;
+use Graphpinator\Typesystem\Argument\Argument;
+use Graphpinator\Typesystem\Argument\ArgumentSet;
+use Graphpinator\Typesystem\Container;
+use Graphpinator\Typesystem\Contract\Entity;
+use Graphpinator\Typesystem\Field\Field;
+use Graphpinator\Typesystem\Field\FieldSet;
+use Graphpinator\Typesystem\InterfaceSet;
+use Graphpinator\Typesystem\InterfaceType;
+use Graphpinator\Value\TypeIntermediateValue;
+use PHPUnit\Framework\TestCase;
+
+final class ImplicitInheritanceTest extends TestCase
 {
-    public static function getParentInterface() : \Graphpinator\Typesystem\InterfaceType
+    public static function getParentInterface() : InterfaceType
     {
-        return new class extends \Graphpinator\Typesystem\InterfaceType
+        return new class extends InterfaceType
         {
             protected const NAME = 'ParentInterface';
 
-            public function createResolvedValue($rawValue) : \Graphpinator\Value\TypeIntermediateValue
+            public function createResolvedValue($rawValue) : TypeIntermediateValue
             {
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\FieldSet
+            protected function getFieldDefinition() : FieldSet
             {
-                return new \Graphpinator\Typesystem\Field\FieldSet([
-                    \Graphpinator\Typesystem\Field\Field::create(
+                return new FieldSet([
+                    Field::create(
                         'name',
-                        \Graphpinator\Typesystem\Container::String(),
-                    )->setArguments(new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                        \Graphpinator\Typesystem\Argument\Argument::create('arg', \Graphpinator\Typesystem\Container::String()->notNull())
+                        Container::String(),
+                    )->setArguments(new ArgumentSet([
+                        Argument::create('arg', Container::String()->notNull())
                             ->setDefaultValue('abc'),
                     ])),
-                    \Graphpinator\Typesystem\Field\Field::create(
+                    Field::create(
                         'surname',
-                        \Graphpinator\Typesystem\Container::String(),
-                    )->setArguments(new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                        \Graphpinator\Typesystem\Argument\Argument::create('arg', \Graphpinator\Typesystem\Container::String()->notNull()),
+                        Container::String(),
+                    )->setArguments(new ArgumentSet([
+                        Argument::create('arg', Container::String()->notNull()),
                     ]))->addDirective(
-                        \Graphpinator\Typesystem\Container::directiveDeprecated(),
+                        Container::directiveDeprecated(),
                     ),
                 ]);
             }
         };
     }
 
-    public static function getNewFieldInterface() : \Graphpinator\Typesystem\InterfaceType
+    public static function getNewFieldInterface() : InterfaceType
     {
-        return new class extends \Graphpinator\Typesystem\InterfaceType
+        return new class extends InterfaceType
         {
             protected const NAME = 'ChildInterface';
 
             public function __construct()
             {
-                parent::__construct(new \Graphpinator\Typesystem\InterfaceSet([
+                parent::__construct(new InterfaceSet([
                     ImplicitInheritanceTest::getParentInterface(),
                 ]));
             }
 
-            public function createResolvedValue($rawValue) : \Graphpinator\Value\TypeIntermediateValue
+            public function createResolvedValue($rawValue) : TypeIntermediateValue
             {
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\FieldSet
+            protected function getFieldDefinition() : FieldSet
             {
-                return new \Graphpinator\Typesystem\Field\FieldSet([
-                    new \Graphpinator\Typesystem\Field\Field('number', \Graphpinator\Typesystem\Container::Int()->notNull()),
+                return new FieldSet([
+                    new Field('number', Container::Int()->notNull()),
                 ]);
             }
         };
     }
 
-    public static function getNewArgumentInterface() : \Graphpinator\Typesystem\InterfaceType
+    public static function getNewArgumentInterface() : InterfaceType
     {
-        return new class extends \Graphpinator\Typesystem\InterfaceType
+        return new class extends InterfaceType
         {
             protected const NAME = 'ChildInterface';
 
             public function __construct()
             {
-                parent::__construct(new \Graphpinator\Typesystem\InterfaceSet([
+                parent::__construct(new InterfaceSet([
                     ImplicitInheritanceTest::getParentInterface(),
                 ]));
             }
 
-            public function createResolvedValue($rawValue) : \Graphpinator\Value\TypeIntermediateValue
+            public function createResolvedValue($rawValue) : TypeIntermediateValue
             {
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\FieldSet
+            protected function getFieldDefinition() : FieldSet
             {
-                return new \Graphpinator\Typesystem\Field\FieldSet([
-                    \Graphpinator\Typesystem\Field\Field::create(
+                return new FieldSet([
+                    Field::create(
                         'name',
-                        \Graphpinator\Typesystem\Container::String(),
-                    )->setArguments(new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                        \Graphpinator\Typesystem\Argument\Argument::create('arg', \Graphpinator\Typesystem\Container::String()->notNull())
+                        Container::String(),
+                    )->setArguments(new ArgumentSet([
+                        Argument::create('arg', Container::String()->notNull())
                             ->setDefaultValue('abc'),
-                        \Graphpinator\Typesystem\Argument\Argument::create('arg2', \Graphpinator\Typesystem\Container::String())
+                        Argument::create('arg2', Container::String())
                             ->setDefaultValue(null),
                     ])),
                 ]);
@@ -99,31 +112,31 @@ final class ImplicitInheritanceTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function getCovariantFieldInterface() : \Graphpinator\Typesystem\InterfaceType
+    public static function getCovariantFieldInterface() : InterfaceType
     {
-        return new class extends \Graphpinator\Typesystem\InterfaceType
+        return new class extends InterfaceType
         {
             protected const NAME = 'ChildInterface';
 
             public function __construct()
             {
-                parent::__construct(new \Graphpinator\Typesystem\InterfaceSet([
+                parent::__construct(new InterfaceSet([
                     ImplicitInheritanceTest::getParentInterface(),
                 ]));
             }
 
-            public function createResolvedValue($rawValue) : \Graphpinator\Value\TypeIntermediateValue
+            public function createResolvedValue($rawValue) : TypeIntermediateValue
             {
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\FieldSet
+            protected function getFieldDefinition() : FieldSet
             {
-                return new \Graphpinator\Typesystem\Field\FieldSet([
-                    \Graphpinator\Typesystem\Field\Field::create(
+                return new FieldSet([
+                    Field::create(
                         'name',
-                        \Graphpinator\Typesystem\Container::String()->notNull(),
-                    )->setArguments(new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                        \Graphpinator\Typesystem\Argument\Argument::create('arg', \Graphpinator\Typesystem\Container::String()->notNull())
+                        Container::String()->notNull(),
+                    )->setArguments(new ArgumentSet([
+                        Argument::create('arg', Container::String()->notNull())
                             ->setDefaultValue('abc'),
                     ])),
                 ]);
@@ -131,31 +144,31 @@ final class ImplicitInheritanceTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function getContravariantArgumentInterface() : \Graphpinator\Typesystem\InterfaceType
+    public static function getContravariantArgumentInterface() : InterfaceType
     {
-        return new class extends \Graphpinator\Typesystem\InterfaceType
+        return new class extends InterfaceType
         {
             protected const NAME = 'ChildInterface';
 
             public function __construct()
             {
-                parent::__construct(new \Graphpinator\Typesystem\InterfaceSet([
+                parent::__construct(new InterfaceSet([
                     ImplicitInheritanceTest::getParentInterface(),
                 ]));
             }
 
-            public function createResolvedValue($rawValue) : \Graphpinator\Value\TypeIntermediateValue
+            public function createResolvedValue($rawValue) : TypeIntermediateValue
             {
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\FieldSet
+            protected function getFieldDefinition() : FieldSet
             {
-                return new \Graphpinator\Typesystem\Field\FieldSet([
-                    \Graphpinator\Typesystem\Field\Field::create(
+                return new FieldSet([
+                    Field::create(
                         'name',
-                        \Graphpinator\Typesystem\Container::String(),
-                    )->setArguments(new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                        \Graphpinator\Typesystem\Argument\Argument::create('arg', \Graphpinator\Typesystem\Container::String())
+                        Container::String(),
+                    )->setArguments(new ArgumentSet([
+                        Argument::create('arg', Container::String())
                             ->setDefaultValue('abc'),
                     ])),
                 ]);
@@ -163,31 +176,31 @@ final class ImplicitInheritanceTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function getDifferentDefaultInterface() : \Graphpinator\Typesystem\InterfaceType
+    public static function getDifferentDefaultInterface() : InterfaceType
     {
-        return new class extends \Graphpinator\Typesystem\InterfaceType
+        return new class extends InterfaceType
         {
             protected const NAME = 'ChildInterface';
 
             public function __construct()
             {
-                parent::__construct(new \Graphpinator\Typesystem\InterfaceSet([
+                parent::__construct(new InterfaceSet([
                     ImplicitInheritanceTest::getParentInterface(),
                 ]));
             }
 
-            public function createResolvedValue($rawValue) : \Graphpinator\Value\TypeIntermediateValue
+            public function createResolvedValue($rawValue) : TypeIntermediateValue
             {
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\FieldSet
+            protected function getFieldDefinition() : FieldSet
             {
-                return new \Graphpinator\Typesystem\Field\FieldSet([
-                    \Graphpinator\Typesystem\Field\Field::create(
+                return new FieldSet([
+                    Field::create(
                         'name',
-                        \Graphpinator\Typesystem\Container::String(),
-                    )->setArguments(new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                        \Graphpinator\Typesystem\Argument\Argument::create('arg', \Graphpinator\Typesystem\Container::String()->notNull())
+                        Container::String(),
+                    )->setArguments(new ArgumentSet([
+                        Argument::create('arg', Container::String()->notNull())
                             ->setDefaultValue('xyz'),
                     ])),
                 ]);
@@ -195,31 +208,31 @@ final class ImplicitInheritanceTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function getDifferentFieldDescInterface() : \Graphpinator\Typesystem\InterfaceType
+    public static function getDifferentFieldDescInterface() : InterfaceType
     {
-        return new class extends \Graphpinator\Typesystem\InterfaceType
+        return new class extends InterfaceType
         {
             protected const NAME = 'ChildInterface';
 
             public function __construct()
             {
-                parent::__construct(new \Graphpinator\Typesystem\InterfaceSet([
+                parent::__construct(new InterfaceSet([
                     ImplicitInheritanceTest::getParentInterface(),
                 ]));
             }
 
-            public function createResolvedValue($rawValue) : \Graphpinator\Value\TypeIntermediateValue
+            public function createResolvedValue($rawValue) : TypeIntermediateValue
             {
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\FieldSet
+            protected function getFieldDefinition() : FieldSet
             {
-                return new \Graphpinator\Typesystem\Field\FieldSet([
-                    \Graphpinator\Typesystem\Field\Field::create(
+                return new FieldSet([
+                    Field::create(
                         'name',
-                        \Graphpinator\Typesystem\Container::String(),
-                    )->setArguments(new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                        \Graphpinator\Typesystem\Argument\Argument::create('arg', \Graphpinator\Typesystem\Container::String()->notNull())
+                        Container::String(),
+                    )->setArguments(new ArgumentSet([
+                        Argument::create('arg', Container::String()->notNull())
                             ->setDefaultValue('abc'),
                     ]))->setDescription('Description'),
                 ]);
@@ -227,31 +240,31 @@ final class ImplicitInheritanceTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function getDifferentArgumentDescInterface() : \Graphpinator\Typesystem\InterfaceType
+    public static function getDifferentArgumentDescInterface() : InterfaceType
     {
-        return new class extends \Graphpinator\Typesystem\InterfaceType
+        return new class extends InterfaceType
         {
             protected const NAME = 'ChildInterface';
 
             public function __construct()
             {
-                parent::__construct(new \Graphpinator\Typesystem\InterfaceSet([
+                parent::__construct(new InterfaceSet([
                     ImplicitInheritanceTest::getParentInterface(),
                 ]));
             }
 
-            public function createResolvedValue($rawValue) : \Graphpinator\Value\TypeIntermediateValue
+            public function createResolvedValue($rawValue) : TypeIntermediateValue
             {
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\FieldSet
+            protected function getFieldDefinition() : FieldSet
             {
-                return new \Graphpinator\Typesystem\Field\FieldSet([
-                    \Graphpinator\Typesystem\Field\Field::create(
+                return new FieldSet([
+                    Field::create(
                         'name',
-                        \Graphpinator\Typesystem\Container::String(),
-                    )->setArguments(new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                        \Graphpinator\Typesystem\Argument\Argument::create('arg', \Graphpinator\Typesystem\Container::String()->notNull())
+                        Container::String(),
+                    )->setArguments(new ArgumentSet([
+                        Argument::create('arg', Container::String()->notNull())
                             ->setDefaultValue('abc')
                             ->setDescription('Description'),
                     ])),
@@ -260,67 +273,67 @@ final class ImplicitInheritanceTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public static function getNewArgumentDefaultInterface() : \Graphpinator\Typesystem\InterfaceType
+    public static function getNewArgumentDefaultInterface() : InterfaceType
     {
-        return new class extends \Graphpinator\Typesystem\InterfaceType
+        return new class extends InterfaceType
         {
             protected const NAME = 'ChildInterface';
 
             public function __construct()
             {
-                parent::__construct(new \Graphpinator\Typesystem\InterfaceSet([
+                parent::__construct(new InterfaceSet([
                     ImplicitInheritanceTest::getParentInterface(),
                 ]));
             }
 
-            public function createResolvedValue($rawValue) : \Graphpinator\Value\TypeIntermediateValue
+            public function createResolvedValue($rawValue) : TypeIntermediateValue
             {
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\FieldSet
+            protected function getFieldDefinition() : FieldSet
             {
-                return new \Graphpinator\Typesystem\Field\FieldSet([
-                    \Graphpinator\Typesystem\Field\Field::create(
+                return new FieldSet([
+                    Field::create(
                         'surname',
-                        \Graphpinator\Typesystem\Container::String(),
-                    )->setArguments(new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                        \Graphpinator\Typesystem\Argument\Argument::create('arg', \Graphpinator\Typesystem\Container::String()->notNull())
+                        Container::String(),
+                    )->setArguments(new ArgumentSet([
+                        Argument::create('arg', Container::String()->notNull())
                             ->setDefaultValue('abc'),
                     ]))->addDirective(
-                        \Graphpinator\Typesystem\Container::directiveDeprecated(),
+                        Container::directiveDeprecated(),
                     ),
                 ]);
             }
         };
     }
 
-    public static function getDirectiveArgumentInterface() : \Graphpinator\Typesystem\InterfaceType
+    public static function getDirectiveArgumentInterface() : InterfaceType
     {
-        return new class extends \Graphpinator\Typesystem\InterfaceType
+        return new class extends InterfaceType
         {
             protected const NAME = 'ChildInterface';
 
             public function __construct()
             {
-                parent::__construct(new \Graphpinator\Typesystem\InterfaceSet([
+                parent::__construct(new InterfaceSet([
                     ImplicitInheritanceTest::getParentInterface(),
                 ]));
             }
 
-            public function createResolvedValue($rawValue) : \Graphpinator\Value\TypeIntermediateValue
+            public function createResolvedValue($rawValue) : TypeIntermediateValue
             {
             }
 
-            protected function getFieldDefinition() : \Graphpinator\Typesystem\Field\FieldSet
+            protected function getFieldDefinition() : FieldSet
             {
-                return new \Graphpinator\Typesystem\Field\FieldSet([
-                    \Graphpinator\Typesystem\Field\Field::create(
+                return new FieldSet([
+                    Field::create(
                         'surname',
-                        \Graphpinator\Typesystem\Container::String(),
-                    )->setArguments(new \Graphpinator\Typesystem\Argument\ArgumentSet([
-                        \Graphpinator\Typesystem\Argument\Argument::create('arg', \Graphpinator\Typesystem\Container::String()->notNull()),
+                        Container::String(),
+                    )->setArguments(new ArgumentSet([
+                        Argument::create('arg', Container::String()->notNull()),
                     ]))->addDirective(
-                        \Graphpinator\Typesystem\Container::directiveDeprecated(),
+                        Container::directiveDeprecated(),
                         ['reason' => 'Some reason'],
                     ),
                 ]);
@@ -440,13 +453,13 @@ final class ImplicitInheritanceTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider simpleDataProvider
-     * @param \Graphpinator\Typesystem\Contract\Entity $type
+     * @param Entity $type
      * @param string $print
      */
-    public function testSimple(\Graphpinator\Typesystem\Contract\Entity $type, string $print) : void
+    public function testSimple(Entity $type, string $print) : void
     {
-        $visitor = new \Graphpinator\Printer\TextVisitor(
-            new \Graphpinator\Printer\ImplicitInheritanceFieldCollector(),
+        $visitor = new TextVisitor(
+            new ImplicitInheritanceFieldCollector(),
         );
         self::assertSame($print, $type->accept($visitor));
     }

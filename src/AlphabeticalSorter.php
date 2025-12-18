@@ -4,13 +4,17 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Printer;
 
-final class AlphabeticalSorter implements \Graphpinator\Printer\Sorter
+use Graphpinator\Typesystem\Contract\Directive;
+use Graphpinator\Typesystem\Contract\NamedType;
+
+final class AlphabeticalSorter implements Sorter
 {
     /**
-     * @param array<\Graphpinator\Typesystem\Contract\NamedType> $types
-     * @param array<\Graphpinator\Typesystem\Contract\Directive> $directives
-     * @return array<\Graphpinator\Typesystem\Contract\NamedType|\Graphpinator\Typesystem\Contract\Directive>
+     * @param array<NamedType> $types
+     * @param array<Directive> $directives
+     * @return array<NamedType|Directive>
      */
+    #[\Override]
     public function sort(array $types, array $directives) : array
     {
         $entities = $types + $directives;

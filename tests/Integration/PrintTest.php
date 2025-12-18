@@ -4,15 +4,27 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Printer\Tests\Integration;
 
-final class PrintTest extends \PHPUnit\Framework\TestCase
+use Graphpinator\Typesystem\Introspection\Directive;
+use Graphpinator\Typesystem\Introspection\Schema;
+use Graphpinator\Typesystem\Introspection\Type;
+use Graphpinator\Typesystem\Introspection\TypeKind;
+use Graphpinator\Printer\Printer;
+use Graphpinator\Printer\TextVisitor;
+use Graphpinator\Printer\TypeKindSorter;
+use Graphpinator\SimpleContainer;
+use Graphpinator\Typesystem\Container;
+use Graphpinator\Typesystem\Contract\Entity;
+use PHPUnit\Framework\TestCase;
+
+final class PrintTest extends TestCase
 {
     public static function simpleDataProvider() : array
     {
-        $container = new \Graphpinator\SimpleContainer([], []);
+        $container = new SimpleContainer([], []);
 
         return [
             [
-                \Graphpinator\Typesystem\Container::Int(),
+                Container::Int(),
                 <<<'EOL'
                 """
                 Int built-in type (32 bit)
@@ -21,7 +33,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
                 EOL,
             ],
             [
-                new \Graphpinator\Introspection\TypeKind(),
+                new TypeKind(),
                 <<<'EOL'
                 """
                 Built-in introspection type
@@ -39,7 +51,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
                 EOL,
             ],
             [
-                new \Graphpinator\Introspection\Schema($container),
+                new Schema($container),
                 <<<'EOL'
                 """
                 Built-in introspection type
@@ -55,7 +67,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
                 EOL,
             ],
             [
-                new \Graphpinator\Introspection\Type($container),
+                new Type($container),
                 <<<'EOL'
                 """
                 Built-in introspection type
@@ -82,7 +94,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
                 EOL,
             ],
             [
-                new \Graphpinator\Introspection\Directive($container),
+                new Directive($container),
                 <<<'EOL'
                 """
                 Built-in introspection type
@@ -122,12 +134,12 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider simpleDataProvider
-     * @param \Graphpinator\Typesystem\Contract\Entity $type
+     * @param Entity $type
      * @param string $print
      */
-    public function testSimple(\Graphpinator\Typesystem\Contract\Entity $type, string $print) : void
+    public function testSimple(Entity $type, string $print) : void
     {
-        $visitor = new \Graphpinator\Printer\TextVisitor();
+        $visitor = new TextVisitor();
         self::assertSame($print, $type->accept($visitor));
     }
 
@@ -148,10 +160,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           number: Int!
           secondField: String!
         }
-        
-        """
-        ComplexDefaultsInput description
-        """
+
         input ComplexDefaultsInput {
           name: String = "default"
           inner: ComplexDefaultsInput = {
@@ -213,10 +222,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
           "single line description"
           D @deprecated(reason: "reason")
         }
-        
-        """
-        ParentInterface Description
-        """
+
         interface ParentInterface {
           name: String!
         }
@@ -248,10 +254,7 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         }
         
         scalar SimpleScalar
-        
-        """
-        Description for SimpleType
-        """
+
         type SimpleType {
           name: String!
         }
@@ -263,8 +266,8 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
         ) repeatable on FIELD
         EOL;
 
-        $printer = new \Graphpinator\Printer\Printer(
-            new \Graphpinator\Printer\TextVisitor(),
+        $printer = new Printer(
+            new TextVisitor(),
         );
 
         self::assertSame($expected, $printer->printSchema(TestSchema::getSchema()));
@@ -286,9 +289,9 @@ final class PrintTest extends \PHPUnit\Framework\TestCase
             'directive @simpleDirective',
         ];
 
-        $printer = new \Graphpinator\Printer\Printer(
-            new \Graphpinator\Printer\TextVisitor(),
-            new \Graphpinator\Printer\TypeKindSorter(),
+        $printer = new Printer(
+            new TextVisitor(),
+            new TypeKindSorter(),
         );
         $schema = $printer->printSchema(TestSchema::getSchema());
         $lastCheckedPos = 0;

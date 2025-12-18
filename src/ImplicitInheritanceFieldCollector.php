@@ -4,17 +4,20 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Printer;
 
-use \Graphpinator\Typesystem\Argument\Argument;
-use \Graphpinator\Typesystem\Argument\ArgumentSet;
-use \Graphpinator\Typesystem\Contract\InterfaceImplementor;
-use \Graphpinator\Typesystem\Contract\Type;
-use \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsage;
-use \Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet;
-use \Graphpinator\Typesystem\Field\Field;
-use \Graphpinator\Typesystem\Field\FieldSet;
+use Graphpinator\Typesystem\Argument\Argument;
+use Graphpinator\Typesystem\Argument\ArgumentSet;
+use Graphpinator\Typesystem\Contract\InterfaceImplementor;
+use Graphpinator\Typesystem\Contract\Type;
+use Graphpinator\Typesystem\DirectiveUsage\DirectiveUsage;
+use Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet;
+use Graphpinator\Typesystem\Field\Field;
+use Graphpinator\Typesystem\Field\FieldSet;
+use Graphpinator\Typesystem\Visitor\IsInstanceOfVisitor;
+use Graphpinator\Value\ArgumentValue;
 
 final class ImplicitInheritanceFieldCollector implements FieldCollector
 {
+    #[\Override]
     public function collect(InterfaceImplementor $interfaceImplementor) : FieldSet
     {
         $parentInterfaces = $interfaceImplementor->getInterfaces();
@@ -52,7 +55,7 @@ final class ImplicitInheritanceFieldCollector implements FieldCollector
 
     private static function typeIsEqual(Type $typeA, Type $typeB) : bool
     {
-        return $typeA->isInstanceOf($typeB) && $typeB->isInstanceOf($typeA);
+        return $typeA->accept(new IsInstanceOfVisitor($typeB)) && $typeB->accept(new IsInstanceOfVisitor($typeA));
     }
 
     private static function argumentsAreEqual(ArgumentSet $setA, ArgumentSet $setB) : bool
@@ -81,7 +84,7 @@ final class ImplicitInheritanceFieldCollector implements FieldCollector
 
         return $argumentA->getDescription() === $argumentB->getDescription()
             && self::typeIsEqual($argumentA->getType(), $argumentB->getType())
-            && (($defaultA === null && $defaultB === null) || ($defaultA && $defaultB && $defaultA->getValue()->isSame($defaultB->getValue())))
+            && (($defaultA === null && $defaultB === null) || ($defaultA instanceof ArgumentValue && $defaultB instanceof ArgumentValue && $defaultA->getValue()->isSame($defaultB->getValue())))
             && self::directiveUsagesAreEqual($argumentA->getDirectiveUsages(), $argumentB->getDirectiveUsages());
     }
 

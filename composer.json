@@ -12,13 +12,18 @@
     }
   ],
   "require": {
-    "infinityloop-dev/graphpinator": "^1.4"
+    "infinityloop-dev/graphpinator": "^2.0"
   },
   "require-dev": {
     "phpunit/phpunit": "^10.4",
-    "infection/infection": "^0.27",
-    "phpstan/phpstan": "^1.10 || ^2.0",
-    "infinityloop-dev/coding-standard": "^0.2"
+    "infection/infection": "^0.29",
+    "phpstan/extension-installer": "^1.4",
+    "phpstan/phpstan": "^2.0",
+    "phpstan/phpstan-deprecation-rules": "^2.0",
+    "phpstan/phpstan-strict-rules": "^2.0",
+    "shipmonk/composer-dependency-analyser": "^1.8",
+    "thecodingmachine/phpstan-safe-rule": "^1.4",
+    "webthinx/codestyle": "^v1.0"
   },
   "scripts": {
     "phpunit": "phpunit tests",
@@ -29,8 +34,9 @@
     "phpstan": "phpstan analyze --level 6 src",
     "phpstan-next": "phpstan analyze --level 7 src",
     "phpstan-max": "phpstan analyze --level max src",
-    "codestyle": "phpcs --standard=vendor/infinityloop-dev/coding-standard/InfinityloopCodingStandard/ruleset.xml --extensions=php src tests",
-    "codestyle-fix": "phpcbf --standard=vendor/infinityloop-dev/coding-standard/InfinityloopCodingStandard/ruleset.xml --extensions=php src tests"
+    "codestyle": "phpcs --extensions=php src tests",
+    "codestyle-fix": "phpcbf --extensions=php src tests",
+    "dependencies": "composer-dependency-analyser"
   },
   "autoload": {
     "psr-4": {
@@ -42,10 +48,12 @@
       "Graphpinator\\Printer\\Tests\\": "tests/"
     }
   },
+  "minimum-stability": "RC",
   "config": {
     "allow-plugins": {
       "dealerdirect/phpcodesniffer-composer-installer": true,
-      "infection/extension-installer": true
+      "infection/extension-installer": true,
+      "phpstan/extension-installer": true
     }
   }
 }

@@ -4,6 +4,32 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Printer;
 
+use Graphpinator\Typesystem\Argument\Argument;
+use Graphpinator\Typesystem\Argument\ArgumentSet;
+use Graphpinator\Typesystem\Directive;
+use Graphpinator\Typesystem\DirectiveUsage\DirectiveUsage;
+use Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet;
+use Graphpinator\Typesystem\EnumItem\EnumItem;
+use Graphpinator\Typesystem\EnumItem\EnumItemSet;
+use Graphpinator\Typesystem\EnumType;
+use Graphpinator\Typesystem\Field\Field;
+use Graphpinator\Typesystem\Field\FieldSet;
+use Graphpinator\Typesystem\InputType;
+use Graphpinator\Typesystem\InterfaceSet;
+use Graphpinator\Typesystem\InterfaceType;
+use Graphpinator\Typesystem\ScalarType;
+use Graphpinator\Typesystem\Schema;
+use Graphpinator\Typesystem\Type;
+use Graphpinator\Typesystem\UnionType;
+use Graphpinator\Typesystem\Visitor\PrintNameVisitor;
+use Graphpinator\Value\ArgumentValue;
+use Graphpinator\Value\EnumValue;
+use Graphpinator\Value\InputValue;
+use Graphpinator\Value\InputedValue;
+use Graphpinator\Value\ListInputedValue;
+use Graphpinator\Value\NullValue;
+use Graphpinator\Value\ScalarValue;
+
 final class TextVisitor implements PrintComponentVisitor
 {
     private const INDENT_SPACES = 2;
@@ -18,13 +44,14 @@ final class TextVisitor implements PrintComponentVisitor
             ?? new AllFieldCollector();
     }
 
-    public function visitSchema(\Graphpinator\Typesystem\Schema $schema) : string
+    #[\Override]
+    public function visitSchema(Schema $schema) : string
     {
         $indentation = \str_repeat(' ', self::INDENT_SPACES);
-        $mutationPart = $schema->getMutation() instanceof \Graphpinator\Typesystem\Type
+        $mutationPart = $schema->getMutation() instanceof Type
             ? $indentation . 'mutation: ' . $schema->getMutation()->getName() . \PHP_EOL
             : '';
-        $subscriptionPart = $schema->getSubscription() instanceof \Graphpinator\Typesystem\Type
+        $subscriptionPart = $schema->getSubscription() instanceof Type
             ? $indentation . 'subscription: ' . $schema->getSubscription()->getName() . \PHP_EOL
             : '';
 
@@ -37,7 +64,8 @@ final class TextVisitor implements PrintComponentVisitor
             . '}';
     }
 
-    public function visitType(\Graphpinator\Typesystem\Type $type) : string
+    #[\Override]
+    public function visitType(Type $type) : string
     {
         return $this->printDescription($type->getDescription())
             . 'type ' . $type->getName()
@@ -47,7 +75,8 @@ final class TextVisitor implements PrintComponentVisitor
             . '}';
     }
 
-    public function visitInterface(\Graphpinator\Typesystem\InterfaceType $interface) : string
+    #[\Override]
+    public function visitInterface(InterfaceType $interface) : string
     {
         return $this->printDescription($interface->getDescription())
             . 'interface ' . $interface->getName()
@@ -57,7 +86,8 @@ final class TextVisitor implements PrintComponentVisitor
             . '}';
     }
 
-    public function visitUnion(\Graphpinator\Typesystem\UnionType $union) : string
+    #[\Override]
+    public function visitUnion(UnionType $union) : string
     {
         $typeNames = [];
 
@@ -71,7 +101,8 @@ final class TextVisitor implements PrintComponentVisitor
             . ' = ' . \implode(' | ', $typeNames);
     }
 
-    public function visitInput(\Graphpinator\Typesystem\InputType $input) : string
+    #[\Override]
+    public function visitInput(InputType $input) : string
     {
         return $this->printDescription($input->getDescription())
             . 'input ' . $input->getName()
@@ -80,14 +111,16 @@ final class TextVisitor implements PrintComponentVisitor
             . '}';
     }
 
-    public function visitScalar(\Graphpinator\Typesystem\ScalarType $scalar) : string
+    #[\Override]
+    public function visitScalar(ScalarType $scalar) : string
     {
         return $this->printDescription($scalar->getDescription())
             . 'scalar ' . $scalar->getName()
             . $this->printDirectiveUsages($scalar->getDirectiveUsages());
     }
 
-    public function visitEnum(\Graphpinator\Typesystem\EnumType $enum) : string
+    #[\Override]
+    public function visitEnum(EnumType $enum) : string
     {
         return $this->printDescription($enum->getDescription())
             . 'enum ' . $enum->getName()
@@ -96,7 +129,8 @@ final class TextVisitor implements PrintComponentVisitor
             . '}';
     }
 
-    public function visitDirective(\Graphpinator\Typesystem\Directive $directive) : string
+    #[\Override]
+    public function visitDirective(Directive $directive) : string
     {
         $schema = $this->printDescription($directive->getDescription())
             . 'directive @' . $directive->getName();
@@ -112,7 +146,8 @@ final class TextVisitor implements PrintComponentVisitor
         return $schema . ' on ' . \implode(' | ', \array_column($directive->getLocations(), 'value'));
     }
 
-    public function visitField(\Graphpinator\Typesystem\Field\Field $field) : string
+    #[\Override]
+    public function visitField(Field $field) : string
     {
         $schema = $this->printItemDescription($field->getDescription())
             . $field->getName();
@@ -121,22 +156,24 @@ final class TextVisitor implements PrintComponentVisitor
             $schema .= '(' . $this->printItems($field->getArguments()) . \PHP_EOL . ')';
         }
 
-        return $schema . ': ' . $field->getType()->printName() . $this->printDirectiveUsages($field->getDirectiveUsages());
+        return $schema . ': ' . $field->getType()->accept(new PrintNameVisitor()) . $this->printDirectiveUsages($field->getDirectiveUsages());
     }
 
-    public function visitArgument(\Graphpinator\Typesystem\Argument\Argument $argument) : string
+    #[\Override]
+    public function visitArgument(Argument $argument) : string
     {
         $schema = $this->printItemDescription($argument->getDescription())
-            . $argument->getName() . ': ' . $argument->getType()->printName();
+            . $argument->getName() . ': ' . $argument->getType()->accept(new PrintNameVisitor());
 
-        if ($argument->getDefaultValue() instanceof \Graphpinator\Value\ArgumentValue) {
+        if ($argument->getDefaultValue() instanceof ArgumentValue) {
             $schema .= ' = ' . $this->printValue($argument->getDefaultValue()->getValue());
         }
 
         return $schema . $this->printDirectiveUsages($argument->getDirectiveUsages());
     }
 
-    public function visitDirectiveUsage(\Graphpinator\Typesystem\DirectiveUsage\DirectiveUsage $directiveUsage) : string
+    #[\Override]
+    public function visitDirectiveUsage(DirectiveUsage $directiveUsage) : string
     {
         $schema = '@' . $directiveUsage->getDirective()->getName();
         $printableArguments = [];
@@ -157,12 +194,14 @@ final class TextVisitor implements PrintComponentVisitor
         return $schema;
     }
 
-    public function visitEnumItem(\Graphpinator\Typesystem\EnumItem\EnumItem $enumItem) : string
+    #[\Override]
+    public function visitEnumItem(EnumItem $enumItem) : string
     {
         return $this->printItemDescription($enumItem->getDescription())
             . $enumItem->getName() . $this->printDirectiveUsages($enumItem->getDirectiveUsages());
     }
 
+    #[\Override]
     public function glue(array $entries) : string
     {
         return \implode(\PHP_EOL . \PHP_EOL, $entries);
@@ -171,7 +210,7 @@ final class TextVisitor implements PrintComponentVisitor
     /**
      * @return array<string>
      */
-    private static function recursiveGetInterfaces(\Graphpinator\Typesystem\InterfaceSet $implements) : array
+    private static function recursiveGetInterfaces(InterfaceSet $implements) : array
     {
         $return = [];
 
@@ -205,7 +244,7 @@ final class TextVisitor implements PrintComponentVisitor
         return '"""' . \PHP_EOL . $description . \PHP_EOL . '"""' . \PHP_EOL;
     }
 
-    private function printImplements(\Graphpinator\Typesystem\InterfaceSet $implements) : string
+    private function printImplements(InterfaceSet $implements) : string
     {
         if (\count($implements) === 0) {
             return '';
@@ -214,7 +253,7 @@ final class TextVisitor implements PrintComponentVisitor
         return ' implements ' . \implode(' & ', self::recursiveGetInterfaces($implements));
     }
 
-    private function printDirectiveUsages(\Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet $set) : string
+    private function printDirectiveUsages(DirectiveUsageSet $set) : string
     {
         $return = '';
 
@@ -225,9 +264,7 @@ final class TextVisitor implements PrintComponentVisitor
         return $return;
     }
 
-    private function printItems(
-        \Graphpinator\Typesystem\Field\FieldSet|\Graphpinator\Typesystem\Argument\ArgumentSet|\Graphpinator\Typesystem\EnumItem\EnumItemSet $set,
-    ) : string
+    private function printItems(FieldSet|ArgumentSet|EnumItemSet $set) : string
     {
         $result = '';
         $previousHasDescription = false;
@@ -252,9 +289,9 @@ final class TextVisitor implements PrintComponentVisitor
         return $result;
     }
 
-    private function printValue(\Graphpinator\Value\InputedValue $value, int $indentLevel = 0) : string
+    private function printValue(InputedValue $value, int $indentLevel = 0) : string
     {
-        if ($value instanceof \Graphpinator\Value\LeafValue || $value instanceof \Graphpinator\Value\NullValue) {
+        if ($value instanceof ScalarValue || $value instanceof EnumValue || $value instanceof NullValue) {
             return $value->printValue();
         }
 
@@ -262,21 +299,21 @@ final class TextVisitor implements PrintComponentVisitor
         $indentation = \str_repeat(' ', $indentLevel * self::INDENT_SPACES);
         $innerIndent = $indentation . \str_repeat(' ', self::INDENT_SPACES);
 
-        if ($value instanceof \Graphpinator\Value\InputValue) {
+        if ($value instanceof InputValue) {
             $openingChar = '{';
             $closingChar = '}';
 
             foreach ($value as $key => $innerValue) {
-                \assert($innerValue instanceof \Graphpinator\Value\ArgumentValue);
+                \assert($innerValue instanceof ArgumentValue);
 
                 $component[] = $key . ': ' . $this->printValue($innerValue->getValue(), $indentLevel + 1);
             }
-        } elseif ($value instanceof \Graphpinator\Value\ListInputedValue) {
+        } elseif ($value instanceof ListInputedValue) {
             $openingChar = '[';
             $closingChar = ']';
 
             foreach ($value as $innerValue) {
-                \assert($innerValue instanceof \Graphpinator\Value\InputedValue);
+                \assert($innerValue instanceof InputedValue);
 
                 $component[] = $this->printValue($innerValue, $indentLevel + 1);
             }

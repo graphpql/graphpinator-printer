@@ -4,6 +4,39 @@ declare(strict_types = 1);
 
 namespace Graphpinator\Printer;
 
+use Graphpinator\Typesystem\Argument\Argument;
+use Graphpinator\Typesystem\Argument\ArgumentSet;
+use Graphpinator\Typesystem\Contract\NamedType;
+use Graphpinator\Typesystem\Contract\Type as TypeContract;
+use Graphpinator\Typesystem\Directive;
+use Graphpinator\Typesystem\DirectiveUsage\DirectiveUsage;
+use Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet;
+use Graphpinator\Typesystem\EnumItem\EnumItem;
+use Graphpinator\Typesystem\EnumItem\EnumItemSet;
+use Graphpinator\Typesystem\EnumType;
+use Graphpinator\Typesystem\Field\Field;
+use Graphpinator\Typesystem\Field\FieldSet;
+use Graphpinator\Typesystem\InputType;
+use Graphpinator\Typesystem\InterfaceSet;
+use Graphpinator\Typesystem\InterfaceType;
+use Graphpinator\Typesystem\ListType;
+use Graphpinator\Typesystem\NotNullType;
+use Graphpinator\Typesystem\ScalarType;
+use Graphpinator\Typesystem\Schema;
+use Graphpinator\Typesystem\Type;
+use Graphpinator\Typesystem\UnionType;
+use Graphpinator\Typesystem\Visitor\GetNamedTypeVisitor;
+use Graphpinator\Typesystem\Visitor\PrintNameVisitor;
+use Graphpinator\Value\ArgumentValue;
+use Graphpinator\Value\EnumValue;
+use Graphpinator\Value\InputValue;
+use Graphpinator\Value\InputedValue;
+use Graphpinator\Value\LeafValue;
+use Graphpinator\Value\ListInputedValue;
+use Graphpinator\Value\NullInputedValue;
+use Graphpinator\Value\NullValue;
+use Graphpinator\Value\ScalarValue;
+
 final class HtmlVisitor implements PrintComponentVisitor
 {
     private const LINK_TEXTS = ['Q', 'M', 'S'];
@@ -19,13 +52,14 @@ final class HtmlVisitor implements PrintComponentVisitor
             ?? new AllFieldCollector();
     }
 
-    public function visitSchema(\Graphpinator\Typesystem\Schema $schema) : string
+    #[\Override]
+    public function visitSchema(Schema $schema) : string
     {
         $query = self::generateRootTypeLink($schema->getQuery(), 'query');
-        $mutation = $schema->getMutation() instanceof \Graphpinator\Typesystem\Type
+        $mutation = $schema->getMutation() instanceof Type
             ? self::generateRootTypeLink($schema->getMutation(), 'mutation')
             : '';
-        $subscription = $schema->getSubscription() instanceof \Graphpinator\Typesystem\Type
+        $subscription = $schema->getSubscription() instanceof Type
             ? self::generateRootTypeLink($schema->getSubscription(), 'subscription')
             : '';
 
@@ -51,19 +85,8 @@ final class HtmlVisitor implements PrintComponentVisitor
         EOL;
     }
 
-    private static function generateRootTypeLink(\Graphpinator\Typesystem\Type $type, string $rootType) : string
-    {
-        $link = self::printTypeLink($type);
-
-        return <<<EOL
-        <div class="line">
-                    <span class="field-name">{$rootType}</span>
-                    <span class="colon">:</span>&nbsp;<span class="field-type">{$link}</span>
-                </div>
-        EOL;
-    }
-
-    public function visitType(\Graphpinator\Typesystem\Type $type) : string
+    #[\Override]
+    public function visitType(Type $type) : string
     {
         return <<<EOL
         <section id="graphql-type-{$type->getName()}">
@@ -87,7 +110,8 @@ final class HtmlVisitor implements PrintComponentVisitor
         EOL;
     }
 
-    public function visitInterface(\Graphpinator\Typesystem\InterfaceType $interface) : string
+    #[\Override]
+    public function visitInterface(InterfaceType $interface) : string
     {
         return <<<EOL
         <section id="graphql-type-{$interface->getName()}">
@@ -111,7 +135,8 @@ final class HtmlVisitor implements PrintComponentVisitor
         EOL;
     }
 
-    public function visitUnion(\Graphpinator\Typesystem\UnionType $union) : string
+    #[\Override]
+    public function visitUnion(UnionType $union) : string
     {
         $typeNames = [];
 
@@ -136,7 +161,8 @@ final class HtmlVisitor implements PrintComponentVisitor
         EOL;
     }
 
-    public function visitInput(\Graphpinator\Typesystem\InputType $input) : string
+    #[\Override]
+    public function visitInput(InputType $input) : string
     {
         return <<<EOL
         <section id="graphql-type-{$input->getName()}">
@@ -159,7 +185,8 @@ final class HtmlVisitor implements PrintComponentVisitor
         EOL;
     }
 
-    public function visitScalar(\Graphpinator\Typesystem\ScalarType $scalar) : string
+    #[\Override]
+    public function visitScalar(ScalarType $scalar) : string
     {
         return <<<EOL
         <section id="graphql-type-{$scalar->getName()}">
@@ -175,7 +202,8 @@ final class HtmlVisitor implements PrintComponentVisitor
         EOL;
     }
 
-    public function visitEnum(\Graphpinator\Typesystem\EnumType $enum) : string
+    #[\Override]
+    public function visitEnum(EnumType $enum) : string
     {
         return <<<EOL
         <section id="graphql-type-{$enum->getName()}">
@@ -198,7 +226,8 @@ final class HtmlVisitor implements PrintComponentVisitor
         EOL;
     }
 
-    public function visitDirective(\Graphpinator\Typesystem\Directive $directive) : string
+    #[\Override]
+    public function visitDirective(Directive $directive) : string
     {
         $repeatable = $directive->isRepeatable()
             ? '&nbsp;<span class="keyword">repeatable</span>'
@@ -223,7 +252,8 @@ final class HtmlVisitor implements PrintComponentVisitor
         EOL;
     }
 
-    public function visitField(\Graphpinator\Typesystem\Field\Field $field) : string
+    #[\Override]
+    public function visitField(Field $field) : string
     {
         $link = self::printTypeLink($field->getType());
 
@@ -239,12 +269,13 @@ final class HtmlVisitor implements PrintComponentVisitor
         EOL;
     }
 
-    public function visitArgument(\Graphpinator\Typesystem\Argument\Argument $argument) : string
+    #[\Override]
+    public function visitArgument(Argument $argument) : string
     {
         $defaultValue = '';
         $link = '<span class="argument-type">' . self::printTypeLink($argument->getType()) . '</span>';
 
-        if ($argument->getDefaultValue() instanceof \Graphpinator\Value\ArgumentValue) {
+        if ($argument->getDefaultValue() instanceof ArgumentValue) {
             $defaultValue .= '&nbsp;<span class="equals">=</span>&nbsp;';
             $defaultValue .= '<span class="argument-value">' . $this->printValue($argument->getDefaultValue()->getValue()) . '</span>';
         }
@@ -261,7 +292,8 @@ final class HtmlVisitor implements PrintComponentVisitor
         EOL;
     }
 
-    public function visitDirectiveUsage(\Graphpinator\Typesystem\DirectiveUsage\DirectiveUsage $directiveUsage) : string
+    #[\Override]
+    public function visitDirectiveUsage(DirectiveUsage $directiveUsage) : string
     {
         $schema = '&nbsp;<span class="typename">' . self::printDirectiveLink($directiveUsage) . '</span>';
         $printableArguments = [];
@@ -288,12 +320,14 @@ final class HtmlVisitor implements PrintComponentVisitor
         return $schema;
     }
 
-    public function visitEnumItem(\Graphpinator\Typesystem\EnumItem\EnumItem $enumItem) : string
+    #[\Override]
+    public function visitEnumItem(EnumItem $enumItem) : string
     {
         return $this->printItemDescription($enumItem->getDescription()) . '<div class="line enum-item">' . $enumItem->getName()
             . $this->printDirectiveUsages($enumItem->getDirectiveUsages()) . '</div>';
     }
 
+    #[\Override]
     public function glue(array $entries) : string
     {
         $html = '<div class="graphpinator-schema">'
@@ -310,10 +344,22 @@ final class HtmlVisitor implements PrintComponentVisitor
         return \str_replace('<div class="line"></div>', self::emptyLine(), $html);
     }
 
+    private static function generateRootTypeLink(Type $type, string $rootType) : string
+    {
+        $link = self::printTypeLink($type);
+
+        return <<<EOL
+        <div class="line">
+                    <span class="field-name">{$rootType}</span>
+                    <span class="colon">:</span>&nbsp;<span class="field-type">{$link}</span>
+                </div>
+        EOL;
+    }
+
     /**
      * @return array<string>
      */
-    private static function recursiveGetInterfaces(\Graphpinator\Typesystem\InterfaceSet $implements) : array
+    private static function recursiveGetInterfaces(InterfaceSet $implements) : array
     {
         $return = [];
 
@@ -325,13 +371,13 @@ final class HtmlVisitor implements PrintComponentVisitor
         return $return;
     }
 
-    private static function printTypeLink(\Graphpinator\Typesystem\Contract\Type $type) : string
+    private static function printTypeLink(TypeContract $type) : string
     {
         return match ($type::class) {
-            \Graphpinator\Typesystem\NotNullType::class =>
+            NotNullType::class =>
                 self::printTypeLink($type->getInnerType()) .
                 '<span class="exclamation-mark">!</span>',
-            \Graphpinator\Typesystem\ListType::class =>
+            ListType::class =>
                 '<span class="bracket-square">[</span>' .
                 self::printTypeLink($type->getInnerType()) .
                 '<span class="bracket-square">]</span>',
@@ -339,19 +385,19 @@ final class HtmlVisitor implements PrintComponentVisitor
         };
     }
 
-    private static function printNamedTypeLink(\Graphpinator\Typesystem\Contract\NamedType $type) : string
+    private static function printNamedTypeLink(NamedType $type) : string
     {
-        $href = \str_starts_with($type->getNamedType()::class, 'Graphpinator\Typesystem\Spec')
+        $href = \str_starts_with($type->accept(new GetNamedTypeVisitor())::class, 'Graphpinator\Typesystem\Spec')
             ? ''
-            : 'href="#graphql-type-' . $type->getNamedType()->getName() . '"';
-        $description = self::normalizeString($type->getNamedType()->getDescription());
+            : 'href="#graphql-type-' . $type->accept(new GetNamedTypeVisitor())->getName() . '"';
+        $description = self::normalizeString($type->accept(new GetNamedTypeVisitor())->getDescription());
 
         return <<<EOL
-        <a class="typename" {$href} title="{$description}">{$type->printName()}</a>
+        <a class="typename" {$href} title="{$description}">{$type->accept(new PrintNameVisitor())}</a>
         EOL;
     }
 
-    private static function printDirectiveLink(\Graphpinator\Typesystem\DirectiveUsage\DirectiveUsage $directiveUsage) : string
+    private static function printDirectiveLink(DirectiveUsage $directiveUsage) : string
     {
         $href = \str_starts_with($directiveUsage->getDirective()::class, 'Graphpinator\Typesystem\Spec')
             ? ''
@@ -396,7 +442,7 @@ final class HtmlVisitor implements PrintComponentVisitor
         return '<div class="line">&nbsp;</div>';
     }
 
-    private function printImplements(\Graphpinator\Typesystem\InterfaceSet $implements) : string
+    private function printImplements(InterfaceSet $implements) : string
     {
         if (\count($implements) === 0) {
             return '';
@@ -406,7 +452,7 @@ final class HtmlVisitor implements PrintComponentVisitor
             . \implode('&nbsp;<span class="ampersand">&</span>&nbsp;', self::recursiveGetInterfaces($implements));
     }
 
-    private function printDirectiveUsages(\Graphpinator\Typesystem\DirectiveUsage\DirectiveUsageSet $set) : string
+    private function printDirectiveUsages(DirectiveUsageSet $set) : string
     {
         $return = '';
 
@@ -418,7 +464,7 @@ final class HtmlVisitor implements PrintComponentVisitor
     }
 
     private function printItems(
-        \Graphpinator\Typesystem\Field\FieldSet|\Graphpinator\Typesystem\Argument\ArgumentSet|\Graphpinator\Typesystem\EnumItem\EnumItemSet $set,
+        FieldSet|ArgumentSet|EnumItemSet $set,
     ) : string
     {
         $result = '';
@@ -440,12 +486,12 @@ final class HtmlVisitor implements PrintComponentVisitor
         return $result;
     }
 
-    private function printLeafValue(\Graphpinator\Value\InputedValue $value) : string
+    private function printLeafValue(InputedValue $value) : string
     {
         $className = match ($value::class) {
-            \Graphpinator\Value\NullInputedValue::class => 'null',
-            \Graphpinator\Value\EnumValue::class => 'enum-literal',
-            \Graphpinator\Value\ScalarValue::class => match (\get_debug_type($value->getRawValue())) {
+            NullValue::class => 'null',
+            EnumValue::class => 'enum-literal',
+            ScalarValue::class => match (\get_debug_type($value->getRawValue())) {
                 'bool' => $value->getRawValue() ? 'true' : 'false',
                 'int' => 'int-literal',
                 'float' => 'float-literal',
@@ -456,30 +502,30 @@ final class HtmlVisitor implements PrintComponentVisitor
         return '<span class="' . $className . '">' . $value->printValue() . '</span>';
     }
 
-    private function printValue(\Graphpinator\Value\InputedValue $value) : string
+    private function printValue(InputedValue $value) : string
     {
-        if ($value instanceof \Graphpinator\Value\LeafValue || $value instanceof \Graphpinator\Value\NullValue) {
+        if ($value instanceof ScalarValue || $value instanceof EnumValue || $value instanceof NullValue) {
             return $this->printLeafValue($value);
         }
 
         $component = [];
 
-        if ($value instanceof \Graphpinator\Value\InputValue) {
+        if ($value instanceof InputValue) {
             $openingChar = '<span class="bracket-curly">{</span>';
             $closingChar = '<span class="bracket-curly">}</span>';
 
             foreach ($value as $key => $innerValue) {
-                \assert($innerValue instanceof \Graphpinator\Value\ArgumentValue);
+                \assert($innerValue instanceof ArgumentValue);
 
                 $component[] = '<span class="value-name">' . $key . '</span><span class="colon">:</span>'
                     . $this->printValue($innerValue->getValue());
             }
-        } elseif ($value instanceof \Graphpinator\Value\ListInputedValue) {
+        } elseif ($value instanceof ListInputedValue) {
             $openingChar = '<span class="bracket-square">[</span>';
             $closingChar = '<span class="bracket-square">]</span>';
 
             foreach ($value as $innerValue) {
-                \assert($innerValue instanceof \Graphpinator\Value\InputedValue);
+                \assert($innerValue instanceof InputedValue);
 
                 $component[] = $this->printValue($innerValue);
             }
@@ -496,7 +542,7 @@ final class HtmlVisitor implements PrintComponentVisitor
         return $openingChar . '<span class="value">' . $components . '</span>' . $closingChar;
     }
 
-    private function printArguments(\Graphpinator\Typesystem\Directive|\Graphpinator\Typesystem\Field\Field $component) : string
+    private function printArguments(Directive|Field $component) : string
     {
         if ($component->getArguments()->count() === 0) {
             return '';
