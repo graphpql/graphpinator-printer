@@ -14,6 +14,7 @@ use Graphpinator\Typesystem\Field\Field;
 use Graphpinator\Typesystem\Field\FieldSet;
 use Graphpinator\Typesystem\Visitor\IsInstanceOfVisitor;
 use Graphpinator\Value\ArgumentValue;
+use Graphpinator\Value\Visitor\IsValueSameVisitor;
 
 final class ImplicitInheritanceFieldCollector implements FieldCollector
 {
@@ -84,7 +85,7 @@ final class ImplicitInheritanceFieldCollector implements FieldCollector
 
         return $argumentA->getDescription() === $argumentB->getDescription()
             && self::typeIsEqual($argumentA->getType(), $argumentB->getType())
-            && (($defaultA === null && $defaultB === null) || ($defaultA instanceof ArgumentValue && $defaultB instanceof ArgumentValue && $defaultA->getValue()->isSame($defaultB->getValue())))
+            && (($defaultA === null && $defaultB === null) || ($defaultA instanceof ArgumentValue && $defaultB instanceof ArgumentValue && $defaultA->value->accept(new IsValueSameVisitor($defaultB->value))))
             && self::directiveUsagesAreEqual($argumentA->getDirectiveUsages(), $argumentB->getDirectiveUsages());
     }
 

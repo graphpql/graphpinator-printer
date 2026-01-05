@@ -23,12 +23,14 @@ use Graphpinator\Typesystem\Type;
 use Graphpinator\Typesystem\UnionType;
 use Graphpinator\Typesystem\Visitor\PrintNameVisitor;
 use Graphpinator\Value\ArgumentValue;
+use Graphpinator\Value\Contract\InputedValue;
+use Graphpinator\Value\Contract\Value;
 use Graphpinator\Value\EnumValue;
 use Graphpinator\Value\InputValue;
-use Graphpinator\Value\InputedValue;
-use Graphpinator\Value\ListInputedValue;
+use Graphpinator\Value\ListValue;
 use Graphpinator\Value\NullValue;
 use Graphpinator\Value\ScalarValue;
+use Graphpinator\Value\Visitor\PrintValueVisitor;
 
 final class TextVisitor implements PrintComponentVisitor
 {
@@ -166,7 +168,7 @@ final class TextVisitor implements PrintComponentVisitor
             . $argument->getName() . ': ' . $argument->getType()->accept(new PrintNameVisitor());
 
         if ($argument->getDefaultValue() instanceof ArgumentValue) {
-            $schema .= ' = ' . $this->printValue($argument->getDefaultValue()->getValue());
+            $schema .= ' = ' . $this->printValue($argument->getDefaultValue()->value);
         }
 
         return $schema . $this->printDirectiveUsages($argument->getDirectiveUsages());
@@ -178,16 +180,16 @@ final class TextVisitor implements PrintComponentVisitor
         $schema = '@' . $directiveUsage->getDirective()->getName();
         $printableArguments = [];
 
-        foreach ($directiveUsage->getArgumentValues() as $argument) {
+        foreach ($directiveUsage->getArgumentValues() as $argumentValue) {
             // do not print default value
-            if ($argument->getValue()->getRawValue() === $argument->getArgument()->getDefaultValue()?->getValue()->getRawValue()) {
+            if ($argumentValue->value->getRawValue() === $argumentValue->argument->getDefaultValue()?->value->getRawValue()) {
                 continue;
             }
 
-            $printableArguments[] = $argument->getArgument()->getName() . ': ' . $argument->getValue()->printValue();
+            $printableArguments[] = $argumentValue->argument->getName() . ': ' . $argumentValue->value->accept(new PrintValueVisitor());
         }
 
-        if (\count($printableArguments)) {
+        if (\count($printableArguments) > 0) {
             $schema .= '(' . \implode(', ', $printableArguments) . ')';
         }
 
@@ -289,10 +291,10 @@ final class TextVisitor implements PrintComponentVisitor
         return $result;
     }
 
-    private function printValue(InputedValue $value, int $indentLevel = 0) : string
+    private function printValue(Value $value, int $indentLevel = 0) : string
     {
         if ($value instanceof ScalarValue || $value instanceof EnumValue || $value instanceof NullValue) {
-            return $value->printValue();
+            return $value->accept(new PrintValueVisitor());
         }
 
         $component = [];
@@ -304,11 +306,9 @@ final class TextVisitor implements PrintComponentVisitor
             $closingChar = '}';
 
             foreach ($value as $key => $innerValue) {
-                \assert($innerValue instanceof ArgumentValue);
-
-                $component[] = $key . ': ' . $this->printValue($innerValue->getValue(), $indentLevel + 1);
+                $component[] = $key . ': ' . $this->printValue($innerValue->value, $indentLevel + 1);
             }
-        } elseif ($value instanceof ListInputedValue) {
+        } elseif ($value instanceof ListValue) {
             $openingChar = '[';
             $closingChar = ']';
 

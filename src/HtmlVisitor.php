@@ -28,12 +28,14 @@ use Graphpinator\Typesystem\UnionType;
 use Graphpinator\Typesystem\Visitor\GetNamedTypeVisitor;
 use Graphpinator\Typesystem\Visitor\PrintNameVisitor;
 use Graphpinator\Value\ArgumentValue;
+use Graphpinator\Value\Contract\InputedValue;
+use Graphpinator\Value\Contract\Value;
 use Graphpinator\Value\EnumValue;
 use Graphpinator\Value\InputValue;
-use Graphpinator\Value\InputedValue;
-use Graphpinator\Value\ListInputedValue;
+use Graphpinator\Value\ListValue;
 use Graphpinator\Value\NullValue;
 use Graphpinator\Value\ScalarValue;
+use Graphpinator\Value\Visitor\PrintValueVisitor;
 
 final class HtmlVisitor implements PrintComponentVisitor
 {
@@ -275,7 +277,7 @@ final class HtmlVisitor implements PrintComponentVisitor
 
         if ($argument->getDefaultValue() instanceof ArgumentValue) {
             $defaultValue .= '&nbsp;<span class="equals">=</span>&nbsp;';
-            $defaultValue .= '<span class="argument-value">' . $this->printValue($argument->getDefaultValue()->getValue()) . '</span>';
+            $defaultValue .= '<span class="argument-value">' . $this->printValue($argument->getDefaultValue()->value) . '</span>';
         }
 
         return <<<EOL
@@ -298,18 +300,18 @@ final class HtmlVisitor implements PrintComponentVisitor
 
         foreach ($directiveUsage->getArgumentValues() as $argument) {
             // do not print default value
-            if ($argument->getValue()->getRawValue() === $argument->getArgument()->getDefaultValue()?->getValue()->getRawValue()) {
+            if ($argument->value->getRawValue() === $argument->argument->getDefaultValue()?->value->getRawValue()) {
                 continue;
             }
 
-            $printableArgument = '<span class="argument-name">' . $argument->getArgument()->getName() . '</span>';
+            $printableArgument = '<span class="argument-name">' . $argument->argument->getName() . '</span>';
             $printableArgument .= '<span class="colon">:</span>&nbsp;';
-            $printableArgument .= '<span class="argument-value">' . $this->printValue($argument->getValue()) . '</span>';
+            $printableArgument .= '<span class="argument-value">' . $this->printValue($argument->value) . '</span>';
 
             $printableArguments[] = $printableArgument;
         }
 
-        if (\count($printableArguments)) {
+        if (\count($printableArguments) > 0) {
             $schema .= '<span class="bracket-round">(</span>'
                 . \implode('<span class="comma">,</span>&nbsp;', $printableArguments)
                 . '<span class="bracket-round">)</span>';
@@ -371,15 +373,16 @@ final class HtmlVisitor implements PrintComponentVisitor
 
     private static function printTypeLink(TypeContract $type) : string
     {
-        return match ($type::class) {
-            NotNullType::class =>
+        return match (true) {
+            $type instanceof NotNullType =>
                 self::printTypeLink($type->getInnerType()) .
                 '<span class="exclamation-mark">!</span>',
-            ListType::class =>
+            $type instanceof ListType =>
                 '<span class="bracket-square">[</span>' .
                 self::printTypeLink($type->getInnerType()) .
                 '<span class="bracket-square">]</span>',
-            default => self::printNamedTypeLink($type),
+            $type instanceof NamedType => self::printNamedTypeLink($type),
+            default => throw new \InvalidArgumentException('Unknown type.'),
         };
     }
 
@@ -490,17 +493,19 @@ final class HtmlVisitor implements PrintComponentVisitor
             NullValue::class => 'null',
             EnumValue::class => 'enum-literal',
             ScalarValue::class => match (\get_debug_type($value->getRawValue())) {
-                'bool' => $value->getRawValue() ? 'true' : 'false',
+                'bool' => $value->getRawValue() === true ? 'true' : 'false',
                 'int' => 'int-literal',
                 'float' => 'float-literal',
                 'string' => 'string-literal',
+                default => throw new \InvalidArgumentException('Unknown leaf value type.'),
             },
+            default => throw new \InvalidArgumentException('Unknown leaf value type.'),
         };
 
-        return '<span class="' . $className . '">' . $value->printValue() . '</span>';
+        return '<span class="' . $className . '">' . $value->accept(new PrintValueVisitor()) . '</span>';
     }
 
-    private function printValue(InputedValue $value) : string
+    private function printValue(Value $value) : string
     {
         if ($value instanceof ScalarValue || $value instanceof EnumValue || $value instanceof NullValue) {
             return $this->printLeafValue($value);
@@ -513,12 +518,10 @@ final class HtmlVisitor implements PrintComponentVisitor
             $closingChar = '<span class="bracket-curly">}</span>';
 
             foreach ($value as $key => $innerValue) {
-                \assert($innerValue instanceof ArgumentValue);
-
                 $component[] = '<span class="value-name">' . $key . '</span><span class="colon">:</span>'
-                    . $this->printValue($innerValue->getValue());
+                    . $this->printValue($innerValue->value);
             }
-        } elseif ($value instanceof ListInputedValue) {
+        } elseif ($value instanceof ListValue) {
             $openingChar = '<span class="bracket-square">[</span>';
             $closingChar = '<span class="bracket-square">]</span>';
 
