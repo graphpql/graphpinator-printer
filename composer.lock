@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "infinityloop-dev/graphpinator",
-            "version": "v2.0-rc5",
+            "version": "v2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/graphpql/graphpinator.git",
-                "reference": "2a42cc600a332fb361cc002de2cfcc05ecf6c275"
+                "reference": "e8283f02aef82e8673f10029e20611ee6923e2e0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/graphpql/graphpinator/zipball/2a42cc600a332fb361cc002de2cfcc05ecf6c275",
-                "reference": "2a42cc600a332fb361cc002de2cfcc05ecf6c275",
+                "url": "https://api.github.com/repos/graphpql/graphpinator/zipball/e8283f02aef82e8673f10029e20611ee6923e2e0",
+                "reference": "e8283f02aef82e8673f10029e20611ee6923e2e0",
                 "shasum": ""
             },
             "require": {
@@ -32,7 +32,7 @@
             },
             "require-dev": {
                 "guzzlehttp/psr7": "^2.8",
-                "infection/infection": "^0.29 || ^0.31",
+                "infection/infection": "^0.31 || ^0.32",
                 "infinityloop-dev/graphpinator-tokenizer": "^1.3",
                 "phpstan/extension-installer": "^1.4",
                 "phpstan/phpstan": "^2.0",
@@ -74,9 +74,9 @@
             "homepage": "https://github.com/graphpql/",
             "support": {
                 "issues": "https://github.com/graphpql/graphpinator/issues",
-                "source": "https://github.com/graphpql/graphpinator/tree/v2.0-rc5"
+                "source": "https://github.com/graphpql/graphpinator/tree/v2.1"
             },
-            "time": "2025-12-23T22:46:42+00:00"
+            "time": "2026-01-09T23:07:29+00:00"
         },
         {
             "name": "infinityloop-dev/graphpinator-common",
@@ -5077,10 +5077,10 @@
     ],
     "aliases": [],
     "minimum-stability": "RC",
-    "stability-flags": [],
+    "stability-flags": {},
     "prefer-stable": false,
     "prefer-lowest": false,
-    "platform": [],
-    "platform-dev": [],
-    "plugin-api-version": "2.2.0"
+    "platform": {},
+    "platform-dev": {},
+    "plugin-api-version": "2.6.0"
 }
